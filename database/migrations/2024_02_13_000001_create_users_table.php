@@ -21,8 +21,11 @@ class CreateUsersTable extends Migration
             $table->string('role', 50);
             $table->boolean('receive_notifications')->default(0);
             $table->timestamps();
-            $table->primary('user_id');
+        
+            // You don't need to explicitly set primary key, 'id' method already does that
+            // $table->primary('user_id');
         });
+        
     }
 
     /**

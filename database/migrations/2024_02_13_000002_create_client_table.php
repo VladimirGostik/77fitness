@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientsTable extends Migration
+class CreateClientTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,9 @@ class CreateClientsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->timestamps();
-            $table->primary('client_id');
+            
+            // Primary key declaration is not required here because 'id' is already declared
+            // $table->primary('client_id');
         });
     }
 
@@ -27,5 +29,4 @@ class CreateClientsTable extends Migration
     {
         Schema::dropIfExists('clients');
     }
-};
-
+}

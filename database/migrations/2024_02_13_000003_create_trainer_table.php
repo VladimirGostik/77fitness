@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTrainersTable extends Migration
+class CreateTrainerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,6 @@ class CreateTrainersTable extends Migration
             $table->decimal('session_price', 10, 2);
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->timestamps();
-            $table->primary('trainer_id');
         });
     }
 

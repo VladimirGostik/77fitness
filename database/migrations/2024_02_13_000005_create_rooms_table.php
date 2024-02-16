@@ -15,7 +15,6 @@ class CreateRoomsTable extends Migration
             $table->id('room_id');
             $table->string('name', 255);
             $table->timestamps();
-            $table->primary('room_id');
         });
     }
 
