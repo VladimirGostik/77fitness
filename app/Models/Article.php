@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    use HasFactory;
+    protected $table = "articles";
 
     /**
      * The attributes that are mass assignable.
@@ -15,27 +15,11 @@ class Article extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'admin_id',
-        'trainer_id',
         'title',
         'content',
         'date_time',
         // Add any additional fields you want to be mass assignable for articles
     ];
 
-    /**
-     * Get the admin associated with the article.
-     */
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class, 'admin_id');
-    }
-
-    /**
-     * Get the trainer associated with the article.
-     */
-    public function trainer()
-    {
-        return $this->belongsTo(Trainer::class, 'trainer_id');
-    }
+  
 }

@@ -12,16 +12,11 @@ class CreateArticlesTable extends Migration
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id('article_id');
-            $table->unsignedBigInteger('admin_id');
-            $table->unsignedBigInteger('trainer_id')->nullable();
+            $table->id();
             $table->string('title');
             $table->text('content');
-            $table->dateTime('date_time');
             $table->timestamps();
 
-            $table->foreign('admin_id')->references('admin_id')->on('admins')->onDelete('cascade');
-            $table->foreign('trainer_id')->references('trainer_id')->on('trainers')->onDelete('cascade');
         });
     }
 

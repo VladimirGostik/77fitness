@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\ArticlesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,6 @@ Route::group(['middleware' => 'auth'], function (){
         return "hi";
     });
 });
+
+Route::resource('articles',ArticlesController::class);
+
