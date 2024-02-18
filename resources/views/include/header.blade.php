@@ -13,6 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/articles">Articles</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articles/create">Create article</a>
+                </li>
                 @auth
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}">Logout</a>

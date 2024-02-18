@@ -1,0 +1,17 @@
+Potrebujem: 
+
+composer require laravelcollective/html
+
+instalacia: Laravel Blade Snipp...
+
+Dump na databazu: 
+
+# To dump the database
+php artisan migrate
+php artisan db:seed
+mysqldump -u username -p database_name > database_dump.sql
+
+# To import the database
+mysql -u username -p database_name < database_dump.sql
+
+

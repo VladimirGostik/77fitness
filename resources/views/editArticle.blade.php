@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>
-        Create Article
+        Edit Article
     </h1>
     <div class="mt-5">
         @if($errors->any())
@@ -12,31 +12,26 @@
                 @endforeach
             </div>
         @endif
-        
 
         @if(session()->has('error'))
-                <div class="alert alert-danger">{{session('error')}}
-
-                </div>
+            <div class="alert alert-danger">{{session('error')}}</div>
         @endif
 
         @if(session('success'))
-                <div class="alert alert-success">{{session('success')}}
-
-                </div>
+            <div class="alert alert-success">{{session('success')}}</div>
         @endif
     </div>
     
-    {!! Form::open(['route' => 'articles.store', 'method' => 'POST']) !!}
+    {!! Form::open(['route' => ['articles.update', $article->id], 'method' => 'POST']) !!}
         <div class="form-group">
             {{Form::label('title', 'Title')}}
-            {{Form::text('title','',['class' => 'form-control', 'placeholder' => 'Title'])}}
+            {{Form::text('title', $article->title, ['class' => 'form-control', 'placeholder' => 'Title'])}}
         </div>
         <div class="form-group">
             {{Form::label('content', 'Content')}}
-            {{Form::textarea('content','',['class' => 'form-control', 'placeholder' => 'Content'])}}
+            {{Form::textarea('content', $article->content, ['class' => 'form-control', 'placeholder' => 'Content'])}}
         </div>
-        {{Form::submit('Submit',['class' => 'btn btn=primary'])}}
+        {{Form::hidden('_method', 'PUT')}}
+        {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
     {!! Form::close() !!}
-
 @endsection

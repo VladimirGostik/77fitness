@@ -64,7 +64,9 @@ class ArticlesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $article = Article::find($id);
+        return view('editArticle')->with('article',$article);
+
     }
 
     /**
@@ -72,7 +74,21 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required'
+            // Add any other validation rules you need
+        ]);
+         // Create a new article
+         $article = Article::find($id);
+         $article->title = $request->input('title');
+         $article->content = $request->input('content'); 
+         // Set other properties if needed
+         $article->save();
+ 
+         // Redirect or return a response as needed
+         return redirect()->route('articles.index')->with('success', 'Article created successfully');
+        
     }
 
     /**
@@ -80,6 +96,9 @@ class ArticlesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $article = Article::find($id);
+        $article->delete(); 
+
+    return redirect()->route('articles.index')->with('success', 'Article deleted successfully');
     }
 }

@@ -4,8 +4,11 @@
     <h1>
         Articles
     </h1>
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
     
-    @if(count($articles) >1 )
+    @if(count($articles) >= 1 )
     <div class = "card">
         <ul class="list-group list-group-flush">
              <li class="list-group=item">
