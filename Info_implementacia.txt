@@ -1,6 +1,12 @@
 Potrebujem: 
 
 composer require laravelcollective/html
+install node.js
+php artisan ui vue --auth
+npm install
+
+php artisan storage:link
+
 
 instalacia: Laravel Blade Snipp...
 
@@ -13,5 +19,10 @@ mysqldump -u username -p database_name > database_dump.sql
 
 # To import the database
 mysql -u username -p database_name < database_dump.sql
+
+
+
+
+
 
 

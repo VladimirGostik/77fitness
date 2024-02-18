@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
     <h1>
@@ -27,7 +27,7 @@
         @endif
     </div>
     
-    {!! Form::open(['route' => 'articles.store', 'method' => 'POST']) !!}
+    {!! Form::open(['route' => 'articles.store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
         <div class="form-group">
             {{Form::label('title', 'Title')}}
             {{Form::text('title','',['class' => 'form-control', 'placeholder' => 'Title'])}}
@@ -35,6 +35,10 @@
         <div class="form-group">
             {{Form::label('content', 'Content')}}
             {{Form::textarea('content','',['class' => 'form-control', 'placeholder' => 'Content'])}}
+        </div>
+        <div class="form-group">
+            {{Form::file('cover_image')}}
+
         </div>
         {{Form::submit('Submit',['class' => 'btn btn=primary'])}}
     {!! Form::close() !!}

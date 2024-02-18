@@ -21,5 +21,7 @@ class Article extends Model
         // Add any additional fields you want to be mass assignable for articles
     ];
 
-  
+    public function user(){
+        return $this->belongTo('App\User');
+    }
 }
