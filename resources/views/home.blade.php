@@ -5,36 +5,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    @if(Auth::user()->role === 1)
+                        {{-- Client Section --}}
+                        @include('profile.client')
+                    @elseif(Auth::user()->role === 2)
+                        {{-- Trainer Section --}}
+                        @include('profile.trainer')
+                    @elseif(Auth::user()->role === 3)
+                        {{-- Admin Section --}}
+                        @include('profile.admin')
                     @endif
-
                 </div>
-                <h1>Vitaj na stranke 77fitness... tuto bude info: </h1>
-                @if($articles && count($articles) > 0)
-                <table class="table table-striped">
-                    <tr>
-                        <th>Title</th>
-                        <th></th>
-                        <th></th>
-
-                    </tr>
-                    @foreach($articles as $article)
-                        <tr>
-                            <th>{{$article->title}}</th>
-                            <th><a href="/articles/{{$article->id}}/edit" class="btn btn-default">Edit</a></th>
-                            <th></th>
-
-                        </tr>
-                    @endforeach
-                </table>
-                @else
-                <p>You have no articles.</p>
-                @endif
             </div>
         </div>
     </div>

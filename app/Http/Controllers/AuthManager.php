@@ -40,17 +40,23 @@ class AuthManager extends Controller
 
     function registrationPost(Request $request){
         $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
+            'phone_number' => 'required|unique:users',
+            'receive_notifications' => 'boolean',
+            'role' => 'integer',
         ]);
 
         $data = [
-            'first_name' => $request->firstname,
-            'last_name' => $request->lastname,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone_number' => $request->phone_number,
+            'receive_notifications' => $request->receive_notifications,
+            'role' => $request->role,
         ];
 
 
@@ -59,6 +65,7 @@ class AuthManager extends Controller
             if (!$user) {
                 return redirect(route('registration'))->with("error", "Registration details are not valid");
             }
+            Auth::login($user);
 
             return redirect(route('login'))->with("success", "Registration successful");
         }

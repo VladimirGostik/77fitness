@@ -24,9 +24,6 @@
                         </div>
 
                     </div>
-
-                
-
                     @endforeach
             </ul>
     @else

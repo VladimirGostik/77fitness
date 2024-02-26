@@ -15,7 +15,7 @@ return new class extends Migration
             // Add new columns
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('phone_number')->nullable();
+            $table->string('phone_number')->nullable(false);
             $table->boolean('receive_notifications')->default(true);
             $table->tinyInteger('role')->default(1); // 1: client, 2: trainer, 3: admin
 
