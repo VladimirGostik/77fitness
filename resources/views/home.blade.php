@@ -8,13 +8,13 @@
                 <div class="card-body">
                     @if(Auth::user()->role === 1)
                         {{-- Client Section --}}
-                        @include('profile.client')
+                        @include('home.profileClient')
                     @elseif(Auth::user()->role === 2)
                         {{-- Trainer Section --}}
-                        @include('profile.trainer')
+                        @include('home.profileTrainer')
                     @elseif(Auth::user()->role === 3)
                         {{-- Admin Section --}}
-                        @include('profile.admin')
+                        @include('home.profileAdmin')
                     @endif
                 </div>
             </div>

@@ -40,9 +40,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'receive_notifications' => 'boolean',
     ];
 
     public function articles(){
         return $this->hasMany('App\Models\Article');
+    }
+
+        public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
+
+    public function trainer()
+    {
+        return $this->hasOne(Trainer::class);
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
     }
 }
