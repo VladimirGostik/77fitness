@@ -9,6 +9,9 @@ class Client extends Model
 {
     use HasFactory;
 
+    protected $table = "clients";
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +26,6 @@ class Client extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

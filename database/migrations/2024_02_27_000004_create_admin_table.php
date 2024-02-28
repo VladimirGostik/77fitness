@@ -15,7 +15,6 @@ class CreateAdminTable extends Migration
             $table->id('admin_id');
             $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

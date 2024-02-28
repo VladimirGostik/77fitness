@@ -36,7 +36,7 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Request::is('/') ? ' active' : '' }}" href="{{ url('/') }}">Home</a>
+                                <a class="nav-link{{ Request::is('/') ? ' active' : '' }}" href="{{ url('/home') }}">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/articles">Articles</a>

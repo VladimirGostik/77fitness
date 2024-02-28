@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Client;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -54,6 +55,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone_number' => ['required', 'regex:/^[0-9]{10}$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'receive_notifications' => ['boolean'],
         ]);
     }
 
@@ -65,12 +67,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'phone_number' => $data['phone_number'],
             'password' => Hash::make($data['password']),
+            'receive_notifications' => $data['receive_notifications'],
         ]);
+
+        // Create a client for the user
+        $clientData = ['user_id' => $user->id];
+        $user->client()->create($clientData);
+
+        return $user;
     }
 }
