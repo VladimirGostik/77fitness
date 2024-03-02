@@ -1,42 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+    <div class="container">
+        <h1>Welcome, {{ Auth::user()->first_name }}, this is your profile page!</h1>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        <div class="actions">
+            <a href="{{ route('trainers.edit', ['trainer' => Auth::user()->trainer->id]) }}">
+                <i class="fas fa-user-edit"></i> Edit Profile
+            </a> <br>
 
-                </div>
-                <h1>Vitaj na stranke 77fitness... TOTO je home page trainer </h1>
-                @if($articles && count($articles) > 0)
-                <table class="table table-striped">
-                    <tr>
-                        <th>Title</th>
-                        <th></th>
-                        <th></th>
+            <a href="{{ route('articles.create') }}">
+                <i class="fas fa-plus-circle"></i> Create Article
+            </a> <br>
 
-                    </tr>
-                    @foreach($articles as $article)
-                        <tr>
-                            <th>{{$article->title}}</th>
-                            <th><a href="/articles/{{$article->id}}/edit" class="btn btn-default">Edit</a></th>
-                            <th></th>
+            <a href="{{ route('articles.index') }}">
+                <i class="fas fa-list"></i> Edit Articles
+            </a> <br>
+      {{--       
+            <a href="{{ route('reservations.create') }}">
+                <i class="fas fa-calendar-plus"></i> Create Reservation
+            </a> <br>
 
-                        </tr>
-                    @endforeach
-                </table>
-                @else
-                <p>You have no articles.</p>
-                @endif
-            </div>
+            <a href="{{ route('group-reservations.create') }}">
+                <i class="fas fa-users"></i> Create Group Reservation
+            </a> <br>
+--}}
+            <!-- Add more actions as needed -->
         </div>
     </div>
-</div>
 @endsection

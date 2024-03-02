@@ -12,7 +12,7 @@ class CreateTrainerTable extends Migration
     public function up(): void
     {
         Schema::create('trainers', function (Blueprint $table) {
-            $table->id('trainer_id');
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('specialization');
             $table->text('description');

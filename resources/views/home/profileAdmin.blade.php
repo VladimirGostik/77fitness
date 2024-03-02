@@ -1,42 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+    <div class="container">
+        <h1>Welcome, {{ Auth::user()->first_name }}, this is a admin page!</h1>
+        <div class="actions">
+            <a href="{{ route('users.index') }}"><i class="fas fa-user-edit"></i> Edit User</a> <br>
+            <a href="{{ route('articles.index') }}"><i class="fas fa-list"></i> Edit Articles</a> <br>
+            <a href="{{ route('articles.create') }}"><i class="fas fa-plus-circle"></i> Create Article</a> <br>
+            <a href="{{ route('trainers.create') }}"><i class="fas fa-plus-circle"></i> Create Trainer</a> <br>
+            <a href="{{ route('trainers.index') }}"><i class="fas fa-user"></i> Edit Trainers</a>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                </div>
-                <h1>TOTO je home page admin </h1>
-                @if($articles && count($articles) > 0)
-                <table class="table table-striped">
-                    <tr>
-                        <th>Title</th>
-                        <th></th>
-                        <th></th>
-
-                    </tr>
-                    @foreach($articles as $article)
-                        <tr>
-                            <th>{{$article->title}}</th>
-                            <th><a href="/articles/{{$article->id}}/edit" class="btn btn-default">Edit</a></th>
-                            <th></th>
-
-                        </tr>
-                    @endforeach
-                </table>
-                @else
-                <p>You have no articles.</p>
-                @endif
-            </div>
+            <!-- Add more actions as needed -->
         </div>
     </div>
-</div>
 @endsection
+

@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TrainerController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +43,22 @@ Route::group(['middleware' => 'auth'], function (){
 });
 
 Route::resource('articles',ArticlesController::class);
-
+/*
+ak to bude potrbovat auth ci je to admin... 
+Route::group(['middleware' => 'auth', 'is_admin'], function (){
+    Route::get('/profile', function (){ 
+        return "hi";
+    });
+});
+*/
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{id}', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+
+Route::resource('trainers', TrainerController::class);

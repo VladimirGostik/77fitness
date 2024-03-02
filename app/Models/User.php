@@ -43,6 +43,21 @@ class User extends Authenticatable
         'receive_notifications' => 'boolean',
     ];
 
+    public function getRoleName()
+    {
+        // Assuming there's a 'role' column in your users table
+        switch ($this->attributes['role']) {
+            case 1:
+                return 'Client';
+            case 2:
+                return 'Trainer';
+            case 3:
+                return 'Admin';
+            default:
+                return 'Unknown Role';
+        }
+    }
+
     public function articles(){
         return $this->hasMany('App\Models\Article');
     }

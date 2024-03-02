@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Trainer extends Model
 {
     use HasFactory;
+    protected $table = "trainers";
+    public $timestamps = false;
+
 
     /**
      * The attributes that are mass assignable.

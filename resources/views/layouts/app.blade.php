@@ -12,6 +12,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -41,9 +43,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/articles">Articles</a>
                             </li>
-                            <li class="nav-item">
-                        <a class="nav-link" href="/articles/create">Create article</a>
-                         </li>
+                        
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
