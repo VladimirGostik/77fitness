@@ -12,7 +12,7 @@ class CreateGroupsTable extends Migration
     public function up(): void
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->id('group_id');
+            $table->id();
             $table->unsignedBigInteger('trainer_id');
             $table->unsignedBigInteger('room_id');
             $table->integer('max_participants');

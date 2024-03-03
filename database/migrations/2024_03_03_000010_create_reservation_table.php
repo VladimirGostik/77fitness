@@ -12,17 +12,16 @@ class CreateReservationTable extends Migration
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->id('reservation_id');
-            $table->unsignedBigInteger('client_id');
+            $table->id();
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->unsignedBigInteger('trainer_id');
-            $table->boolean('is_group_reservation');
-            $table->dateTime('reservation_date');
+            $table->dateTime('start_reservation')->nullable();
+            $table->dateTime('end_reservation')->nullable();
             $table->decimal('reservation_price', 10, 2);
-            $table->decimal('price', 10, 2);
             $table->timestamps();
 
-            $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
-            $table->foreign('trainer_id')->references('trainer_id')->on('trainers')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');
         });
     }
 
@@ -33,5 +32,4 @@ class CreateReservationTable extends Migration
     {
         Schema::dropIfExists('reservations');
     }
-};
-
+}

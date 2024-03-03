@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
+    protected $table = 'reservations'; // Assuming your table name for admins is 'admins'
 
     /**
      * The attributes that are mass assignable.
@@ -17,13 +18,15 @@ class Reservation extends Model
     protected $fillable = [
         'client_id',
         'trainer_id',
-        'is_group_reservation',
-        'reservation_date',
+        'start_reservation',
+        'end_reservation',
         'reservation_price',
-        'price',
-        // Add any additional fields you want to be mass assignable for reservations
     ];
 
+    protected $casts = [
+        'start_reservation' => 'datetime',
+        'end_reservation' => 'datetime',
+    ];
     /**
      * Get the client associated with the reservation.
      */

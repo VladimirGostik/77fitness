@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\ReservationController;
+
 
 
 
@@ -62,3 +64,16 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.de
 
 
 Route::resource('trainers', TrainerController::class);
+
+Route::group(['middleware' => ['auth', 'trainer']], function () {
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('/reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('/reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::resource('reservations', ReservationController::class)->except(['create', 'show']);
+
+});
+
+
+

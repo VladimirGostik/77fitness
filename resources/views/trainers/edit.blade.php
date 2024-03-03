@@ -16,7 +16,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+        @endif
 
         <form method="POST" action="{{ route('trainers.update', ['trainer' => $trainer->id]) }}" >
             @csrf

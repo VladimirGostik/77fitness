@@ -16,11 +16,14 @@
             <a href="{{ route('articles.index') }}">
                 <i class="fas fa-list"></i> Edit Articles
             </a> <br>
-      {{--       
+      
             <a href="{{ route('reservations.create') }}">
                 <i class="fas fa-calendar-plus"></i> Create Reservation
             </a> <br>
 
+            <a href="{{ route('reservations.index') }}">All Reservation</a>
+
+      {{-- 
             <a href="{{ route('group-reservations.create') }}">
                 <i class="fas fa-users"></i> Create Group Reservation
             </a> <br>

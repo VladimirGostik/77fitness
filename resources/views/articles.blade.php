@@ -5,8 +5,11 @@
 @section('content')
     <h1>Articles</h1>
     
-    @if(auth()->user()->role === 2 || auth()->user()->role === 3)
-    <a href="{{ route('home') }}" class="btn btn-default">Go Back</a>
+    @if(auth()->guest())
+    <a href="{{ route('welcome') }}" class="btn btn-default">Go Back</a>
+    @else()(
+        <a href="{{ route('home') }}" class="btn btn-default">Go Back</a>
+    )
     @endif
    
 

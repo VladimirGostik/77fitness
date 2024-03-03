@@ -151,5 +151,7 @@ class TrainerController extends Controller
             return redirect()->route('trainers.index')->with('error', 'Failed to delete trainer');
         }
     }
+
     // Other methods for updating, deleting, showing trainers, etc.
+
     }

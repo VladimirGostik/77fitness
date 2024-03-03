@@ -4,6 +4,8 @@ composer require laravelcollective/html
 install node.js
 php artisan ui vue --auth
 npm install
+composer require nesbot/carbon
+
 
 php artisan storage:link
 
