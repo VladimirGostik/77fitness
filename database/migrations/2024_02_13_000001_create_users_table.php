@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('email_verified_at')->nullable();
             $table->string('password');
+            $table->decimal('credit', 10, 2)->default(0); // Added credit column
             $table->rememberToken();
             $table->timestamps();
         

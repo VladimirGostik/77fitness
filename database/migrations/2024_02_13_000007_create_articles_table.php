@@ -15,8 +15,11 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
+            
+            // Define user_id as a foreign key referencing the id column in the users table
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            
             $table->timestamps();
-
         });
     }
 
@@ -27,5 +30,4 @@ class CreateArticlesTable extends Migration
     {
         Schema::dropIfExists('articles');
     }
-};
-
+}

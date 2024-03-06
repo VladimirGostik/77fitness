@@ -19,8 +19,8 @@ class CreateGroupsTable extends Migration
             $table->boolean('is_reserved');
             $table->timestamps();
 
-            $table->foreign('trainer_id')->references('trainer_id')->on('trainers')->onDelete('cascade');
-            $table->foreign('room_id')->references('room_id')->on('rooms')->onDelete('cascade');
+            $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');
+            $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
         });
     }
 

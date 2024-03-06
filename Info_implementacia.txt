@@ -5,6 +5,7 @@ install node.js
 php artisan ui vue --auth
 npm install
 composer require nesbot/carbon
+composer require beyondcode/laravel-er-diagram-generator --dev
 
 
 php artisan storage:link

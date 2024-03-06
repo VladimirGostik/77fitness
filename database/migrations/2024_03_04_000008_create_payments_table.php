@@ -12,15 +12,13 @@ class CreatePaymentsTable extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id('payment_id');
+            $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('reservation_id');
             $table->decimal('amount', 10, 2);
-            $table->dateTime('date_time');
+            $table->string('payment_type'); // This can be 'credit', 'session', 'membership', etc.
             $table->timestamps();
 
-            $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
-            $table->foreign('reservation_id')->references('reservation_id')->on('reservations')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
 
@@ -31,5 +29,4 @@ class CreatePaymentsTable extends Migration
     {
         Schema::dropIfExists('payments');
     }
-};
-
+}

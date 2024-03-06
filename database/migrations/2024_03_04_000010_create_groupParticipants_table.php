@@ -12,14 +12,15 @@ class CreateGroupParticipantsTable extends Migration
     public function up(): void
     {
         Schema::create('group_participants', function (Blueprint $table) {
-            $table->unsignedBigInteger();
-            $table->unsignedBigInteger('client_id');
-            $table->timestamps();
-
-            $table->foreign('group_id')->references('group_id')->on('groups')->onDelete('cascade');
-            $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
+            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('client_id')->nullable(); // Client ID can be null for non-registered participants
+            $table->string('name')->nullable(); // Added column for the name of non-registered participants
+    
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
+    
 
     /**
      * Reverse the migrations.
