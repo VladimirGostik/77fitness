@@ -6,6 +6,7 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\GroupReservationController;
 
 
 
@@ -75,5 +76,6 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
 
 });
 
-
+Route::get('/group_reservations/create', [GroupReservationController::class, 'create'])->name('group_reservations.create');
+Route::post('/group_reservations', [GroupReservationController::class, 'store'])->name('group_reservations.store');
 

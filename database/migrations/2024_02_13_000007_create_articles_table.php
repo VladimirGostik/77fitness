@@ -15,6 +15,7 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
+            $table->string('cover_image');
             
             // Define user_id as a foreign key referencing the id column in the users table
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

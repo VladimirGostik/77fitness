@@ -8,9 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Trainer;
 use App\Models\Reservation;
+use App\Models\Room;
 use Carbon\Carbon;
-
-
 class ReservationController extends Controller
 {
     public function index()
@@ -25,8 +24,12 @@ class ReservationController extends Controller
     {
         $trainerId = auth()->user()->trainer->id; // Assuming you have a relationship between User and Trainer
         $trainer = Trainer::findOrFail($trainerId);
+        $rooms = Room::all();
 
-        return view('reservations.create', ['sessionPrice' => $trainer->session_price]);
+        return view('reservations.create', [
+            'sessionPrice' => $trainer->session_price,
+            'rooms' => $rooms,
+        ]);
     }
     
     public function edit(Reservation $reservation)

@@ -15,6 +15,12 @@ class CreateRoomsTable extends Migration
             $table->id();
             $table->string('name', 255);
         });
+
+        DB::table('rooms')->insert([
+            ['name' => 'Fitko'],
+            ['name' => 'Funkcna zona'],
+            ['name' => 'Kardio zona'],
+        ]);
     }
     /**
      * Reverse the migrations.
