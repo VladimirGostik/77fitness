@@ -18,6 +18,9 @@ class GroupReservation extends Model
         'max_participants',
         'room_id',
     ];
-
+    
+    protected $attributes = [
+        'is_reserved' => false,
+    ];
     // Add any relationships or additional logic as needed
 }

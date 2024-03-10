@@ -22,6 +22,7 @@ use App\Http\Controllers\GroupReservationController;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -73,9 +74,10 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::put('/reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::resource('reservations', ReservationController::class)->except(['create', 'show']);
+    Route::get('/group_reservations/create', [GroupReservationController::class, 'create'])->name('group_reservations.create');
+    Route::post('/group_reservations', [GroupReservationController::class, 'store'])->name('group_reservations.store');
 
 });
 
-Route::get('/group_reservations/create', [GroupReservationController::class, 'create'])->name('group_reservations.create');
-Route::post('/group_reservations', [GroupReservationController::class, 'store'])->name('group_reservations.store');
 
+Route::get('/events', [EventController::class, 'index'])->name('events.index');

@@ -15,8 +15,10 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('trainer_id');
             $table->unsignedBigInteger('room_id');
+            $table->dateTime('start_reservation')->nullable(); // Add this line
+            $table->dateTime('end_reservation')->nullable();   // Add this line
             $table->integer('max_participants');
-            $table->boolean('is_reserved');
+            $table->boolean('is_reserved')->default(false);
             $table->timestamps();
 
             $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');

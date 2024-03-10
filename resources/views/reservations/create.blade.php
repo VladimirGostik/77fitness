@@ -19,6 +19,7 @@
                 </ul>
             </div>
         @endif
+    <div id="group-reservation-fields" style="padding: 20px; border: 1px solid #ccc; border-radius: 10px; margin-top: 20px;">
 
         <!-- Regular Reservation Form -->
         <form method="POST" action="{{ route('reservations.store') }}">
@@ -43,7 +44,7 @@
 
             <button type="submit" class="btn btn-primary mt-3">Create Regular Reservation</button>
         </form>
-
+    </div>
         <!-- Group Reservation Form -->
         @include('partials._group_reservation_form')
 

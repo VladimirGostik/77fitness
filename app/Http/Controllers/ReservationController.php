@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Trainer;
 use App\Models\Reservation;
+use App\Models\GroupReservation;
 use App\Models\Room;
 use Carbon\Carbon;
+
 class ReservationController extends Controller
 {
     public function index()
@@ -65,6 +67,21 @@ class ReservationController extends Controller
         // If there are overlapping reservations, display an error
         if ($overlappingReservations) {
             return redirect()->route('reservations.create')->with('error', 'Overlapping reservations are not allowed.');
+        }
+
+        $overlappingReservations = GroupReservation::where('trainer_id', $trainerId)
+        ->where(function ($query) use ($startDateTime, $endDateTime) {
+            $query->whereBetween('start_reservation', [$startDateTime, $endDateTime])
+                ->orWhereBetween('end_reservation', [$startDateTime, $endDateTime])
+                ->orWhere(function ($query) use ($startDateTime, $endDateTime) {
+                    $query->where('start_reservation', '<=', $endDateTime)
+                        ->where('end_reservation', '>=', $startDateTime);
+                });
+        })
+        ->exists();
+        // If there are overlapping reservations, display an error
+        if ($overlappingReservations) {
+            return redirect()->route('reservations.create')->with('error', 'Overlapping Group reservations are not allowed.');
         }
 
 
@@ -130,4 +147,28 @@ class ReservationController extends Controller
 
         return redirect()->route('reservations.index')->with('success', 'Reservation deleted successfully');
     }
+
+
+// ReservationController.php
+
+    public function getReservations()
+    {
+        // Fetch reservations from the database and format them appropriately
+        $reservations = Reservation::all();
+
+        $formattedReservations = $reservations->map(function ($reservation) {
+            return [
+                'id' => $reservation->id,
+                'title' => 'Reservation ' . $reservation->id,
+                'start' => $reservation->start_reservation->toDateTimeString(),
+                'end' => $reservation->end_reservation->toDateTimeString(),
+                'client' => $reservation->user ? $reservation->user->full_name : 'Free',
+            ];
+        });
+
+        return response()->json($formattedReservations);
+    }
+
+
+
 }
