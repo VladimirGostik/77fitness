@@ -76,6 +76,9 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::resource('reservations', ReservationController::class)->except(['create', 'show']);
     Route::get('/group_reservations/create', [GroupReservationController::class, 'create'])->name('group_reservations.create');
     Route::post('/group_reservations', [GroupReservationController::class, 'store'])->name('group_reservations.store');
+    Route::get('/group_reservations/{group_reservation}/edit', [GroupReservationController::class, 'edit'])->name('group_reservations.edit');
+    Route::delete('/group_reservations/{group_reservation}', [GroupReservationController::class, 'destroy'])->name('group_reservations.destroy');
+
 
 });
 

@@ -9,6 +9,8 @@ class Reservation extends Model
 {
     use HasFactory;
     protected $table = 'reservations'; // Assuming your table name for admins is 'admins'
+    protected $dates = ['start_reservation', 'end_reservation'];
+
 
     /**
      * The attributes that are mass assignable.

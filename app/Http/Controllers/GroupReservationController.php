@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 class GroupReservationController extends Controller
 {
+
+
     public function create()
     {
         $trainerId = auth()->user()->trainer->id; // Assuming you have a relationship between User and Trainer
@@ -85,6 +87,42 @@ class GroupReservationController extends Controller
     // Redirect back with a success message
     return redirect()->route('reservations.create')->with('success', 'Group Reservation created successfully');
 }
+
+public function edit(GroupReservation $groupReservation)
+    {
+        // Logic for showing the edit form
+        // You may need to fetch any necessary data from the database
+        return view('group_reservations.edit', compact('groupReservation'));
+    }
+
+    public function update(Request $request, GroupReservation $groupReservation)
+    {
+        // Validation rules for updating an existing group reservation
+        $validator = Validator::make($request->all(), [
+            // Add your validation rules here
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('group_reservations.edit', ['groupReservation' => $groupReservation->id])
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Logic for updating the group reservation in the database
+        // ...
+
+        return redirect()->route('group_reservations.index')
+            ->with('success', 'Group Reservation updated successfully');
+    }
+
+public function destroy(GroupReservation $groupReservation)
+    {
+        // Logic for deleting the group reservation from the database
+        $groupReservation->delete();
+
+        return redirect()->route('group_reservations.index')
+            ->with('success', 'Group Reservation deleted successfully');
+    }
 
     
 }

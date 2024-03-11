@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 use Illuminate\Http\Request;
+use App\Models\Client;
 use App\Models\Trainer;
 use App\Models\Reservation;
 use App\Models\GroupReservation;
@@ -18,8 +19,9 @@ class ReservationController extends Controller
     {
         // Fetch all reservations
         $reservations = Reservation::all();
+        $groupReservations = GroupReservation::all();
 
-        return view('reservations.index', compact('reservations'));
+        return view('reservations.index', compact('reservations', 'groupReservations'));
     }
 
     public function create()
@@ -151,24 +153,6 @@ class ReservationController extends Controller
 
 // ReservationController.php
 
-    public function getReservations()
-    {
-        // Fetch reservations from the database and format them appropriately
-        $reservations = Reservation::all();
-
-        $formattedReservations = $reservations->map(function ($reservation) {
-            return [
-                'id' => $reservation->id,
-                'title' => 'Reservation ' . $reservation->id,
-                'start' => $reservation->start_reservation->toDateTimeString(),
-                'end' => $reservation->end_reservation->toDateTimeString(),
-                'client' => $reservation->user ? $reservation->user->full_name : 'Free',
-            ];
-        });
-
-        return response()->json($formattedReservations);
-    }
-
-
+    
 
 }
