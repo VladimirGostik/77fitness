@@ -6,10 +6,12 @@
 
     <div class="container">
         <h1>All Reservations</h1>
-        <a href="/home" class="btn btn-default">Go back</a>
+        <a href="/home" class="btn btn-default">Go back</a> <br>
         <a href="{{ route('reservations.create') }}">
             <i class="fas fa-calendar-plus"></i> Create Reservation
         </a> <br>
+
+        <div id='calendar'></div>
 
         @if(count($reservations) > 0)
             <table class="table">
@@ -71,8 +73,6 @@
                 </tbody>
                 
             </table>
-
-            <div id='calendar'></div>
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {

@@ -90,7 +90,6 @@ class GroupReservationController extends Controller
 
 public function edit(GroupReservation $groupReservation)
     {
-        // Logic for showing the edit form
         // You may need to fetch any necessary data from the database
         return view('group_reservations.edit', compact('groupReservation'));
     }
