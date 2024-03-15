@@ -15,7 +15,14 @@ use Illuminate\Http\Request;
 
 class GroupReservationController extends Controller
 {
+    public function index()
+    {
+        // Fetch all reservations
+        $reservations = Reservation::all();
+        $groupReservations = GroupReservation::all();
 
+        return view('reservations.index', compact('reservations', 'groupReservations'));
+    }
 
     public function create()
     {
@@ -86,34 +93,97 @@ class GroupReservationController extends Controller
 
     // Redirect back with a success message
     return redirect()->route('reservations.create')->with('success', 'Group Reservation created successfully');
-}
-
-public function edit(GroupReservation $groupReservation)
-    {
-        // Logic for showing the edit form
-        // You may need to fetch any necessary data from the database
-        return view('group_reservations.edit', compact('groupReservation'));
     }
 
-    public function update(Request $request, GroupReservation $groupReservation)
+    public function edit(GroupReservation $groupReservation)
     {
-        // Validation rules for updating an existing group reservation
-        $validator = Validator::make($request->all(), [
-            // Add your validation rules here
-        ]);
+        // Fetch the necessary data
+        $trainerId = auth()->user()->trainer->id;
+        $trainer = Trainer::findOrFail($trainerId);
+        $rooms = Room::all();
 
-        if ($validator->fails()) {
-            return redirect()->route('group_reservations.edit', ['groupReservation' => $groupReservation->id])
-                ->withErrors($validator)
-                ->withInput();
+        // Return the view with the necessary data
+        return view('group_reservations.edit', compact('groupReservation', 'rooms'));
+    }
+
+    public function update(Request $request, $id)
+        {
+            // Validation rules for the update action
+
+            //dd($request->all());
+
+            $request->validate([
+                'start_time' => 'required',
+                'end_time' => 'required',
+                'max_participants' => 'required|integer|min:1',
+                'room_id' => 'required|exists:rooms,id',
+            ]);
+
+            $trainerId = Auth::user()->trainer->id;
+            $groupReservation = GroupReservation::findOrFail($id);
+            $reservationDate = Carbon::parse($request->input('start_time'))->toDateString();
+            
+            if (Carbon::parse($reservationDate)->isPast()) {
+                return redirect()->back()->with('error', 'Cannot update reservation with a past date.');
+            }
+        
+        
+
+            $startDate = Carbon::parse($groupReservation->start_reservation)->toDateString();
+            $endDate = Carbon::parse($groupReservation->end_reservation)->toDateString();
+    
+            // Combine the existing date with the new time inputs
+            $newStartDateTime = Carbon::parse($startDate . ' ' . $request->input('start_time'));
+            $newEndDateTime = Carbon::parse($endDate . ' ' . $request->input('end_time'));
+
+            $overlappingReservations = Reservation::where('trainer_id', $trainerId)
+            ->where('id', '<>', $id) // Exclude the current reservation from the check
+            ->where(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                $query->whereBetween('start_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhereBetween('end_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhere(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                        $query->where('start_reservation', '<', $newEndDateTime)
+                            ->where('end_reservation', '>', $newStartDateTime);
+                    });
+            })
+            ->exists();
+
+            if ($overlappingReservations) {
+                return redirect()->back()->with('error', 'The reservation overlaps with an existing reservation.');
+            }
+
+            $overlappingReservations = GroupReservation::where('trainer_id', $trainerId)
+            ->where('id', '<>', $id) // Exclude the current reservation from the check
+            ->where(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                $query->whereBetween('start_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhereBetween('end_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhere(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                        $query->where('start_reservation', '<', $newEndDateTime)
+                            ->where('end_reservation', '>', $newStartDateTime);
+                    });
+            })
+            ->exists();
+
+
+            if ($overlappingReservations) {
+                return redirect()->back()->with('error', 'The reservation overlaps with an existing Group reservation.');
+            }
+
+            dd($groupReservation->all());
+
+            // Update the group reservation attributes
+            $groupReservation->update([
+                'start_reservation' => $request->input('start_time'),
+                'end_reservation' => $request->input('end_time'),
+                'max_participants' => $request->input('max_participants'),
+                'room_id' => $request->input('room_id'),
+            ]);
+
+            // Redirect back with a success message
+            return redirect()->route('group_reservations.edit')->with('success', 'Group Reservation updated successfully');
         }
 
-        // Logic for updating the group reservation in the database
-        // ...
 
-        return redirect()->route('group_reservations.index')
-            ->with('success', 'Group Reservation updated successfully');
-    }
 
 public function destroy(GroupReservation $groupReservation)
     {

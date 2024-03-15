@@ -10,8 +10,10 @@
         <a href="{{ route('reservations.create') }}">
             <i class="fas fa-calendar-plus"></i> Create Reservation
         </a> <br>
+        
+        <div id='calendar'></div>
 
-        @if(count($reservations) > 0)
+        @if(count($reservations) >= 0)
             <table class="table">
                 <thead>
                     <tr>
@@ -72,7 +74,6 @@
                 
             </table>
 
-            <div id='calendar'></div>
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -93,7 +94,7 @@
                                     title: '(' + {{ $groupReservation->max_participants }} + ')',
                                     start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
                                     end: '{{ $groupReservation->end_reservation->toIso8601String() }}',
-                                    url: '{{ route('reservations.edit', ['reservation' => $reservation->id]) }}',
+                                    url: '{{ route('group_reservations.edit', ['group_reservation' => $groupReservation->id]) }}',
                                 },
                             @endforeach
                         ],

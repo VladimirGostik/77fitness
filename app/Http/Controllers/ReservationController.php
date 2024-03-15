@@ -87,7 +87,6 @@ class ReservationController extends Controller
         }
 
 
-
         // Create a new reservation
         Reservation::create([
             'client_id' => null,
@@ -109,18 +108,33 @@ class ReservationController extends Controller
             'end_time' => 'required',
             'reservation_price' => 'required|numeric|min:0',
         ]);
-
+        //dd($request->all());
         $trainerId = Auth::user()->trainer->id;
 
-        // Retrieve the existing reservation
         $reservation = Reservation::findOrFail($id);
+        $reservationDate = Carbon::parse($request->input('start_time'))->toDateString();
+        if (Carbon::parse($reservationDate)->isPast()) {
+            return redirect()->back()->with('error', 'Cannot update reservation with a past date.');
+        }
+    
+
+        $startDate = Carbon::parse($reservation->start_reservation)->toDateString();
+        $endDate = Carbon::parse($reservation->end_reservation)->toDateString();
+
+        // Combine the existing date with the new time inputs
+        $newStartDateTime = Carbon::parse($startDate . ' ' . $request->input('start_time'));
+        $newEndDateTime = Carbon::parse($endDate . ' ' . $request->input('end_time'));
 
         // Check if the new time range overlaps with other reservations
         $overlappingReservations = Reservation::where('trainer_id', $trainerId)
             ->where('id', '<>', $id) // Exclude the current reservation from the check
-            ->where(function ($query) use ($request) {
-                $query->where('start_reservation', '<', $request->input('end_time'))
-                    ->where('end_reservation', '>', $request->input('start_time'));
+            ->where(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                $query->whereBetween('start_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhereBetween('end_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhere(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                        $query->where('start_reservation', '<', $newEndDateTime)
+                            ->where('end_reservation', '>', $newStartDateTime);
+                    });
             })
             ->exists();
 
@@ -128,10 +142,28 @@ class ReservationController extends Controller
             return redirect()->back()->with('error', 'The reservation overlaps with an existing reservation.');
         }
 
+        $overlappingReservations = GroupReservation::where('trainer_id', $trainerId)
+            ->where('id', '<>', $id) // Exclude the current reservation from the check
+            ->where(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                $query->whereBetween('start_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhereBetween('end_reservation', [$newStartDateTime, $newEndDateTime])
+                    ->orWhere(function ($query) use ($newStartDateTime, $newEndDateTime) {
+                        $query->where('start_reservation', '<', $newEndDateTime)
+                            ->where('end_reservation', '>', $newStartDateTime);
+                    });
+            })
+            ->exists();
+
+
+            if ($overlappingReservations) {
+                return redirect()->back()->with('error', 'The reservation overlaps with an existing Group reservation.');
+            }
+    
+
         // Update the reservation attributes
         $reservation->update([
-            'start_reservation' => $request->input('start_time'),
-            'end_reservation' => $request->input('end_time'),
+            'start_reservation' => $newStartDateTime,
+            'end_reservation' => $newEndDateTime,
             'reservation_price' => $request->input('reservation_price'),
         ]);
 

@@ -74,11 +74,12 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::put('/reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::resource('reservations', ReservationController::class)->except(['create', 'show']);
+
     Route::get('/group_reservations/create', [GroupReservationController::class, 'create'])->name('group_reservations.create');
     Route::post('/group_reservations', [GroupReservationController::class, 'store'])->name('group_reservations.store');
     Route::get('/group_reservations/{group_reservation}/edit', [GroupReservationController::class, 'edit'])->name('group_reservations.edit');
+    Route::put('/group_reservations/{group_reservation}', [GroupReservationController::class, 'update'])->name('group_reservations.update');
     Route::delete('/group_reservations/{group_reservation}', [GroupReservationController::class, 'destroy'])->name('group_reservations.destroy');
-
 
 });
 

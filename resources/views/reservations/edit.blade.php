@@ -3,14 +3,10 @@
 @section('content')
     <div class="container">
         <h1>Edit Reservation</h1>
-        <a href="/home" class="btn btn-default">Go back</a>
+        <a href="/reservations" class="btn btn-default">Go back</a>
 
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
         <form method="POST" action="{{ route('reservations.update', ['reservation' => $reservation->id]) }}">
