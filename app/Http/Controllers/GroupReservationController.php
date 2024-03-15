@@ -104,6 +104,8 @@ class GroupReservationController extends Controller
 
         // Return the view with the necessary data
         return view('group_reservations.edit', compact('groupReservation', 'rooms'));
+        // You may need to fetch any necessary data from the database
+        return view('group_reservations.edit', compact('groupReservation'));
     }
 
     public function update(Request $request, $id)
