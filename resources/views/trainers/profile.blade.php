@@ -50,41 +50,67 @@
     </div>
 </div>
 
+<style>
+    .reserved-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+    padding: 5px;
+    border-radius: 5px;
+    color: black; /* Text color */
+    font-weight: bold;
+}
+</style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridWeek',
-            events: [
-                @foreach($reservations->where('trainer_id', $trainer->id) as $reservation)
-                    {
-                        title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Free' }}',
-                        start: '{{ $reservation->start_reservation->toIso8601String() }}',
-                        end: '{{ $reservation->end_reservation->toIso8601String() }}',
-                        data: {!! json_encode($reservation) !!},
-                        type: 'reservation'
-                    },
-                @endforeach
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridWeek',
+        events: [
+            @foreach($reservations->where('trainer_id', $trainer->id) as $reservation)
+                {
+                    title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Free' }}',
+                    start: '{{ $reservation->start_reservation->toIso8601String() }}',
+                    end: '{{ $reservation->end_reservation->toIso8601String() }}',
+                    data: {!! json_encode($reservation) !!},
+                    type: 'reservation'
+                },
+            @endforeach
 
-                @foreach($groupReservations->where('trainer_id', $trainer->id) as $groupReservation)
-                    {
-                        title: '{{ $groupReservation->max_participants }}',
-                        start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
-                        end: '{{ $groupReservation->end_reservation->toIso8601String() }}',
-                        data: {!! json_encode($groupReservation) !!},
-                        type: 'group_reservation'
-                    },
-                @endforeach
-            ],
-            eventClick: function(info) {
-                // Prevent default action
-                info.jsEvent.preventDefault();
+            @foreach($groupReservations->where('trainer_id', $trainer->id) as $groupReservation)
+                {
+                    title: '{{ $groupReservation->max_participants }}',
+                    start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
+                    end: '{{ $groupReservation->end_reservation->toIso8601String() }}',
+                    data: {!! json_encode($groupReservation) !!},
+                    type: 'group_reservation'
+                },
+            @endforeach
+        ],
+        eventClick: function(info) {
+            // Prevent default action
+            info.jsEvent.preventDefault();
 
-                // Open modal with reservation data
-                openModal(info.event.extendedProps.data, info.event.extendedProps.type);
-            },
-        });
-        calendar.render();
+            // Open modal with reservation data
+            openModal(info.event.extendedProps.data, info.event.extendedProps.type);
+        },
+        eventDidMount: function(info) {
+            // Check if the event is reserved (client_id != null)
+            if (info.event.extendedProps.data.client_id) {
+                // Create a div element for the overlay
+                var overlayDiv = document.createElement('div');
+                overlayDiv.classList.add('reserved-overlay');
+                info.el.appendChild(overlayDiv);
+            }
+        }
+    });
+    calendar.render();
+
+    // Other functions...
+
 
         // Function to format date time
         function formatDateTime(dateTimeString) {
@@ -153,4 +179,5 @@
 
     });
 </script>
+
 @endsection
