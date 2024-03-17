@@ -9,11 +9,20 @@
         @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
         @endif
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <h1>Create Trainer</h1>
         <a href="/trainers" class="btn btn-default">Go back</a>
 
 
-        <form method="POST" action="{{ route('trainers.store') }}">
+        <form method="POST" action="{{ route('trainers.store') }}" enctype="multipart/form-data">
             @csrf
 
             <!-- User Information -->
@@ -66,6 +75,11 @@
             <div class="form-group">
                 <label for="session_price">Session Price</label>
                 <input type="text" name="session_price" id="session_price" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="profile_photo">Profile Photo</label>
+                <input type="file" name="profile_photo" id="profile_photo" class="form-control">
             </div>
 
             <button type="submit" class="btn btn-primary">Create Trainer</button>

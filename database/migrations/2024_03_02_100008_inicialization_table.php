@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -63,6 +64,12 @@ class InicializationTable extends Migration
 
         ]);
 
+
+        $photo1 = 'marekkosec.png';
+        $photo2 = 'jankotrener.png';
+        $photo3 = 'tamiiglarova.png';
+
+
         DB::table('trainers')->insert([
             [
                 'user_id' => $userId2, // User ID for Marek Kosec
@@ -70,6 +77,7 @@ class InicializationTable extends Migration
                 'description' => 'Specializujem sa na jednoduchych ludi napriklad',
                 'experience' => '5 rokov v goleme a FTVS',
                 'session_price' => 15,
+                'profile_photo' => $photo1,
             ],
             [
                 'user_id' => $userId3, // User ID for Jano Halaj
@@ -77,6 +85,7 @@ class InicializationTable extends Migration
                 'description' => 'Robim kruhove treningy v Liesku',
                 'experience' => '12 rokov',
                 'session_price' => 10,
+                'profile_photo' => $photo2,
             ],
             [
                 'user_id' => $userId4, // User ID for Jano Halaj
@@ -84,6 +93,7 @@ class InicializationTable extends Migration
                 'description' => 'Trenujem baby co chcu vyzerat ako ja',
                 'experience' => 'rok',
                 'session_price' => 22,
+                'profile_photo' => $photo3,
             ]
             // Add more trainers as needed
         ]);

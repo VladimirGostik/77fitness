@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\GroupReservationController;
+use App\Http\Controllers\ClientController;
+
 
 
 
@@ -82,6 +84,17 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::delete('/group_reservations/{group_reservation}', [GroupReservationController::class, 'destroy'])->name('group_reservations.destroy');
 
 });
+
+Route::get('/trainers/{trainer}', [TrainerController::class, 'show'])->name('trainer.profile');
+
+
+Route::group(['middleware' => ['auth', 'client']], function () {
+
+    Route::post('/reservations/{reservation_id}/submit', [ReservationController::class, 'submit']);
+});
+
+
+
 
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');

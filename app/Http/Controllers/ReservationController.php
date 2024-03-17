@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+
 use App\Models\Client;
 use App\Models\Trainer;
 use App\Models\Reservation;
@@ -24,6 +24,7 @@ class ReservationController extends Controller
         return view('reservations.index', compact('reservations', 'groupReservations'));
     }
 
+
     public function create()
     {
         $trainerId = auth()->user()->trainer->id; // Assuming you have a relationship between User and Trainer
@@ -35,11 +36,32 @@ class ReservationController extends Controller
             'rooms' => $rooms,
         ]);
     }
+
+
+    public function submit(Request $request, $reservation_id)
+    {
+    Log::info('Submitting reservation with ID: ' . $reservation_id);
+    $request->validate([
+        ]);
+
+        $client_id = Auth::user()->client->id;
+        $reservation = Reservation::find($reservation_id);
+
+        $reservation->update([
+            'client_id' => $client_id,
+        ]);
+        // Optionally, return a response indicating success or failure
+    }
+
     
+
+
     public function edit(Reservation $reservation)
     {
         return view('reservations.edit', compact('reservation'));
     }
+
+
 
     public function store(Request $request)
     {
@@ -99,6 +121,8 @@ class ReservationController extends Controller
         // Redirect back with a success message
         return redirect()->route('reservations.create')->with('success', 'Reservation created successfully');
     }
+
+
 
     public function update(Request $request, $id)
     {

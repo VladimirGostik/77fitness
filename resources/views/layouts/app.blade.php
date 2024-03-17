@@ -42,9 +42,6 @@
                             <li class="nav-item">
                                 <a class="nav-link{{ Request::is('/') ? ' active' : '' }}" href="{{ url('/home') }}">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/articles">Articles</a>
-                            </li>
                         
                         @guest
                             @if (Route::has('login'))

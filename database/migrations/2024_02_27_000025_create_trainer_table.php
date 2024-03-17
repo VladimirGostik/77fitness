@@ -18,6 +18,7 @@ class CreateTrainerTable extends Migration
             $table->text('description');
             $table->text('experience');
             $table->decimal('session_price', 10, 2);
+            $table->string('profile_photo')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

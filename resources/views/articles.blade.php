@@ -4,13 +4,9 @@
 
 @section('content')
     <h1>Articles</h1>
-    
-    @if(auth()->guest())
-    <a href="{{ route('welcome') }}" class="btn btn-default">Go Back</a>
-    @else()(
-        <a href="{{ route('home') }}" class="btn btn-default">Go Back</a>
-    )
-    @endif
+
+    <a href="{{ url('/home') }}" class="btn btn-default">Go Back</a>
+
    
 
     @if(session('success'))

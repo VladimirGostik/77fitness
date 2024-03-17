@@ -24,6 +24,11 @@
 
             <!-- User Details -->
             <div class="form-group">
+                <label for="profile_photo">New Profile Photo:</label>
+                <input type="file" name="profile_photo" class="form-control-file">
+            </div>
+
+            <div class="form-group">
                 <label for="first_name">First Name:</label>
                 <input type="text" name="first_name" value="{{ $trainer->user->first_name }}" class="form-control" required>
             </div>

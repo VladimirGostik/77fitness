@@ -2,41 +2,60 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+    <h1>Client Profile</h1>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+    <h2>Recent Articles</h2>
+    <div class="row">
+        @if (count($articles) > 0)
+            @foreach ($articles as $article)
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $article->title }}</h5>
+                            <p class="card-text">{{ $article->content }}</p>
                         </div>
-                    @endif
-
+                        <div class="card-footer">
+                            <a href="{{ route('articles.show', ['article' => $article->id]) }}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
                 </div>
-                <h1>Vitaj na stranke 77fitness... TOTO je home page client </h1>
-                @if($articles && count($articles) > 0)
-                <table class="table table-striped">
-                    <tr>
-                        <th>Title</th>
-                        <th></th>
-                        <th></th>
-
-                    </tr>
-                    @foreach($articles as $article)
-                        <tr>
-                            <th>{{$article->title}}</th>
-                            <th><a href="/articles/{{$article->id}}/edit" class="btn btn-default">Edit</a></th>
-                            <th></th>
-
-                        </tr>
-                    @endforeach
-                </table>
-                @else
-                <p>You have no articles.</p>
-                @endif
+            @endforeach
+            <div class="col-md-12">
+                <a href="{{ route('articles.index') }}" class="btn btn-outline-primary">See More Articles</a>
             </div>
-        </div>
+        @else
+            <p>No articles found.</p>
+        @endif
+    </div>
+
+    <h2 class="mt-5">Available Trainers</h2>
+    <div class="row">
+        @if (count($trainers) > 0)
+            @foreach ($trainers as $trainer)
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        @if($trainer->profile_photo)
+                            <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" class="card-img-top" alt="Trainer Photo">
+                        @else
+                            <img src="{{ asset('images/default_trainer_photo.jpg') }}" class="card-img-top" alt="Default Trainer Photo">
+                        @endif
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</h5>
+                            <p class="card-text">{{ $trainer->specialization }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->id]) }}" class="btn btn-primary">View Profile</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            @endforeach
+            <div class="col-md-12">
+                <a href="#" class="btn btn-outline-primary">See More Trainers</a>
+            </div>
+        @else
+            <p>No trainers available.</p>
+        @endif
     </div>
 </div>
 @endsection

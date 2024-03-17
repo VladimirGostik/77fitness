@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User; // Make sure to import the User model
 use App\Models\Trainer;
+use App\Models\Reservation;
+use App\Models\GroupReservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,6 +21,14 @@ class TrainerController extends Controller
     {
         $trainers = Trainer::all();
         return view('trainers.index', compact('trainers'));
+    }
+
+    public function show(Trainer $trainer)
+    {
+        $reservations = Reservation::all();
+        $groupReservations = GroupReservation::all();
+
+        return view('trainers.profile', compact('trainer','reservations','groupReservations'));
     }
 
     public function create()
@@ -58,7 +68,15 @@ class TrainerController extends Controller
                 'description' => 'required',
                 'experience' => 'required',
                 'session_price' => 'required',
+                'profile_photo' => 'image|mimes:jpeg,png,jpg,gif|max:4096',
             ]);
+
+            if ($request->hasFile('profile_photo')) {
+                $fileName = time() . '_' . $request->file('profile_photo')->getClientOriginalName();
+                $request->file('profile_photo')->storeAs('profile_photos', $fileName, 'public');
+            } else {
+                $fileName = null;
+            }
     
             $user = User::create([
                 'first_name' => $request->input('first_name'),
@@ -76,6 +94,7 @@ class TrainerController extends Controller
                 'description' => $request->input('description'),
                 'experience' => $request->input('experience'),
                 'session_price' => $request->input('session_price'),
+                'profile_photo' => $fileName,
             ]);
     
     
@@ -122,6 +141,12 @@ class TrainerController extends Controller
                     'session_price' => $request->input('session_price'),
                     // ... other fields
                 ]);
+
+
+                if ($request->hasFile('profile_photo')) {
+                    $photoPath = $request->file('profile_photo')->store('public/profile_photos');
+                    $trainer->update(['profile_photo' => $photoPath]);
+                }
 
                 return redirect()->route('trainers.index')->with('success', 'Trainer updated successfully');
             } catch (\Exception $e) {

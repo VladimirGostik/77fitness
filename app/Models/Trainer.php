@@ -23,6 +23,7 @@ class Trainer extends Model
         'description',
         'experience',
         'session_price',
+        'profile_photo',
     ];
 
     /**
