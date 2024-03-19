@@ -48,9 +48,14 @@ class GroupReservationController extends Controller
 
     // Assume the date is sent from the form, modify the format if needed
     $trainerId = auth()->user()->trainer->id;
+    $minAllowedStartTime = Carbon::now()->addHour();
     $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('start_time'))->toDateTimeString();
     $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('end_time'))->toDateTimeString();
     
+    if (Carbon::parse($startDateTime)->lte($minAllowedStartTime)) {
+        return redirect()->route('reservations.create')->with('error', 'Reservation start time must be at least 1 hour from now.');
+    }
+
     $overlappingReservations = GroupReservation::where('trainer_id', $trainerId)
     ->where(function ($query) use ($startDateTime, $endDateTime) {
         $query->whereBetween('start_reservation', [$startDateTime, $endDateTime])

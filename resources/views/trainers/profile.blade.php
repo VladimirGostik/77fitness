@@ -27,6 +27,8 @@
             <h2>Training Calendar</h2>
             <!-- Add code to display training calendar with reservations here -->
             <div id='calendar'></div>
+            <div id="overlay" class="reserved-overlay"></div>
+
         </div>
     </div>
 </div>
@@ -51,17 +53,35 @@
 </div>
 
 <style>
-   .reserved-overlay {
-        color: black; /* Set text color to black */
-            /* Other styles */
+    .reserved-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.7); /* Adjust opacity as needed */
+        z-index: 999; /* Ensure it's above the calendar events */
     }
-
 
     .fc-daygrid-day-number {
         color: black; /* Set text color to black */
     }
-        
 
+    .fc-event {
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 2px 4px;
+        margin-right: 2px;
+    }
+
+    .fc-event-reserved {
+        background-color: red !important; /* Change background color to red for reserved events */
+        color: white; /* Set text color to white */
+    }
+
+    .fc-event-free:hover {
+        background-color: lightgreen; /* Change background color to light green on hover */
+    }
 
 </style>
 
@@ -90,37 +110,38 @@
                     type: 'group_reservation'
                 },
                 @endforeach
-            ],
-            eventClick: function(info) {
-                // Prevent default action for reserved events
-                if (info.event.extendedProps.data.client_id) {
-                    info.jsEvent.preventDefault();
-                    return;
-                }
-
-                // Open modal with reservation data for free events
-                openModal(info.event.extendedProps.data, info.event.extendedProps.type);
-            },
-            eventDidMount: function(info) {
-                // Check if the event is reserved (client_id != null)
-                if (info.event.extendedProps.data.client_id) {
-                    // Add reserved class to make it visually different and not clickable
-                    info.el.style.backgroundColor = '#ea6c79c3'; // Adjust background color
-                    info.el.style.color = 'white'; // Adjust text color
-
-                } else {
-                    // Add free class to make it visually different and clickable
-                    info.el.style.backgroundColor = '#01b25aba'; // Adjust background color
-                    info.el.style.color = 'white'; // Adjust text color
-                    //overlay.classList.add('reserved-overlay');
-
-                }
-
-            }
+            ]
         });
+
         calendar.render();
 
-        // Other functions...
+        var overlay = document.getElementById('overlay'); // Get the overlay element
+
+        calendar.on('eventDidMount', function(info) {
+            // Check if the event is reserved (client_id != null)
+            if (info.event.extendedProps.data.client_id) {
+                // Add reserved class to make it visually different and not clickable
+                info.el.classList.add('fc-event-reserved');
+                // Hide the overlay for reserved events
+                overlay.style.display = 'none';
+            } else {
+                // Add free class to make it visually different and clickable
+                info.el.classList.add('fc-event-free');
+                // Show the overlay for free events
+                overlay.style.display = 'block';
+            }
+        });
+
+        calendar.on('eventClick', function(info) {
+            // Prevent default action for reserved events
+            if (info.event.extendedProps.data.client_id) {
+                info.jsEvent.preventDefault();
+                return;
+            }
+
+            // Open modal with reservation data for free events
+            openModal(info.event.extendedProps.data, info.event.extendedProps.type);
+        });
 
         // Function to format date time
         function formatDateTime(dateTimeString) {
@@ -131,63 +152,63 @@
             var month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
             var year = dateTime.getFullYear();
             return hours + ':' + minutes + ' ' + day + '.' + month + '.' + year;
-        }
+       
 
-        // Function to open modal
-        function openModal(data, type) {
-            // Example of how to open a Bootstrap modal using JavaScript
-            $('#reservationModal').modal('show');
+    }
 
-            // Add logic to populate modal with reservation data based on the type (reservation or group reservation)
-            // For example:
-            if (type === 'reservation') {
-                // Format start and end times
-                var startTime = formatDateTime(data.start_reservation);
-                var endTime = formatDateTime(data.end_reservation);
+    // Function to open modal
+    function openModal(data, type) {
+        // Example of how to open a Bootstrap modal using JavaScript
+        $('#reservationModal').modal('show');
 
-                // Populate modal with reservation data
-                $('#reservationModal .modal-title').text('Reservation Details');
-                $('#reservationModal .modal-body').html(
-                    '<p><strong>Trainer:</strong> {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</p>' +
-                    '<p><strong>Start Time:</strong> ' + startTime + '</p>' +
-                    '<p><strong>End Time:</strong> ' + endTime + '</p>' +
-                    '<p><strong>Session Price:</strong> ' + data.reservation_price + ' eur</p>'
-                );
+        // Add logic to populate modal with reservation data based on the type (reservation or group reservation)
+        // For example:
+        if (type === 'reservation') {
+            // Format start and end times
+            var startTime = formatDateTime(data.start_reservation);
+            var endTime = formatDateTime(data.end_reservation);
 
-                // Add event listener for submit button
-                $('#submitReservation').click(function() {
-                    // Perform reservation submission here
-                    // You can send an AJAX request to your server to update the reservation with the client ID
-                    // Example:
+            // Populate modal with reservation data
+            $('#reservationModal .modal-title').text('Reservation Details');
+            $('#reservationModal .modal-body').html(
+                '<p><strong>Trainer:</strong> {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</p>' +
+                '<p><strong>Start Time:</strong> ' + startTime + '</p>' +
+                '<p><strong>End Time:</strong> ' + endTime + '</p>' +
+                '<p><strong>Session Price:</strong> ' + data.reservation_price + ' eur</p>'
+            );
 
-                    $.ajax({
-                        url: '/reservations/' + data.id + '/submit',
-                        type: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            // Handle response from server
-                            $('#reservationModal').modal('hide');
-                            location.reload(); // Reload the page after successful submission
-                        },
-                        error: function(xhr, status, error) {
-                            // Handle error
-                            console.error(error);
-                            alert('Failed to submit reservation.');
-                        }
-                    });
+            // Add event listener for submit button
+            $('#submitReservation').click(function() {
+                // Perform reservation submission here
+                // You can send an AJAX request to your server to update the reservation with the client ID
+                // Example:
 
+                $.ajax({
+                    url: '/reservations/' + data.id + '/submit',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        // Handle response from server
+                        $('#reservationModal').modal('hide');
+                        location.reload(); // Reload the page after successful submission
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(error);
+                        alert('Failed to submit reservation.');
+                    }
                 });
 
-            } else if (type === 'group_reservation') {
-                // Populate modal with group reservation data
-                $('#reservationModal .modal-title').text('Group Reservation Details');
-                // Add logic to display group reservation details
-            }
+            });
+
+        } else if (type === 'group_reservation') {
+            // Populate modal with group reservation data
+            $('#reservationModal .modal-title').text('Group Reservation Details');
+            // Add logic to display group reservation details
         }
+    }
     });
 </script>
-
-
 @endsection

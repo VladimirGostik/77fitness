@@ -74,8 +74,13 @@ class ReservationController extends Controller
 
         // Fetch the trainer's ID from the authenticated user
         $trainerId = auth()->user()->trainer->id;
+        $minAllowedStartTime = Carbon::now()->addHour();
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('start_time'))->toDateTimeString();
         $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('end_time'))->toDateTimeString();
+        
+        if (Carbon::parse($startDateTime)->lte($minAllowedStartTime)) {
+            return redirect()->route('reservations.create')->with('error', 'Reservation start time must be at least 1 hour from now.');
+        }
         
         $overlappingReservations = Reservation::where('trainer_id', $trainerId)
         ->where(function ($query) use ($startDateTime, $endDateTime) {
@@ -137,13 +142,13 @@ class ReservationController extends Controller
 
         $reservation = Reservation::findOrFail($id);
         $reservationDate = Carbon::parse($request->input('start_time'))->toDateString();
-        if (Carbon::parse($reservationDate)->isPast()) {
-            return redirect()->back()->with('error', 'Cannot update reservation with a past date.');
-        }
-    
-
         $startDate = Carbon::parse($reservation->start_reservation)->toDateString();
         $endDate = Carbon::parse($reservation->end_reservation)->toDateString();
+        $minAllowedStartTime = Carbon::now()->addHour();
+
+        if (Carbon::parse($startDateTime)->lte($minAllowedStartTime)) {
+            return redirect()->route('reservations.create')->with('error', 'Reservation start time must be at least 1 hour from now.');
+        }
 
         // Combine the existing date with the new time inputs
         $newStartDateTime = Carbon::parse($startDate . ' ' . $request->input('start_time'));
