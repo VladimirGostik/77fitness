@@ -19,6 +19,7 @@ class CreateGroupsTable extends Migration
             $table->dateTime('end_reservation')->nullable();   // Add this line
             $table->integer('max_participants');
             $table->boolean('is_reserved')->default(false);
+            $table->string('transaction_id')->nullable();
             $table->timestamps();
 
             $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');

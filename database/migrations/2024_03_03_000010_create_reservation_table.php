@@ -18,6 +18,7 @@ class CreateReservationTable extends Migration
             $table->dateTime('start_reservation')->nullable();
             $table->dateTime('end_reservation')->nullable();
             $table->decimal('reservation_price', 10, 2);
+            $table->string('transaction_id')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

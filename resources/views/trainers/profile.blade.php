@@ -51,26 +51,27 @@
 </div>
 
 <style>
-    .reserved-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
-    padding: 5px;
-    border-radius: 5px;
-    color: black; /* Text color */
-    font-weight: bold;
-}
+   .reserved-overlay {
+        color: black; /* Set text color to black */
+            /* Other styles */
+    }
+
+
+    .fc-daygrid-day-number {
+        color: black; /* Set text color to black */
+    }
+        
+
+
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridWeek',
-        events: [
-            @foreach($reservations->where('trainer_id', $trainer->id) as $reservation)
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridWeek',
+            events: [
+                @foreach($reservations->where('trainer_id', $trainer->id) as $reservation)
                 {
                     title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Free' }}',
                     start: '{{ $reservation->start_reservation->toIso8601String() }}',
@@ -78,9 +79,9 @@
                     data: {!! json_encode($reservation) !!},
                     type: 'reservation'
                 },
-            @endforeach
+                @endforeach
 
-            @foreach($groupReservations->where('trainer_id', $trainer->id) as $groupReservation)
+                @foreach($groupReservations->where('trainer_id', $trainer->id) as $groupReservation)
                 {
                     title: '{{ $groupReservation->max_participants }}',
                     start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
@@ -88,29 +89,38 @@
                     data: {!! json_encode($groupReservation) !!},
                     type: 'group_reservation'
                 },
-            @endforeach
-        ],
-        eventClick: function(info) {
-            // Prevent default action
-            info.jsEvent.preventDefault();
+                @endforeach
+            ],
+            eventClick: function(info) {
+                // Prevent default action for reserved events
+                if (info.event.extendedProps.data.client_id) {
+                    info.jsEvent.preventDefault();
+                    return;
+                }
 
-            // Open modal with reservation data
-            openModal(info.event.extendedProps.data, info.event.extendedProps.type);
-        },
-        eventDidMount: function(info) {
-            // Check if the event is reserved (client_id != null)
-            if (info.event.extendedProps.data.client_id) {
-                // Create a div element for the overlay
-                var overlayDiv = document.createElement('div');
-                overlayDiv.classList.add('reserved-overlay');
-                info.el.appendChild(overlayDiv);
+                // Open modal with reservation data for free events
+                openModal(info.event.extendedProps.data, info.event.extendedProps.type);
+            },
+            eventDidMount: function(info) {
+                // Check if the event is reserved (client_id != null)
+                if (info.event.extendedProps.data.client_id) {
+                    // Add reserved class to make it visually different and not clickable
+                    info.el.style.backgroundColor = '#ea6c79c3'; // Adjust background color
+                    info.el.style.color = 'white'; // Adjust text color
+
+                } else {
+                    // Add free class to make it visually different and clickable
+                    info.el.style.backgroundColor = '#01b25aba'; // Adjust background color
+                    info.el.style.color = 'white'; // Adjust text color
+                    //overlay.classList.add('reserved-overlay');
+
+                }
+
             }
-        }
-    });
-    calendar.render();
+        });
+        calendar.render();
 
-    // Other functions...
-
+        // Other functions...
 
         // Function to format date time
         function formatDateTime(dateTimeString) {
@@ -159,7 +169,7 @@
                         success: function(response) {
                             // Handle response from server
                             $('#reservationModal').modal('hide');
-                            alert('Reservation submitted successfully.');
+                            location.reload(); // Reload the page after successful submission
                         },
                         error: function(xhr, status, error) {
                             // Handle error
@@ -176,8 +186,8 @@
                 // Add logic to display group reservation details
             }
         }
-
     });
 </script>
+
 
 @endsection
