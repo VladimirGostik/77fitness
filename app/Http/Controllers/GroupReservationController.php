@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Date;
 use App\Models\Trainer;
 use App\Models\Reservation;
 use App\Models\GroupReservation; // Adjust the namespace based on your project structure
+use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -35,6 +36,26 @@ class GroupReservationController extends Controller
             'rooms' => $rooms,
         ]);
     }
+
+    public function submit(Request $request, $groupReservation_id)
+        {
+            Log::info('Submitting reservation with ID: ' . $groupReservation_id);
+    
+        }
+
+    public function getGroupReservationDetails($id)
+        {
+            $groupReservation = GroupReservation::findOrFail($id); // Assuming GroupReservation is your model for group reservations
+
+            // Count participants for this group reservation
+            $participantCount = GroupParticipant::where('group_id', $groupReservation->id)->count();
+
+            return response()->json([
+                'groupReservation' => $groupReservation,
+                'participantCount' => $participantCount,
+            ]);
+        }
+
 
     public function store(Request $request)
 {

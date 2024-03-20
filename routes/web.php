@@ -86,11 +86,14 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
 });
 
 Route::get('/trainers/{trainer}', [TrainerController::class, 'show'])->name('trainer.profile');
+Route::post('/group_reservations/{group_reservations}/add-participant', [GroupReservationController::class, 'addParticipant'])->name('add.participant');
 
 
 Route::group(['middleware' => ['auth', 'client']], function () {
 
     Route::post('/reservations/{reservation_id}/submit', [ReservationController::class, 'submit']);
+    Route::post('/group_reservations/{group_reservation_id}/submit', [GroupReservationController::class, 'submit']);
+
 });
 
 

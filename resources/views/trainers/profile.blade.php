@@ -62,10 +62,24 @@
             </div>
             <div class="modal-body">
                 <!-- Content for group reservation modal -->
+                @foreach($groupReservations as $groupReservation)
+                    <div>
+                        <strong>Reservation ID:</strong> {{ $groupReservation->id }}<br>
+                        <strong>Number of Participants:</strong> {{ $groupReservation->participants_count }}<br>
+                        <strong>Start time:</strong> {{ date('H:i  d.m.Y', strtotime($groupReservation->start_reservation)) }} <br>
+                        <strong>End time:</strong> {{ date('H:i  d.m.Y', strtotime($groupReservation->end_reservation)) }} <br>                        
+                        <!-- Add form to add new participant -->
+                        <form method="POST" action="{{ route('add.participant', ['group_reservations' => $groupReservation->id]) }}">
+                            @csrf
+                            <input type="text" name="participant_name" placeholder="Participant Name">
+                            <button type="submit">Add Participant</button>
+                        </form>
+                    </div>
+                @endforeach
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <!-- Add any additional buttons or actions here -->
+                <button id="submitGroupReservation" class="btn btn-primary">Submit Group Reservation</button>
             </div>
         </div>
     </div>
@@ -106,7 +120,7 @@
 
                 @foreach($groupReservations->where('trainer_id', $trainer->id) as $groupReservation)
                 {
-                    title: '{{ $groupReservation->max_participants }}',
+                    title: '{{ $groupReservation->participants_count }} / {{ $groupReservation->max_participants }}',
                     start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
                     end: '{{ $groupReservation->end_reservation->toIso8601String() }}',
                     data: {!! json_encode($groupReservation) !!},
@@ -116,7 +130,7 @@
             ],
             eventClick: function(info) {
                 if (info.event.extendedProps.type === 'group_reservation') {
-                    openGroupReservationModal(info.event.extendedProps.data);
+                    openGroupReservationModal(info.event.extendedProps.data, info.event.extendedProps.type);
                 } else if (info.event.extendedProps.data.client_id) {
                     info.jsEvent.preventDefault();
                     return;
@@ -157,18 +171,43 @@
                         }
                     });
                 });
-            } else if (type === 'group_reservation') {
-                $('#reservationModal .modal-title').text('Group Reservation Details');
             }
         }
 
-        function openGroupReservationModal(data) {
-            console.log("Opening group reservation modal"); // Add this line to log a message
+        function openGroupReservationModal(data, type) {
+            console.log("Opening group reservation modal");
+
 
             $('#groupReservationModal').modal('show');
-            
-            // Add logic to populate modal with group reservation details and options to add participants
+            if (type === 'group_reservation' && data.participants) { // Ensure data.participants is defined
+                $('#participantCount').val(data.participants.length); // Set the number of participants
+                var participantInputs = '';
+                data.participants.forEach(function(participant) {
+                    participantInputs += '<input type="text" class="form-control mb-2" name="participant[]" value="' + participant.name + '">';
+                });
+                $('#participantInputs').html(participantInputs); // Add participant input fields
+                $('#submitGroupReservation').off('click').on('click', function() {
+                    var formData = $('#groupReservationForm').serialize(); // Serialize form data
+                    $.ajax({
+                        url: '/group_reservation/' + data.id + '/submit',
+                        type: 'POST',
+                        data: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            $('#groupReservationModal').modal('hide');
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                            alert('Failed to submit Group Reservation.');
+                        }
+                    });
+                });
+            }
         }
+
 
         function formatDateTime(dateTimeString) {
             var dateTime = new Date(dateTimeString);
@@ -177,11 +216,9 @@
             var day = dateTime.getDate().toString().padStart(2, '0');
             var month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
             var year = dateTime.getFullYear();
-            return hours + ':' + minutes + ' ' + day + '.' + month + '.' + year;
+            return hours + ':' + minutes + '   ' + day + '.' + month + '.' + year;
         }
     });
 </script>
-
-
 
 @endsection
