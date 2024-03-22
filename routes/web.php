@@ -92,7 +92,9 @@ Route::post('/group_reservations/{group_reservations}/add-participant', [GroupRe
 Route::group(['middleware' => ['auth', 'client']], function () {
 
     Route::post('/reservations/{reservation_id}/submit', [ReservationController::class, 'submit']);
-    Route::post('/group_reservations/{group_reservation_id}/submit', [GroupReservationController::class, 'submit']);
+    Route::post('/group_reservation/{id}/submit', [GroupReservationController::class, 'submit']);
+    Route::get('/group_reservation/{id}/participants', [GroupReservationController::class, 'getParticipants']);
+
 
 });
 

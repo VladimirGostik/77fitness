@@ -15,6 +15,7 @@ class CreateGroupParticipantsTable extends Migration
             $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('client_id')->nullable(); // Client ID can be null for non-registered participants
             $table->string('name')->nullable(); // Added column for the name of non-registered participants
+            $table->timestamps();
     
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

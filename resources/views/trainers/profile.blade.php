@@ -63,18 +63,18 @@
             <div class="modal-body">
                 <!-- Content for group reservation modal -->
                 @foreach($groupReservations as $groupReservation)
-                    <div>
-                        <strong>Reservation ID:</strong> {{ $groupReservation->id }}<br>
-                        <strong>Number of Participants:</strong> {{ $groupReservation->participants_count }}<br>
-                        <strong>Start time:</strong> {{ date('H:i  d.m.Y', strtotime($groupReservation->start_reservation)) }} <br>
-                        <strong>End time:</strong> {{ date('H:i  d.m.Y', strtotime($groupReservation->end_reservation)) }} <br>                        
-                        <!-- Add form to add new participant -->
-                        <form method="POST" action="{{ route('add.participant', ['group_reservations' => $groupReservation->id]) }}">
-                            @csrf
-                            <input type="text" name="participant_name" placeholder="Participant Name">
-                            <button type="submit">Add Participant</button>
-                        </form>
+                <div>
+                    <strong>Reservation ID:</strong> {{ $groupReservation->id }}<br>
+                    <strong>Number of Participants:</strong> {{ $groupReservation->participants_count }}<br>
+                    <strong>Start time:</strong> {{ date('H:i  d.m.Y', strtotime($groupReservation->start_reservation)) }} <br>
+                    <strong>End time:</strong> {{ date('H:i  d.m.Y', strtotime($groupReservation->end_reservation)) }} <br>
+                    <!-- Add form to add new participant -->
+                    <div id="participant-container">
+                        <div class="participant-input">
+                            <button type="button" class="btn btn-primary btn-sm add-participant">Add participants +</button>
+                        </div>
                     </div>
+                </div>
                 @endforeach
             </div>
             <div class="modal-footer">
@@ -84,6 +84,7 @@
         </div>
     </div>
 </div>
+
 
 
 <style>
@@ -104,6 +105,30 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Add event listener to plus button
+        document.querySelectorAll('.add-participant').forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Create new input field and append it to the participant container
+                var participantContainer = button.closest('#participant-container'); // Check this line
+                var newInput = document.createElement('div');
+                newInput.classList.add('participant-input');
+                newInput.innerHTML = '<input type="text" name="participant_name[]" placeholder="Participant Name">' +
+                    '<button type="button" class="btn btn-danger btn-sm remove-participant">-</button>';
+                participantContainer.appendChild(newInput);
+            });
+        });
+
+        // Add event listener to remove button
+        document.querySelectorAll('.modal-body').forEach(function(container) {
+            container.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-participant')) {
+                    // Remove the participant input field when remove button is clicked
+                    event.target.closest('.participant-input').remove();
+                }
+            });
+        });
+
+
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridWeek',
@@ -175,39 +200,69 @@
         }
 
         function openGroupReservationModal(data, type) {
-            console.log("Opening group reservation modal");
 
 
-            $('#groupReservationModal').modal('show');
-            if (type === 'group_reservation' && data.participants) { // Ensure data.participants is defined
-                $('#participantCount').val(data.participants.length); // Set the number of participants
-                var participantInputs = '';
-                data.participants.forEach(function(participant) {
-                    participantInputs += '<input type="text" class="form-control mb-2" name="participant[]" value="' + participant.name + '">';
-                });
-                $('#participantInputs').html(participantInputs); // Add participant input fields
-                $('#submitGroupReservation').off('click').on('click', function() {
-                    var formData = $('#groupReservationForm').serialize(); // Serialize form data
-                    $.ajax({
-                        url: '/group_reservation/' + data.id + '/submit',
-                        type: 'POST',
-                        data: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            $('#groupReservationModal').modal('hide');
-                            location.reload();
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error);
-                            alert('Failed to submit Group Reservation.');
+            // Check if type is 'group_reservation'
+            if (type === 'group_reservation') {
+                $('#groupReservationModal').modal('show');
+
+                // Fetch participants for the group reservation
+                $.ajax({
+                    url: '/group_reservation/' + data.id + '/participants',
+                    type: 'GET',
+                    success: function(response) {
+                        console.log(response); // Log the response data
+
+                        // Check if the response data is an empty array
+                        if (Array.isArray(response) && response.length === 0) {
+                            //console.log("No participants data available.");
                         }
-                    });
+
+                        // Clear any existing participant inputs
+                        $('#participantInputs').empty();
+
+                        var participants = response; // Assuming response contains the participants data
+
+                        $('#participantCount').val(participants.length);
+
+                        var participantInputs = '';
+                        // Populate participant input fields
+                        participants.forEach(function(participant) {
+                            participantInputs += '<input type="text" class="form-control mb-2" name="participant[]" value="' + participant.name + '">';
+                        });
+                        $('#participantInputs').html(participantInputs);
+                        console.log("dostal som sa az sem");
+                        // Handle submission of form data
+                        $('#submitGroupReservation').off('click').on('click', function() {
+                            var formData = $('#groupReservationForm').serialize();
+                            
+                            $.ajax({
+                                url: '/group_reservation/' + data.id + '/submit',
+                                type: 'POST',
+                                data: formData,
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(response) {
+                                    $('#groupReservationModal').modal('hide');
+                                    location.reload();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                    alert('Failed to submit Group Reservation.');
+                                }
+                            });
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        alert('Failed to fetch group participants.');
+                    }
                 });
+            } else {
+                console.error("Invalid type or participants data.");
             }
         }
-
 
         function formatDateTime(dateTimeString) {
             var dateTime = new Date(dateTimeString);
@@ -219,6 +274,7 @@
             return hours + ':' + minutes + '   ' + day + '.' + month + '.' + year;
         }
     });
+
 </script>
 
 @endsection

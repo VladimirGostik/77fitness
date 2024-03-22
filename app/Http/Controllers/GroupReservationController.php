@@ -5,13 +5,14 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 use App\Models\Trainer;
 use App\Models\Reservation;
 use App\Models\GroupReservation; // Adjust the namespace based on your project structure
 use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 
 class GroupReservationController extends Controller
@@ -37,14 +38,43 @@ class GroupReservationController extends Controller
         ]);
     }
 
-    public function submit(Request $request, $groupReservation_id)
+    public function submit(Request $request, $id)
         {
-            Log::info('Submitting reservation with ID: ' . $groupReservation_id);
-    
+            Log::info('Submitting reservation with ID: ' . $id);
+
+            // Get the participants from the request
+            $participants = $request->input('participant', []);
+
+            // If there are no participants provided, log the current user as the participant
+            if (empty($participants)) {
+                $user = $request->user(); // Assuming you're using Laravel's authentication
+                $participant = new GroupParticipant();
+                $participant->group_id = $id;
+                $participant->name = $user->name; // Or whatever field you want to use for the participant's name
+                $participant->save();
+                Log::info('Participant ' . $user->name . ' added to group reservation ' . $id);
+            } else {
+                // If participants are provided, loop through them and save each one
+                foreach ($participants as $participantName) {
+                    $participant = new GroupParticipant();
+                    $participant->group_reservation_id = $id;
+                    $participant->name = $participantName;
+                    $participant->save();
+                    Log::info('Participant ' . $participantName . ' added to group reservation ' . $id);
+                }
+            }
+
+            // Handle any other logic here
+
+            return response()->json(['message' => 'Group participants added successfully']);
+            
         }
+
 
     public function getGroupReservationDetails($id)
         {
+            Log::info('Submitting..... ');
+
             $groupReservation = GroupReservation::findOrFail($id); // Assuming GroupReservation is your model for group reservations
 
             // Count participants for this group reservation
@@ -57,8 +87,22 @@ class GroupReservationController extends Controller
         }
 
 
-    public function store(Request $request)
-{
+    public function getParticipants($id)
+        {
+            try {
+                // Fetch group participants for the given group ID
+                $participants = GroupParticipant::where('group_id', $id)->get();
+                
+                // Return the participants as JSON response
+                return response()->json($participants);
+            } catch (\Exception $e) {
+                // Handle any exceptions and return error response
+                return response()->json(['error' => 'Failed to fetch group participants.'], 500);
+            }
+        }
+
+
+    public function store(Request $request){
     // Add validation as needed
     $request->validate([
         'start_time' => 'required',
