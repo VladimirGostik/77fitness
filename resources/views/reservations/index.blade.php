@@ -91,7 +91,13 @@
                             @endforeach
                             @foreach($groupReservations as $groupReservation)
                                 {
-                                    title: '(' + {{ $groupReservation->max_participants }} + ')',
+                                    title: '(' +
+                                            @if($groupReservation->groupParticipants)
+                                                {{ $groupReservation->groupParticipants->count() }}
+                                            @else
+                                                0
+                                            @endif
+                                            + '/' + {{ $groupReservation->max_participants }} + ')',                                  
                                     start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
                                     end: '{{ $groupReservation->end_reservation->toIso8601String() }}',
                                     url: '{{ route('group_reservations.edit', ['group_reservation' => $groupReservation->id]) }}',

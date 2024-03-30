@@ -1,50 +1,101 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Edit Group Reservation</h1>
-        <a href="/reservations" class="btn btn-default">Go back</a>
+<div class="container mt-4">
+    <h1 class="mb-4">Edit Group Reservation</h1>
+    <a href="/reservations" class="btn btn-default">Go back</a>
 
-        @if(session()->has('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
 
-        <form id="updateGroupReservationForm" action="{{ route('group_reservations.update', ['group_reservation' => $groupReservation->id]) }}" method="POST">
-            @csrf
-            @method('PUT')
+    <div class="row">
+        <div class="col-md-6">
+            <form id="updateGroupReservationForm" action="{{ route('group_reservations.update', ['group_reservation' => $groupReservation->id]) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-            <div class="form-group">
-                <label for="start_time">Start Time:</label>
-                <input type="time" name="start_time" value="{{ date('H:i', strtotime($groupReservation->start_reservation)) }}" required>
-            </div>
+                @if(session()->has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
-            <div class="form-group">
-                <label for="end_time">End Time:</label>
-                <input type="time" name="end_time" value="{{ date('H:i', strtotime($groupReservation->end_reservation)) }}" required>
-            </div>
+                <div class="mb-3">
+                    <label for="start_time" class="form-label">Start Time:</label>
+                    <input type="time" class="form-control" id="start_time" name="start_time" value="{{ date('H:i', strtotime($groupReservation->start_reservation)) }}" required>
+                </div>
 
-            <div class="mb-3">
-                <label for="max_participants" class="form-label">Max Participants</label>
-                <input type="number" class="form-control" id="max_participants" name="max_participants" value="{{ old('max_participants', $groupReservation->max_participants) }}" required>
-            </div>
+                <div class="mb-3">
+                    <label for="end_time" class="form-label">End Time:</label>
+                    <input type="time" class="form-control" id="end_time" name="end_time" value="{{ date('H:i', strtotime($groupReservation->end_reservation)) }}" required>
+                </div>
 
-            <div class="mb-3">
-                <label for="room_id" class="form-label">Room</label>
-                <select class="form-select" id="room_id" name="room_id" required>
-                    @foreach($rooms as $room)
-                        <option value="{{ $room->id }}" {{ $groupReservation->room_id == $room->id ? 'selected' : '' }}>
-                            {{ $room->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+                <div class="mb-3">
+                    <label for="max_participants" class="form-label">Max Participants:</label>
+                    <input type="number" class="form-control" id="max_participants" name="max_participants" value="{{ old('max_participants', $groupReservation->max_participants) }}" required>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </form>
+                <div class="mb-3">
+                    <label for="room_id" class="form-label">Room:</label>
+                    <select class="form-select" id="room_id" name="room_id" required>
+                        @foreach($rooms as $room)
+                            <option value="{{ $room->id }}" {{ $groupReservation->room_id == $room->id ? 'selected' : '' }}>
+                                {{ $room->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <h4 class="mb-3">Registered Participants</h4>
+            <ul class="list-group">
+                @foreach($groupReservation->participants as $participant)
+                    <li class="list-group-item d-flex justify-content-between">
+                        {{ $participant->name }}
+                        @if($participant->client_id)
+                            <span class="badge bg-primary rounded-pill">Client ID: {{ $participant->client_id }}</span>
+                        @else
+                            <span class="badge bg-secondary rounded-pill">N/A</span>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        
+            <h5 class="mt-4">Add Participant</h5>
+            @if ($groupReservation->participants_count < $groupReservation->max_participants)
+                <form action="{{ route('group_reservations.add_participant', $groupReservation->id) }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <select class="form-select" aria-label="Add Participant" name="participant_id" required>
+                            <option value="" selected>Select Participant</option>
+                            @if(isset($clients))
+                                @foreach($clients as $client)
+                                    <option value="{{ $client->user->id }}">
+                                        {{ $client->user->first_name }} {{ $client->user->last_name }}
+                                    </option>
+                                @endforeach
+                            @else
+                                <option disabled>Clients not loaded</option>
+                            @endif
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="participant_name" class="form-label">Participant Name</label>
+                        <input type="text" class="form-control" id="participant_name" name="participant_name" value="{{ old('participant_name') }}">
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Participant</button>
+                </form>
+            @else
+                <p class="text-muted">Maximum participant limit reached.</p>
+            @endif
+        </div>
+        
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-   
+<script src="https://code.jquery.3.6
+
 @endsection

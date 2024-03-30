@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Models\Client;
 use App\Models\Trainer;
 use App\Models\Reservation;
 use App\Models\GroupReservation; // Adjust the namespace based on your project structure
@@ -17,13 +18,17 @@ use Carbon\Carbon;
 class GroupReservationController extends Controller
 {
     public function index()
-    {
-        // Fetch all reservations
-        $reservations = Reservation::all();
-        $groupReservations = GroupReservation::all();
+{
+    $reservations = Reservation::all();
+    $groupReservations = GroupReservation::with('groupParticipants')->get();
 
-        return view('reservations.index', compact('reservations', 'groupReservations'));
+    foreach ($groupReservations as $groupReservation) {
+        Log::info('Group reservation ID: ' . $groupReservation->id . ', Participants: ' . $groupReservation->groupParticipants->count());
     }
+
+    return view('reservations.index', compact('reservations', 'groupReservations'));
+}
+
 
     public function create()
     {
@@ -49,7 +54,6 @@ class GroupReservationController extends Controller
     $maxParticipants = $groupReservation->max_participants;
 
     $totalParticipants =  GroupParticipant::where('group_id', $groupReservation->id)->count();
-    Log::info($totalParticipants);
     // Retrieve additional participants from the request
     $participants = $request->input('participants', []);
 
@@ -82,6 +86,32 @@ class GroupReservationController extends Controller
     // Return a JSON response indicating success
     return response()->json(['message' => 'Group participants added successfully']);
 }
+
+public function addParticipant(GroupReservation $groupReservation, Request $request)
+{
+    // Validation logic to ensure participant selection and avoid exceeding max limit
+    $userParticipantId = $request->input('participant_id');
+
+    $client = Client::where('user_id', $userParticipantId)->first(); // Retrieve the client
+
+    if (is_null($client)) {
+        return redirect()->back()->withErrors(['participant_id' => 'Please select a valid participant.']);
+    }
+
+    $participantName = $request->input('participant_name');
+
+    // ... remaining code
+
+    GroupParticipant::create([
+        'group_id' => $groupReservation->id,
+        'client_id' => $client->id, // Use the client's ID
+        'name' => $participantName,
+    ]);
+
+    return redirect()->route('group_reservations.edit', $groupReservation->id)
+    ->with('success', 'Participant added successfully!');
+}
+
 
 
     public function getGroupReservationDetails($id)
@@ -186,11 +216,11 @@ class GroupReservationController extends Controller
         $trainerId = auth()->user()->trainer->id;
         $trainer = Trainer::findOrFail($trainerId);
         $rooms = Room::all();
+        $clients = Client::all();
 
         // Return the view with the necessary data
-        return view('group_reservations.edit', compact('groupReservation', 'rooms'));
-        // You may need to fetch any necessary data from the database
-        return view('group_reservations.edit', compact('groupReservation'));
+        return view('group_reservations.edit', compact('groupReservation', 'rooms', 'clients'));
+
     }
 
     public function update(Request $request, $id)
@@ -277,7 +307,7 @@ public function destroy(GroupReservation $groupReservation)
         // Logic for deleting the group reservation from the database
         $groupReservation->delete();
 
-        return redirect()->route('group_reservations.index')
+        return redirect()->route('reservations.index')
             ->with('success', 'Group Reservation deleted successfully');
     }
 
