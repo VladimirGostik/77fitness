@@ -14,7 +14,6 @@ use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
 use Carbon\Carbon;
 
-
 class GroupReservationController extends Controller
 {
     public function index()
@@ -39,49 +38,65 @@ class GroupReservationController extends Controller
     }
 
     public function submit(Request $request, $id)
-        {
-            Log::info('Submitting reservation with ID: ' . $id);
+{
+    $user = Auth::user();
+    $userId = $user->id;
+    $client = $user->client;  // Assuming a User belongsTo Client relationship
+    $clientId = $client->id;  // Access client ID from the associated Client model
 
-            // Get the participants from the request
-            $participants = $request->input('participant', []);
+    // Get the maximum participants allowed for this group reservation
+    $groupReservation = GroupReservation::findOrFail($id);
+    $maxParticipants = $groupReservation->max_participants;
 
-            // If there are no participants provided, log the current user as the participant
-            if (empty($participants)) {
-                $user = $request->user(); // Assuming you're using Laravel's authentication
-                $participant = new GroupParticipant();
-                $participant->group_id = $id;
-                $participant->name = $user->name; // Or whatever field you want to use for the participant's name
-                $participant->save();
-                Log::info('Participant ' . $user->name . ' added to group reservation ' . $id);
-            } else {
-                // If participants are provided, loop through them and save each one
-                foreach ($participants as $participantName) {
-                    $participant = new GroupParticipant();
-                    $participant->group_reservation_id = $id;
-                    $participant->name = $participantName;
-                    $participant->save();
-                    Log::info('Participant ' . $participantName . ' added to group reservation ' . $id);
-                }
-            }
+    $totalParticipants =  GroupParticipant::where('group_id', $groupReservation->id)->count();
+    Log::info($totalParticipants);
+    // Retrieve additional participants from the request
+    $participants = $request->input('participants', []);
 
-            // Handle any other logic here
+    // Check if adding participants would exceed the limit
+    if (count($participants) + $totalParticipants > $maxParticipants) {
+        $errorMessage = sprintf(
+            'Maximum of %d participants allowed for this group reservation. You tried adding %d participants.',
+            $maxParticipants,
+            count($participants) + 1 // Include the authenticated user
+        );
+        return response()->json(['error' => $errorMessage], 422);    
+    }
 
-            return response()->json(['message' => 'Group participants added successfully']);
-            
-        }
+    // Add the authenticated user as a participant
+    $participant = new GroupParticipant();
+    $participant->group_id = $id;
+    $participant->client_id = $clientId;
+    $participant->name = $user->first_name; // Or use any other appropriate field for the participant's name
+    $participant->save();
+
+    // Add additional participants from the request
+    foreach ($participants as $participantName) {
+        $participant = new GroupParticipant();
+        $participant->group_id = $id;
+        $participant->client_id = $clientId;
+        $participant->name = $participantName;
+        $participant->save();
+    }
+
+    // Return a JSON response indicating success
+    return response()->json(['message' => 'Group participants added successfully']);
+}
 
 
     public function getGroupReservationDetails($id)
         {
-            Log::info('Submitting..... ');
 
             $groupReservation = GroupReservation::findOrFail($id); // Assuming GroupReservation is your model for group reservations
+
+            $client_id = Auth::user()->client_id;
 
             // Count participants for this group reservation
             $participantCount = GroupParticipant::where('group_id', $groupReservation->id)->count();
 
             return response()->json([
                 'groupReservation' => $groupReservation,
+                'client_id' => $client_id,
                 'participantCount' => $participantCount,
             ]);
         }
