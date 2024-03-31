@@ -21,12 +21,7 @@ class ReservationController extends Controller
         // Fetch all reservations
         $reservations = Reservation::all();
         $groupReservations = GroupReservation::with('participants')->get();
-
-        foreach ($groupReservations as $groupReservation) {
-            Log::info(print_r($groupReservation, true));
-            //Log::info('Group reservation ID: ' . $groupReservation->id . ', Participants: ' . (count($groupReservation->groupParticipants) ?? 0));
-        }
-    
+        
         return view('reservations.index', compact('reservations', 'groupReservations'));
     }
 

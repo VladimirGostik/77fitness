@@ -23,10 +23,6 @@ class GroupReservationController extends Controller
     $reservations = Reservation::all();
     $groupReservations = GroupReservation::with('participants')->get();
 
-    foreach ($groupReservations as $groupReservation) {
-        //Log::info('Group reservation ID: ' . $groupReservation->id . ', Participants: ' . (count($groupReservation->groupParticipants) ?? 0));
-    }
-
     return view('reservations.index', compact('reservations', 'groupReservations'));
 }
 
@@ -46,7 +42,6 @@ class GroupReservationController extends Controller
     public function submit(Request $request, $id)
 {
     $user = Auth::user();
-    $userId = $user->id;
     $client = $user->client;  // Assuming a User belongsTo Client relationship
     $clientId = $client->id;  // Access client ID from the associated Client model
 
@@ -58,9 +53,10 @@ class GroupReservationController extends Controller
     // Retrieve additional participants from the request
     $participants = $request->input('participants', []);
 
+
     // Check if adding participants would exceed the limit
     if (count($participants) + $totalParticipants > $maxParticipants) {
-        return redirect()->back()->with('error', 'Cannot update reservation with a past date.');
+        return redirect()->back()->with('error', 'Cannot update reservation... too many people');
     }
 
     // Add the authenticated user as a participant

@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="container">
@@ -68,7 +74,6 @@
     </div>
   </div>
 </div>
-
 
 <style>
   .reserved-overlay {
@@ -287,9 +292,6 @@ function openGroupReservationModal(data, type) {
         }
     }
     }
-
-
-
 });
 </script>
 
