@@ -82,7 +82,7 @@
                         events: [
                             @foreach($reservations as $reservation)
                                 {
-                                    title: '{{ $reservation->user ? $reservation->user->full_name : 'Free' }}',
+                                    title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Free' }}',
                                     start: '{{ $reservation->start_reservation->toIso8601String() }}',
                                     end: '{{ $reservation->end_reservation->toIso8601String() }}',
                                     url: '{{ route('reservations.edit', ['reservation' => $reservation->id]) }}',

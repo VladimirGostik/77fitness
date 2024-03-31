@@ -159,17 +159,20 @@ document.querySelectorAll('.modal-body').forEach(function(container) {
     ],
 
     eventClick: function(info) {
-            if (info.event.extendedProps.type === 'group_reservation' && info.event.classList.contains('full-reservation')) {
-                alert('This group reservation is already full.');
-                info.jsEvent.preventDefault(); // Prevent default click behavior
-                return;
-            } else if (info.event.extendedProps.data.client_id) {
-                info.jsEvent.preventDefault();
-                return;
-            } else {
-                openModal(info.event.extendedProps.data, info.event.extendedProps.type);
-            }
+    if (info.event.extendedProps.type === 'group_reservation') {
+        if (info.event.extendedProps.data.participants_count < info.event.extendedProps.data.max_participants) {
+            openGroupReservationModal(info.event.extendedProps.data, info.event.extendedProps.type);
+        } else {
+            console.log('Maximum participants reached for group reservation.');
+            return;
         }
+    } else if (info.event.extendedProps.data.client_id == null) {
+        openModal(info.event.extendedProps.data, info.event.extendedProps.type);
+    } else {
+        info.jsEvent.preventDefault();
+        return;
+    }
+}
   });
 
   calendar.render();

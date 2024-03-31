@@ -13,6 +13,7 @@ use App\Models\Reservation;
 use App\Models\GroupReservation; // Adjust the namespace based on your project structure
 use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
+use App\Models\User;
 use Carbon\Carbon;
 
 class GroupReservationController extends Controller
@@ -59,12 +60,7 @@ class GroupReservationController extends Controller
 
     // Check if adding participants would exceed the limit
     if (count($participants) + $totalParticipants > $maxParticipants) {
-        $errorMessage = sprintf(
-            'Maximum of %d participants allowed for this group reservation. You tried adding %d participants.',
-            $maxParticipants,
-            count($participants) + 1 // Include the authenticated user
-        );
-        return response()->json(['error' => $errorMessage], 422);    
+        return redirect()->back()->with('error', 'Cannot update reservation with a past date.');
     }
 
     // Add the authenticated user as a participant
@@ -92,15 +88,13 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
     // Validation logic to ensure participant selection and avoid exceeding max limit
     $userParticipantId = $request->input('participant_id');
 
+    //$participantName = User::find($userParticipantId)->name;
+    
     $client = Client::where('user_id', $userParticipantId)->first(); // Retrieve the client
 
-    if (is_null($client)) {
-        return redirect()->back()->withErrors(['participant_id' => 'Please select a valid participant.']);
-    }
-
-    $participantName = $request->input('participant_name');
-
-    // ... remaining code
+    $participant = User::find($userParticipantId);
+    $participantName = $participant ? $participant->first_name . ' ' . $participant->last_name : '';
+  
 
     GroupParticipant::create([
         'group_id' => $groupReservation->id,
@@ -150,6 +144,7 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
     public function store(Request $request){
     // Add validation as needed
     $request->validate([
+        //'client_id' => 'nullable|exists:clients,id', // Allow null or valid client ID
         'start_time' => 'required',
         'end_time' => 'required',
         'max_participants' => 'required|integer|min:1',

@@ -36,16 +36,18 @@ class ReservationController extends Controller
         $trainerId = auth()->user()->trainer->id; // Assuming you have a relationship between User and Trainer
         $trainer = Trainer::findOrFail($trainerId);
         $rooms = Room::all();
+        $clients = Client::all(); // Fetch all clients
+
 
         return view('reservations.create', [
             'sessionPrice' => $trainer->session_price,
             'rooms' => $rooms,
+            'clients' => $clients,
         ]);
     }
 
     public function submit(Request $request, $reservation_id)
     {
-    Log::info('Submitting reservation with ID: ' . $reservation_id);
     $request->validate([
         ]);
 
@@ -58,7 +60,6 @@ class ReservationController extends Controller
         // Optionally, return a response indicating success or failure
     }
 
-    
 
 
     public function edit(Reservation $reservation)
@@ -72,6 +73,7 @@ class ReservationController extends Controller
     {
         // Validate the incoming request
         $request->validate([
+            'client_id' => 'nullable|exists:clients,id', // Allow null or valid client ID
             'start_time' => 'required',
             'end_time' => 'required',
             'reservation_price' => 'required|numeric|min:0',
@@ -121,7 +123,7 @@ class ReservationController extends Controller
 
         // Create a new reservation
         Reservation::create([
-            'client_id' => null,
+            'client_id' => $request->input('client_id'), // Use the selected client ID if provided
             'trainer_id' => $trainerId,
             'start_reservation' => $startDateTime,
             'end_reservation' => $endDateTime,
