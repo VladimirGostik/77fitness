@@ -8,7 +8,6 @@
     <div class="col-md-6">
       <h1>Trainer Profile</h1>
       <a href="/home" class="btn btn-default">Go back</a>
-
       <div>
         @if($trainer->profile_photo)
           <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" alt="Profile Picture" style="max-width: 300px;">

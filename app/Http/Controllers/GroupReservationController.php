@@ -20,10 +20,10 @@ class GroupReservationController extends Controller
     public function index()
 {
     $reservations = Reservation::all();
-    $groupReservations = GroupReservation::with('groupParticipants')->get();
+    $groupReservations = GroupReservation::with('participants')->get();
 
     foreach ($groupReservations as $groupReservation) {
-        Log::info('Group reservation ID: ' . $groupReservation->id . ', Participants: ' . $groupReservation->groupParticipants->count());
+        //Log::info('Group reservation ID: ' . $groupReservation->id . ', Participants: ' . (count($groupReservation->groupParticipants) ?? 0));
     }
 
     return view('reservations.index', compact('reservations', 'groupReservations'));

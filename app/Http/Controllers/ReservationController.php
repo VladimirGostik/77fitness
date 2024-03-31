@@ -10,6 +10,7 @@ use App\Models\Client;
 use App\Models\Trainer;
 use App\Models\Reservation;
 use App\Models\GroupReservation;
+use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
 use Carbon\Carbon;
 
@@ -19,8 +20,13 @@ class ReservationController extends Controller
     {
         // Fetch all reservations
         $reservations = Reservation::all();
-        $groupReservations = GroupReservation::all();
+        $groupReservations = GroupReservation::with('participants')->get();
 
+        foreach ($groupReservations as $groupReservation) {
+            Log::info(print_r($groupReservation, true));
+            //Log::info('Group reservation ID: ' . $groupReservation->id . ', Participants: ' . (count($groupReservation->groupParticipants) ?? 0));
+        }
+    
         return view('reservations.index', compact('reservations', 'groupReservations'));
     }
 
@@ -36,7 +42,6 @@ class ReservationController extends Controller
             'rooms' => $rooms,
         ]);
     }
-
 
     public function submit(Request $request, $reservation_id)
     {
@@ -146,7 +151,7 @@ class ReservationController extends Controller
         $endDate = Carbon::parse($reservation->end_reservation)->toDateString();
         $minAllowedStartTime = Carbon::now()->addHour();
 
-        if (Carbon::parse($startDateTime)->lte($minAllowedStartTime)) {
+        if (Carbon::parse($startDate)->lte($minAllowedStartTime)) {
             return redirect()->route('reservations.create')->with('error', 'Reservation start time must be at least 1 hour from now.');
         }
 

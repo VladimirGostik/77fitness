@@ -74,7 +74,6 @@
                 
             </table>
 
-
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     var calendarEl = document.getElementById('calendar');
@@ -89,20 +88,16 @@
                                     url: '{{ route('reservations.edit', ['reservation' => $reservation->id]) }}',
                                 },
                             @endforeach
-                            @foreach($groupReservations as $groupReservation)
-                                {
-                                    title: '(' +
-                                            @if($groupReservation->groupParticipants)
-                                                {{ $groupReservation->groupParticipants->count() }}
-                                            @else
-                                                0
-                                            @endif
-                                            + '/' + {{ $groupReservation->max_participants }} + ')',                                  
+                            @foreach($groupReservations as $groupReservation){
+                                title: '(' + 
+                                    ({{ $groupReservation->participants()->count() }})
+                                    + '/' + {{ $groupReservation->max_participants }} + ')',
                                     start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
                                     end: '{{ $groupReservation->end_reservation->toIso8601String() }}',
                                     url: '{{ route('group_reservations.edit', ['group_reservation' => $groupReservation->id]) }}',
                                 },
-                            @endforeach
+                                @endforeach
+ 
                         ],
                         eventClick: function(info) {
                             window.location = info.event.url;
