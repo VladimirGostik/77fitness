@@ -3,8 +3,12 @@
 @section('content')
     <div class="container">
         <h1>Trainers List</h1>
-        <a href="/home" class="btn btn-default">Go back</a>
-
+        @if (Auth::check())
+            <a href="/home" class="btn btn-primary">Go back</a>
+        @else
+            <a href="/" class="btn btn-primary">Go back</a>
+         @endif
+         
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif

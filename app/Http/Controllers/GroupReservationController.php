@@ -26,7 +26,6 @@ class GroupReservationController extends Controller
     return view('reservations.index', compact('reservations', 'groupReservations'));
 }
 
-
     public function create()
     {
         $trainerId = auth()->user()->trainer->id; // Assuming you have a relationship between User and Trainer
@@ -40,7 +39,7 @@ class GroupReservationController extends Controller
     }
 
     public function submit(Request $request, $id)
-{
+{  
     $user = Auth::user();
     $client = $user->client;  // Assuming a User belongsTo Client relationship
     $clientId = $client->id;  // Access client ID from the associated Client model
@@ -149,7 +148,7 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
 
     // Assume the date is sent from the form, modify the format if needed
     $trainerId = auth()->user()->trainer->id;
-    $minAllowedStartTime = Carbon::now()->addHour();
+    $minAllowedStartTime = Carbon::now()->addHour()->addDay();
     $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('start_time'))->toDateTimeString();
     $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('end_time'))->toDateTimeString();
     

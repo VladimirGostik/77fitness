@@ -5,8 +5,11 @@
 @section('content')
     <h1>Articles</h1>
 
-    <a href="{{ url('/home') }}" class="btn btn-default">Go Back</a>
-
+    @if (Auth::check())
+        <a href="/home" class="btn btn-primary">Go back</a>
+    @else
+        <a href="/" class="btn btn-primary">Go back</a>
+    @endif
    
 
     @if(session('success'))

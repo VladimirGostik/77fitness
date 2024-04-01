@@ -1,5 +1,11 @@
 <?php
 
+
+use App\Models\Article;
+use App\Models\Trainer;
+use App\Models\Reservation;
+use App\Models\GroupReservation; // Adjust the namespace based on your project structure
+use App\Models\GroupParticipant; // Import the GroupParticipant model
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\ArticlesController;
@@ -8,6 +14,7 @@ use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\GroupReservationController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\HomeController;
 
 
 
@@ -24,13 +31,11 @@ use App\Http\Controllers\ClientController;
 |
 */
 
-
 Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+    $articles = Article::all();
+    $trainers = Trainer::all();
 
-Route::get('/welcome', function () {
-    return view('welcome');
+    return view('welcome', compact('articles', 'trainers'));
 })->name('welcome');
 
 Route::get('/login', [AuthManager::class, 'login'])->name('login');
@@ -59,7 +64,7 @@ Route::group(['middleware' => 'auth', 'is_admin'], function (){
 */
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/{id}', [UserController::class, 'edit'])->name('users.edit');
@@ -95,6 +100,7 @@ Route::group(['middleware' => ['auth', 'client']], function () {
     Route::post('/reservations/{reservation_id}/submit', [ReservationController::class, 'submit']);
     Route::post('/group_reservation/{id}/submit', [GroupReservationController::class, 'submit']);
     Route::get('/group_reservation/{id}/participants', [GroupReservationController::class, 'getParticipants']);
+    Route::get('/home/{trainerId}', [HomeController::class, 'getReservations']);
 
 
 });
@@ -103,4 +109,4 @@ Route::group(['middleware' => ['auth', 'client']], function () {
 
 
 
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
+//Route::get('/events', [EventController::class, 'index'])->name('events.index');

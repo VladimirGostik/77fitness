@@ -13,8 +13,11 @@
   <div class="row">
     <div class="col-md-6">
       <h1>Trainer Profile</h1>
-      <a href="/home" class="btn btn-default">Go back</a>
-      <div>
+      @if (Auth::check())
+        <a href="/home" class="btn btn-primary">Go back</a>
+       @else
+        <a href="/" class="btn btn-primary">Go back</a>
+      @endif      <div>
         @if($trainer->profile_photo)
           <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" alt="Profile Picture" style="max-width: 300px;">
         @else

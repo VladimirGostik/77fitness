@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\User; // Make sure to import the User model
 use App\Models\Trainer;
 use App\Models\Reservation;
@@ -151,7 +152,7 @@ class TrainerController extends Controller
 
                 return redirect()->route('trainers.index')->with('success', 'Trainer updated successfully');
             } catch (\Exception $e) {
-                \Log::error($e->getMessage());
+                Log::error($e->getMessage());
         
                 // Debugging: Output the exception message
                 dd($e->getMessage());
@@ -173,11 +174,12 @@ class TrainerController extends Controller
 
             return redirect()->route('trainers.index')->with('success', 'Trainer deleted successfully');
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
             return redirect()->route('trainers.index')->with('error', 'Failed to delete trainer');
         }
     }
 
     // Other methods for updating, deleting, showing trainers, etc.
+    
 
     }

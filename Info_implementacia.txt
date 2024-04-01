@@ -28,5 +28,3 @@ mysql -u username -p database_name < database_dump.sql
 
 
 
-
-
