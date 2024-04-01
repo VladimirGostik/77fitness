@@ -8,13 +8,12 @@ composer require nesbot/carbon
 composer require beyondcode/laravel-er-diagram-generator --dev
 npm install --save @fullcalendar/core @fullcalendar/daygrid @fullcalendar/timegrid
 
-
 php artisan storage:link
-
 
 instalacia: Laravel Blade Snipp...
 
 Dump na databazu: 
+
 
 # To dump the database
 php artisan migrate
@@ -25,6 +24,28 @@ mysqldump -u username -p database_name > database_dump.sql
 mysql -u username -p database_name < database_dump.sql
 
 
+**********************************************
+nove info:
+Group participants-platby, koľko ľudí zahlási
+
+Platba…prepojiť nejak… zaplatí za všetkých, alebo za každého… prepojiť s rezervaciou…
+Prepojime cez id… hotovosť a payment type…
+
+Credits… prepojiť s user, admin, trener, client… user ma svoje primárne Id a zároveň je to je cudzí kľúč 
+
+Credit=platba… bud je to, cez kredit, v hotovosti alebo priama platba…
+Zoznam pre trénera, kto ide na skupinovku…
+Platobné terminály fungovanie a
 
 
+Platby:
+Trener_id, client_id, admin_id bude rovnaké ako user_id
+
+Premenovať tabuľky…
+Transakcia s klientom 
+Vzťah kto tu transakciu dal do systému…
+V hotovosti najprv payment naviazať
+Translaction + client+user
+Rezervácia + políčko zrušená…. 
+Trener môže byt fotky…  
 

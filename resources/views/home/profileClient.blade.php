@@ -59,8 +59,7 @@
     <div class="row mt-5">
         <div class="col-md-12">
             <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->id]) }}" class="btn btn-primary">Make a Reservation</a>
-
-          <div class="row">
+        <div class="row">
             <div class="col-md-6">
               <h4>Select Trainer</h4>
               <select id="trainer-dropdown" class="form-select mb-3">

@@ -4,18 +4,16 @@
 
 @section('content')
     <h1>Articles</h1>
-
     @if (Auth::check())
         <a href="/home" class="btn btn-primary">Go back</a>
     @else
         <a href="/" class="btn btn-primary">Go back</a>
     @endif
-   
-
+    
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-
+    
     @if(count($articles) >= 1)
         <div class="card">
             <ul class="list-group list-group-flush">

@@ -1,9 +1,5 @@
-<!-- reservations.index.blade.php -->
-
 @extends('layouts.app')
-
 @section('content')
-
     <div class="container">
         <h1>All Reservations</h1>
         <a href="/home" class="btn btn-default">Go back</a>
