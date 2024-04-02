@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class GroupReservation extends Model
 {
     use HasFactory;
-    protected $table = "groups";
+    protected $table = "group_reservations";
     protected $dates = ['start_reservation', 'end_reservation'];
 
 
@@ -27,9 +27,7 @@ class GroupReservation extends Model
         'end_reservation' => 'datetime',
     ];
     
-    protected $attributes = [
-        'is_reserved' => false,
-    ];
+
     // Add any relationships or additional logic as needed
     public function trainer()
     {
