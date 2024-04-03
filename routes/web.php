@@ -70,6 +70,7 @@ Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/{id}', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::post('/users/{user}/change-password', [UserController::class, 'changePassword'])->name('users.change-password');
 
 
 Route::resource('trainers', TrainerController::class);

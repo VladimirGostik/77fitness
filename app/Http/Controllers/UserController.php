@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\HasApiTokens;
+
 
 class UserController extends Controller
 {
@@ -35,28 +37,43 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-    // Add validation rules as needed
-    $request->validate([
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'email' => 'required|email|unique:users,email,'.$id,
-        'phone_number' => 'required',
-        'receive_notifications' => 'boolean', // Make sure this is set to boolean
-        // Add more validation rules for other attributes you want to update
-    ]);
+        // Add validation rules for password fields
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'phone_number' => 'required',
+            'receive_notifications' => 'boolean',
+        ]);
 
-    // Update user attributes
-    $user->update([
-        'first_name' => $request->input('first_name'),
-        'last_name' => $request->input('last_name'),
-        'email' => $request->input('email'),
-        'phone_number' => $request->input('phone_number'),
-        'receive_notifications' => (bool) $request->input('receive_notifications'),
-        // Add more attributes as needed
-    ]);
+ 
 
-    return redirect()->route('users.index')->with('success', 'User updated successfully');
+        // Update other user attributes
+        $user->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'phone_number' => $request->input('phone_number'),
+            'receive_notifications' => (bool) $request->input('receive_notifications'),
+        ]);
+
+        return redirect()->back()->with('success', 'Users info changed successfully!');
     }
+
+    public function changePassword(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    $request->validate([
+        'current_password' => 'required|password:current_user',
+        'new_password' => 'required|min:8|confirmed',
+    ]);
+
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return redirect()->back()->with('success', 'Password changed successfully!');
+}
 
     public function destroy($id)
     {

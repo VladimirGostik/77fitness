@@ -77,23 +77,24 @@
                 </li>
               @endif
             @else
-              <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                  {{ Auth::user()->first_name }}
+            <li class="nav-item dropdown">
+              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                {{ Auth::user()->first_name }}
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                  {{ __('Logout') }}
                 </a>
 
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{{ route('logout') }}"
-                     onclick="event.preventDefault();
-                                   document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                  </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+                </form>
 
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                  </form>
-                </div>
-              </li>
+                <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">Upraviť Profil</a> <a class="dropdown-item" href="#">Dobit Kredit</a> </div>
+            </li>
               <li class="nav-item">
                 <span class="nav-link">Credit: {{ sprintf('%d€', Auth::user()->credit ?? 0) }}</span>
             </li>
