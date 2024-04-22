@@ -31,8 +31,8 @@
                                 <p class="card-text">{{ $trainer->specialization }}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ route('trainers.edit', ['trainer' => $trainer->id]) }}" class="btn btn-primary">Edit Trainer</a>
-                                <form action="{{ route('trainers.destroy', ['trainer' => $trainer->id]) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('trainers.edit', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary">Edit Trainer</a>
+                                <form action="{{ route('trainers.destroy', ['trainer' => $trainer->user_id]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete Trainer</button>

@@ -12,8 +12,8 @@ class CreateAdminTable extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->id('admin_id');
-            $table->unsignedBigInteger('user_id')->unique();
+            //$table->id('admin_id');
+            $table->unsignedBigInteger('user_id')->primary();;
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

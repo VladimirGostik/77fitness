@@ -11,16 +11,13 @@ class Client extends Model
 
     protected $table = "clients";
     public $timestamps = false; // Disable timestamps
-
+    protected $primaryKey = 'user_id';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'user_id',
-    ];
 
     /**
      * Get the user that owns the client.

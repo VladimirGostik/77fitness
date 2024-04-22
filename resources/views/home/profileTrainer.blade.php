@@ -5,7 +5,7 @@
         <h1>Welcome, {{ Auth::user()->first_name }}, this is your profile page!</h1>
 
         <div class="actions">
-            <a href="{{ route('trainers.edit', ['trainer' => Auth::user()->trainer->id]) }}">
+            <a href="{{ route('trainers.edit', ['trainer' => Auth::user()->trainer->user_id]) }}">
                 <i class="fas fa-user-edit"></i> Edit Profile
             </a> <br>
 

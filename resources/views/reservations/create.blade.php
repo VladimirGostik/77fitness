@@ -27,7 +27,7 @@
         <option value="">Select Client</option>
         @if (isset($clients))
           @foreach ($clients as $client)
-            <option value="{{ $client->id }}">
+            <option value="{{ $client->user_id }}">
               {{ $client->user->first_name }} {{ $client->user->last_name }}
             </option>
           @endforeach

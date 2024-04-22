@@ -42,7 +42,7 @@
                             <p class="card-text">{{ $trainer->specialization }}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->id]) }}" class="btn btn-primary">View Profile</a>
+                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary">View Profile</a>
                         </div>
                         
                     </div>
@@ -55,7 +55,7 @@
             <p>No trainers available.</p>
         @endif
     </div>
-    <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->id]) }}" class="btn btn-primary">Make a Reservation</a>
+    <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->user_id]) }}" class="btn btn-primary">Make a Reservation</a>
 
 
 @endsection

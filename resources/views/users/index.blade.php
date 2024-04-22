@@ -4,8 +4,6 @@
     <h1>Users List</h1>
     <a href="/home" class="btn btn-default">Go back</a>
 
-
-    <!-- Search Form -->
     <form action="{{ route('users.index') }}" method="GET">
         @csrf
         <input type="text" name="query" placeholder="Search users" value="{{ $query }}">

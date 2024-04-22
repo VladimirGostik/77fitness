@@ -42,7 +42,7 @@
                             <p class="card-text">{{ $trainer->specialization }}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->id]) }}" class="btn btn-primary">View Profile</a>
+                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary">View Profile</a>
                         </div>
                         
                     </div>
@@ -58,14 +58,14 @@
 
     <div class="row mt-5">
         <div class="col-md-12">
-            <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->id]) }}" class="btn btn-primary">Make a Reservation</a>
+            <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->user_id]) }}" class="btn btn-primary">Make a Reservation</a>
         <div class="row">
             <div class="col-md-6">
               <h4>Select Trainer</h4>
               <select id="trainer-dropdown" class="form-select mb-3">
                 <option value="">Select Trainer</option>
                 @foreach ($trainers as $trainer)
-                  <option value="{{ $trainer->id }}" {{ (request()->get('trainer') == $trainer->id || (!request()->get('trainer') && $trainer->id === $trainers->first()->id)) ? 'selected' : '' }}>
+                  <option value="{{ $trainer->user_id }}" {{ (request()->get('trainer') == $trainer->user_id || (!request()->get('trainer') && $trainer->user_id === $trainers->first()->user_id)) ? 'selected' : '' }}>
                     {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}
                   </option>
                 @endforeach
@@ -87,7 +87,7 @@
     $(document).ready(function() {
         var preselectedTrainerId = '{{ request()->get('trainer') }}';
     if (!preselectedTrainerId) {
-        preselectedTrainerId = {{ $trainers->first()->id }};
+        preselectedTrainerId = {{ $trainers->first()->user_id }};
         // Default to lowest ID
     }
 
@@ -98,7 +98,7 @@
       var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridWeek',
         events: [
-        @foreach($reservations->where('trainer_id', $trainer->id) as $reservation)
+        @foreach($reservations->where('trainer_id', $trainer->user_id) as $reservation)
         {
             title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Free' }}',
             start: '{{ $reservation->start_reservation->toIso8601String() }}',
@@ -109,7 +109,7 @@
         },
         @endforeach
 
-        @foreach($groupReservations->where('trainer_id', $trainer->id) as $groupReservation)
+        @foreach($groupReservations->where('trainer_id', $trainer->user_id) as $groupReservation)
         {
             title: '{{ $groupReservation->participants_count }} / {{ $groupReservation->max_participants }}',
             start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
@@ -136,7 +136,7 @@
 
         if (trainerId === "" || trainerId === null) {
       // Set trainer ID to the first trainer's ID (assuming $trainers is an array of trainers)
-        trainerId = {{ $trainers->first()->id }};
+        trainerId = {{ $trainers->first()->user_id }};
         }
         var reservationLink = '{{ route("trainer.profile", ":trainerId") }}';
         reservationLink = reservationLink.replace(':trainerId', trainerId);

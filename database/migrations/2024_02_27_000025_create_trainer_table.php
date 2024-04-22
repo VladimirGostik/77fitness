@@ -12,8 +12,8 @@ class CreateTrainerTable extends Migration
     public function up(): void
     {
         Schema::create('trainers', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
+            //$table->id();
+            $table->unsignedBigInteger('user_id')->primary(); // Define user_id as primary key
             $table->string('specialization');
             $table->text('description');
             $table->text('experience');

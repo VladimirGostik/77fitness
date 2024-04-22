@@ -139,7 +139,7 @@ document.querySelectorAll('.modal-body').forEach(function(container) {
   var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridWeek',
     events: [
-        @foreach($reservations->where('trainer_id', $trainer->id) as $reservation)
+        @foreach($reservations->where('trainer_id', $trainer->user_id) as $reservation)
         {
             title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Free' }}',
             start: '{{ $reservation->start_reservation->toIso8601String() }}',
@@ -150,7 +150,7 @@ document.querySelectorAll('.modal-body').forEach(function(container) {
         },
         @endforeach
 
-        @foreach($groupReservations->where('trainer_id', $trainer->id) as $groupReservation)
+        @foreach($groupReservations->where('trainer_id', $trainer->user_id) as $groupReservation)
         {
             title: '{{ $groupReservation->participants_count }} / {{ $groupReservation->max_participants }}',
             start: '{{ $groupReservation->start_reservation->toIso8601String() }}',

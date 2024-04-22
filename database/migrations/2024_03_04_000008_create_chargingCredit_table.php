@@ -14,11 +14,13 @@ class CreateChargingCreditTable extends Migration
         Schema::create('chargingCredit', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('admin_id')->nullable(); // New column for admin ID
             $table->decimal('amount', 10, 2);
-            $table->string('payment_type'); // This can be 'credit', 'session', 'membership', etc.
+            $table->enum('payment_type', ['hotovost', 'platobna_karta']); // Changed to enum
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('admin_id')->references('id')->on('users')->onDelete('set null'); // Set null if admin is deleted
         });
     }
 

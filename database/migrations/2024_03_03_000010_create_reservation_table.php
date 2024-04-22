@@ -21,8 +21,8 @@ class CreateReservationTable extends Migration
             $table->unsignedBigInteger('transaction_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');
+            $table->foreign('client_id')->references('user_id')->on('clients')->onDelete('cascade');
+            $table->foreign('trainer_id')->references('user_id')->on('trainers')->onDelete('cascade');
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
 
         });

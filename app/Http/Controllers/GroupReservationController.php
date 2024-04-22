@@ -28,7 +28,7 @@ class GroupReservationController extends Controller
 
     public function create()
     {
-        $trainerId = auth()->user()->trainer->id; // Assuming you have a relationship between User and Trainer
+        $trainerId = auth()->user()->trainer->user_id; // Assuming you have a relationship between User and Trainer
         $trainer = Trainer::findOrFail($trainerId);
         $rooms = Room::all();
 
@@ -42,7 +42,7 @@ class GroupReservationController extends Controller
 {  
     $user = Auth::user();
     $client = $user->client;  // Assuming a User belongsTo Client relationship
-    $clientId = $client->id;  // Access client ID from the associated Client model
+    $clientId = $client->user_id;  // Access client ID from the associated Client model
 
     // Get the maximum participants allowed for this group reservation
     $groupReservation = GroupReservation::findOrFail($id);
@@ -93,7 +93,7 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
 
     GroupParticipant::create([
         'group_id' => $groupReservation->id,
-        'client_id' => $client->id, // Use the client's ID
+        'client_id' => $client->user_id, // Use the client's ID
         'name' => $participantName,
     ]);
 
@@ -147,7 +147,7 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
     ]);
 
     // Assume the date is sent from the form, modify the format if needed
-    $trainerId = auth()->user()->trainer->id;
+    $trainerId = auth()->user()->trainer->user_id;
     $minAllowedStartTime = Carbon::now()->addHour()->addDay();
     $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('start_time'))->toDateTimeString();
     $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('end_time'))->toDateTimeString();
@@ -203,7 +203,7 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
     public function edit(GroupReservation $groupReservation)
     {
         // Fetch the necessary data
-        $trainerId = auth()->user()->trainer->id;
+        $trainerId = auth()->user()->trainer->user_id;
         $trainer = Trainer::findOrFail($trainerId);
         $rooms = Room::all();
         $clients = Client::all();
@@ -226,7 +226,7 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
                 'room_id' => 'required|exists:rooms,id',
             ]);
 
-            $trainerId = Auth::user()->trainer->id;
+            $trainerId = Auth::user()->trainer->user_id;
             $groupReservation = GroupReservation::findOrFail($id);
             $reservationDate = Carbon::parse($request->input('start_time'))->toDateString();
             

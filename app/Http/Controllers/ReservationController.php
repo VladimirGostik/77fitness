@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-
 use App\Models\Client;
 use App\Models\Trainer;
 use App\Models\Reservation;
@@ -13,6 +12,8 @@ use App\Models\GroupReservation;
 use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationSuccessful;
 
 class ReservationController extends Controller
 {
@@ -28,7 +29,7 @@ class ReservationController extends Controller
 
     public function create()
     {
-        $trainerId = auth()->user()->trainer->id; // Assuming you have a relationship between User and Trainer
+        $trainerId = auth()->user()->trainer->user_id; // Assuming you have a relationship between User and Trainer
         $trainer = Trainer::findOrFail($trainerId);
         $rooms = Room::all();
         $clients = Client::all(); // Fetch all clients
@@ -46,22 +47,23 @@ class ReservationController extends Controller
     $request->validate([
         ]);
 
-        $client_id = Auth::user()->client->id;
+        $client_id = Auth::user()->client->user_id;
         $reservation = Reservation::find($reservation_id);
-
+        
         $reservation->update([
             'client_id' => $client_id,
         ]);
         // Optionally, return a response indicating success or failure
-    }
+        $clientEmail = Auth::user()->email;
+        Mail::to($clientEmail)->send(new ReservationSuccessful($reservation));
 
+    }
 
 
     public function edit(Reservation $reservation)
     {
         return view('reservations.edit', compact('reservation'));
     }
-
 
 
     public function store(Request $request)
@@ -75,7 +77,7 @@ class ReservationController extends Controller
         ]);
 
         // Fetch the trainer's ID from the authenticated user
-        $trainerId = auth()->user()->trainer->id;
+        $trainerId = auth()->user()->trainer->user_id;
         $minAllowedStartTime = Carbon::now()->addHour();
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('start_time'))->toDateTimeString();
         $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('end_time'))->toDateTimeString();
@@ -140,7 +142,7 @@ class ReservationController extends Controller
             'reservation_price' => 'required|numeric|min:0',
         ]);
         //dd($request->all());
-        $trainerId = Auth::user()->trainer->id;
+        $trainerId = Auth::user()->trainer->user_id;
 
         $reservation = Reservation::findOrFail($id);
         $reservationDate = Carbon::parse($request->input('start_time'))->toDateString();

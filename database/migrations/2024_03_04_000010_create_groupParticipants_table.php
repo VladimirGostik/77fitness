@@ -18,7 +18,7 @@ class CreateGroupParticipantsTable extends Migration
             $table->timestamps();
     
             $table->foreign('group_id')->references('id')->on('group_reservations')->onDelete('cascade');
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('client_id')->references('user_id')->on('clients')->onDelete('cascade');
         });
     }
     

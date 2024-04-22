@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Trainer extends Model
 {
     use HasFactory;
+
     protected $table = "trainers";
     public $timestamps = false;
-
+    protected $primaryKey = 'user_id';
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
-        'user_id',
         'specialization',
         'description',
         'experience',
@@ -33,4 +33,28 @@ class Trainer extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Get the key for the model.
+     *
+     * @return string
+     */
+    public function getKey()
+    {
+        return 'user_id'; // Set the primary key attribute name
+    }
+
+    /**
+     * Get the primary key type.
+     *
+     * @return string
+     */
+    protected $keyType = 'int';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 }

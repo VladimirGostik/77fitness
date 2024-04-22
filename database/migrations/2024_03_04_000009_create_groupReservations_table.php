@@ -21,7 +21,7 @@ class CreateGroupReservationsTable extends Migration
             $table->unsignedBigInteger('transaction_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');
+            $table->foreign('trainer_id')->references('user_id')->on('trainers')->onDelete('cascade');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
         });

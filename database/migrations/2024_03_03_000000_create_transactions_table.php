@@ -15,12 +15,12 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->decimal('amount', 10, 2);
-            $table->string('type'); // You can define different types of transactions (e.g., payment, credit, etc.)
+            $table->enum('type', ['reservation', 'group_reservation', 'membership']); // Changed to enum
             $table->string('description')->nullable();
             $table->timestamps();
 
             // Define foreign key constraint if necessary
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('client_id')->references('user_id')->on('clients')->onDelete('cascade');
 
         });
     }
