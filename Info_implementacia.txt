@@ -49,3 +49,9 @@ Translaction + client+user
 Rezervácia + políčko zrušená…. 
 Trener môže byt fotky…  
 
+//Charge credit na admina a klienta, že kto dobil kredit a komu…
+
+Tie ID zmeniť… 
+Charging credit/ hotovosť, alebo karta nejaký Enum! 
+Oznamy dorobiť… pri registrácii, prepojenie s adminom, ak to nebude odosielat on, 
+bude nula a medzi tabuľka medzi userom a mailami ktorým userom to prišlo!
