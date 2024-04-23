@@ -55,3 +55,102 @@ Tie ID zmeniť…
 Charging credit/ hotovosť, alebo karta nejaký Enum! 
 Oznamy dorobiť… pri registrácii, prepojenie s adminom, ak to nebude odosielat on, 
 bude nula a medzi tabuľka medzi userom a mailami ktorým userom to prišlo!
+******************✅✅✅**************************
+
+Instalace: composer require gopay/payments-sdk-php
+https://doc.gopay.cz/?_ga=2.116023429.266551348.1713826503-1678932547.1713826498
+najcastejsie chyby: https://teams.microsoft.com/l/message/19:41140d8d-a069-4117-a9ef-f5b736b0947f_b040f452-f29b-42f9-9219-8a2b1ac4547b@unq.gbl.spaces/1713858602556?context=%7B%22contextType%22%3A%22chat%22%7D
+
+************************************************************************************************************
+******************************************* DO do task ************************************************
+************************************************************************************************************
+
+DO do task:
+
+✅✅✅upravit databazu...
+upravit pridavanie fotiek pre trenerov...
+emailovy system vyriest bug...
+platby vyriesit tiez
+frontent...
+pisanie... 
+Jakuba popytat o pracu
+tlacidlo na stiahnutie ludi pdf...
+
+✅✅✅clienta prepojit s kreditom a napojit aj na admina...(user_id premenovat na client_id)
+✅✅✅namiesto enum v transakciach pridam id... rezervacii, a group_reservacii
+✅✅✅Model...
+
+************************************************************************************************************
+************************************************************************************************************
+
+
+Permanetka: 
+id(int)
+client_id(int)
+typ_permanentky(id(dalsej tabulky))
+Platnost_od
+platnost_do(moze/nemusi) da sa vypocitat...
+pouzite_vstupy(int)
+
+TypPermanentky:
+id
+Nazov
+Cena
+dlzkaPlatnosti... 30/90/180/365 dnova (opytam sa na riesenie)
+pocet_vstupov
+
+moznosti prepojenia s turniketmi...()
+
+Skolitel: 
+
+nejaky uvod:
+Specifikacia aplikacia.
+Strukturu databazy popisem v bakalrskej praci// co nie je jasne z databazy tak treba popisat co sa deje
+Popisat nejasnosti...
+Linux server, kde to spusim- 
+
+Struktura prace: 
+UIM tam je sablona (latex)
+Zhrnutie prace(abstrakt,cestne vyhlasenie, obsah)
+
+Hlavna cast:
+-Uvod (omacky o teme,popis prace bez implementacnych detailov,popis co pisem dalej(struktura hlavnej casti/jadra)) 3/4 strany cca.
+-Jadro: cislovane casti: 
+    1.popis problematiky a moze sa prekryvat s uvodom
+    1.2. ciele (co chceme dosiahnut) Webova aplikacia
+    1.3. POrovnanie s existujucimi a analyza trhu(porovnat existujuce systemy)
+    2. Specifikacia aplikacie (co ma ta aplikacia robit, aj s detailami/ popziadavky na aplikaciu): Usecase diagram
+    popisat funkcionalne(use case diagram) a nefunkcionalne poziadavky
+    3.vyber technologii:
+    prehlad co je dostupne...
+    popis ich vlastnosti a preco som si ich vybral... Logicky odovodnit!
+    3.1 vyber frameworku pre serverovu cast
+    3.2 vyber frameworku pre klientsku cast
+    3.3 vyber databazy 
+
+    //ak stihnem, urobit framework aj pre frontent a ked nie, tak vsetko v laraveli...
+
+    4.navrh
+     4.1 datovy Model
+     4.2 navrh grafickeho rozhrania
+     4.3 ako bude komunikovat frontent a backend
+    5.implementacia: sreenshoty...
+     5.1 emaily ako su riesenie (ukazka .env)
+     5.2 komunikacia s databazou
+     5.3 rozbehnutie frameworku
+     5.4 implementacne speciality (principialne)... 
+     5.5 rozbehanie na serveri
+     5.6 prihlasovnaie
+     5.7 platobna brana
+     5.8 migracie z databazy
+     ???
+    6. Spatna vazba:
+     mozno nejaky 
+-Zaver:
+     Vyhodnotenie tej prace, co priniesla, ako pokracovat dalej v implementacii... 
+     
+-2 prilohy co som odovzdal elektronicky (ais)
+-navod pre pouzivatela... ako sa prihlasit, ako prezriet trenerov, treningy, ako urobit rezervaciu/group rezervaciu, ako si pozriet clanky, trenerov... ako dobit kredit, ako si zaplatit permanentku napriklad ako si upravit profil... pre adminov a pre trenerov..
+popridavat fortky treneri, ako vytvarat rezervacie, ako si vytlacit tebn pdf. s luidmi na skupinovkami. Pre admina ako evidovat platby, ako rozposlat maily...
+velmi strucne!!! 
+//Nech to je cca 30 stran! 
