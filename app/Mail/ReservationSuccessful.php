@@ -21,6 +21,7 @@ class ReservationSuccessful extends Mailable
     public function __construct(Reservation $reservation)
     {
         $this->reservation = $reservation;
+
     }
 
     public function build()
@@ -45,7 +46,7 @@ class ReservationSuccessful extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.reservation-success',
         );
     }
 

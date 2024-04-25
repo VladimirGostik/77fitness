@@ -18,12 +18,15 @@ class Client extends Model
      *
      * @var array<int, string>
      */
+    protected $fillable = [
+        'user_id',
+    ];
 
     /**
      * Get the user that owns the client.
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
