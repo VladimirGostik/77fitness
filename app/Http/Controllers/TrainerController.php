@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use App\Models\User; // Make sure to import the User model
 use App\Models\Trainer;
+use App\Models\Client;
 use App\Models\Reservation;
 use App\Models\GroupParticipant;
 use App\Models\GroupReservation;
@@ -29,12 +30,11 @@ class TrainerController extends Controller
     {
         $reservations = Reservation::all();
         $groupReservations = GroupReservation::withCount('participants')->get();
-
-        return view('trainers.profile', compact('trainer', 'reservations', 'groupReservations'));
+        $clients = Client::all();
+        return view('trainers.profile', compact('trainer', 'reservations', 'clients','groupReservations'));
     }
 
-    public function create()
-    {
+    public function create(){
         return view('trainers.create'); // You can create this view as needed
     }
 

@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Reservation;
+use App\Models\Client;
+use App\Models\Trainer;
 
 class ReservationSuccessful extends Mailable
 {
@@ -26,8 +28,8 @@ class ReservationSuccessful extends Mailable
 
     public function build()
     {
-        return $this->view('emails.reservation-success')
-                    ->subject('Your Reservation Confirmation');
+        return $this->subject('Reservation Confirmation')->view('emails.reservation-success');
+
     }
 
     /**

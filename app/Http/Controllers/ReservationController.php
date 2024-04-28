@@ -42,12 +42,12 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function submit(Request $request, $reservation_id)
-    {
+    public function submit(Request $request, $reservation_id){
     $request->validate([
         ]);
 
         $client_id = Auth::user()->client->user_id;
+        $client = Auth::user()->client;
         $reservation = Reservation::find($reservation_id);
         
         $reservation->update([
@@ -199,7 +199,10 @@ class ReservationController extends Controller
             'end_reservation' => $newEndDateTime,
             'reservation_price' => $request->input('reservation_price'),
         ]);
-
+        
+        if($reservation->client_id){
+            Mail::to($reservation->client->user->email)->send(new ReservationEdited($reservation));
+        }
         return redirect()->route('reservations.index')->with('success', 'Reservation updated successfully');
     }
 
