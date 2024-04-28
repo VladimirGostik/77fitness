@@ -9,27 +9,25 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ReservationEdited extends Mailable
+class GroupReservationConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $reservation;
-
     /**
      * Create a new message instance.
-     *
-     * @param $reservation The reservation instance
-     * @return void
      */
-    public function __construct($reservation)
+    public function __construct()
     {
-        $this->reservation = $reservation;
+        //
     }
 
+    /**
+     * Get the message envelope.
+     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Edited',
+            subject: 'Group Reservation Confirmation',
         );
     }
 
@@ -39,17 +37,17 @@ class ReservationEdited extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.reservation-edit',
+            view: 'emails.group_reservation_confirmation',
         );
     }
 
     /**
-     * Build the message.
+     * Get the attachments for the message.
      *
-     * @return $this
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function build()
+    public function attachments(): array
     {
-        return $this->subject('Reservation Edited')->view('emails.reservation_edited');
+        return [];
     }
 }
