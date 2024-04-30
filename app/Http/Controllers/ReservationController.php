@@ -14,6 +14,7 @@ use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationSuccessful;
+use App\Mail\ReservationEdited;
 
 class ReservationController extends Controller
 {
@@ -47,7 +48,6 @@ class ReservationController extends Controller
         ]);
 
         $client_id = Auth::user()->client->user_id;
-        $client = Auth::user()->client;
         $reservation = Reservation::find($reservation_id);
         
         $reservation->update([

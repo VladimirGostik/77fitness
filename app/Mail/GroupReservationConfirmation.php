@@ -8,17 +8,27 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\GroupReservation;
+
 
 class GroupReservationConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $groupReservation; // Change variable name to singular
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(GroupReservation $groupReservation)
     {
-        //
+        $this->groupReservation = $groupReservation; // Change variable name to singular
+    }
+
+    public function build()
+    {
+        return $this->subject('Group Reservation successful')
+                    ->view('emails.group_reservation_confirmation');
     }
 
     /**

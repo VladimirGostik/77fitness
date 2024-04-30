@@ -75,9 +75,9 @@ class GroupReservationController extends Controller
         $participant->name = $participantName;
         $participant->save();
     }
+    $clientEmail = Auth::user()->email;
 
-    $groupReservation = GroupReservation::find($id);
-    Mail::to($client->email)->send(new GroupReservationConfirmation($groupReservation));
+    Mail::to($clientEmail)->send(new GroupReservationConfirmation($groupReservation));
 
     // Return a JSON response indicating success
     return response()->json(['message' => 'Group participants added successfully']);
@@ -158,9 +158,9 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
     $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('end_time'))->toDateTimeString();
     var_dump($minAllowedStartTime);
     var_dump($startDateTime);
-    if (Carbon::parse($startDateTime)->lte($minAllowedStartTime)) {
-        return redirect()->route('reservations.create')->with('error', 'Reservation start time must be at least 1 hour from now.');
-    }
+    // if (Carbon::parse($startDateTime)->lte($minAllowedStartTime)) {
+    //     return redirect()->route('reservations.create')->with('error', 'Reservation start time must be at least 1 hour from now.');
+    // }
 
     $overlappingReservations = GroupReservation::where('trainer_id', $trainerId)
     ->where(function ($query) use ($startDateTime, $endDateTime) {
