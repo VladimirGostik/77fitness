@@ -16,6 +16,7 @@ use App\Models\Room;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Mail\GroupReservationConfirmation;
+use App\Mail\GroupReservationEdited;
 use Illuminate\Support\Facades\Mail;
 
 class GroupReservationController extends Controller
@@ -153,11 +154,10 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
 
     // Assume the date is sent from the form, modify the format if needed
     $trainerId = auth()->user()->trainer->user_id;
-    $minAllowedStartTime = Carbon::now()->addHour()->addDay();
+    //$minAllowedStartTime = Carbon::now()->addHour()->addDay();
     $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('start_time'))->toDateTimeString();
     $endDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('end_time'))->toDateTimeString();
-    var_dump($minAllowedStartTime);
-    var_dump($startDateTime);
+
     // if (Carbon::parse($startDateTime)->lte($minAllowedStartTime)) {
     //     return redirect()->route('reservations.create')->with('error', 'Reservation start time must be at least 1 hour from now.');
     // }
@@ -223,7 +223,6 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
         {
             // Validation rules for the update action
 
-            //dd($request->all());
 
             $request->validate([
                 'start_time' => 'required',
@@ -234,11 +233,10 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
 
             $trainerId = Auth::user()->trainer->user_id;
             $groupReservation = GroupReservation::findOrFail($id);
-            $reservationDate = Carbon::parse($request->input('start_time'))->toDateString();
             
-            if (Carbon::parse($reservationDate)->isPast()) {
-                return redirect()->back()->with('error', 'Cannot update reservation with a past date.');
-            }
+            // if (Carbon::parse($reservationDate)->isPast()) {
+            //     return redirect()->back()->with('error', 'Cannot update reservation with a past date.');
+            // }
         
         
 
@@ -281,19 +279,20 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
             if ($overlappingReservations) {
                 return redirect()->back()->with('error', 'The reservation overlaps with an existing Group reservation.');
             }
-
-            dd($groupReservation->all());
-
+            //dd($newStartDateTime);
             // Update the group reservation attributes
             $groupReservation->update([
-                'start_reservation' => $request->input('start_time'),
-                'end_reservation' => $request->input('end_time'),
+                'start_reservation' => $newStartDateTime,
+                'end_reservation' => $newEndDateTime,
                 'max_participants' => $request->input('max_participants'),
                 'room_id' => $request->input('room_id'),
             ]);
 
+            $participants = GroupParticipant::where('group_id', $groupReservation->id)->get();
+            dd($participants);
             // Redirect back with a success message
-            return redirect()->route('group_reservations.edit')->with('success', 'Group Reservation updated successfully');
+            return redirect()->route('group_reservations.edit', $id)
+            ->with('success', 'Group reservation updated successfully!');        
         }
 
 

@@ -7,9 +7,9 @@
 <body>
     <h1>Potvrdenie Rezervácie</h1>
 
-    <p>Vážený/á {{ $reservation->client->first_name }},</p>
+    <p>Vážený/á {{ $reservation->client->user->first_name }}{{' '}}{{ $reservation->client->user->last_name }},</p>
 
-    <p>Týmto potvrdzujeme Vašu rezerváciu u nás.</p>
+    <p>Týmto potvrdzujeme Vašu rezerváciu u nás na osobny trening.</p>
 
     <p><b>Detaily rezervácie</b></p>
     <ul>
