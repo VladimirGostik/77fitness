@@ -44,6 +44,11 @@ class Trainer extends Model
         return 'user_id'; // Set the primary key attribute name
     }
 
+    public function profilePhotos()
+    {
+        return $this->hasMany(TrainerGalleryPhoto::class);
+    }
+
     /**
      * Get the primary key type.
      *

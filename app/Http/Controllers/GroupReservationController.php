@@ -288,8 +288,15 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
                 'room_id' => $request->input('room_id'),
             ]);
 
-            $participants = GroupParticipant::where('group_id', $groupReservation->id)->get();
-            dd($participants);
+            $participants = GroupParticipant::where('group_id', $groupReservation->id)->select('client_id')->distinct()->get();
+
+            foreach ($participants as $participant) {
+            $client = Client::find($participant->client_id);
+            $clientEmail = $client->user->email;
+
+            Mail::to($clientEmail)->send(new GroupReservationEdited($groupReservation));
+            }
+
             // Redirect back with a success message
             return redirect()->route('group_reservations.edit', $id)
             ->with('success', 'Group reservation updated successfully!');        

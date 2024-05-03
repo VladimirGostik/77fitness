@@ -114,6 +114,7 @@ class TrainerController extends Controller
                 'description' => 'required',
                 'experience' => 'required',
                 'session_price' => 'required',
+                'profile_photo.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation for each photo
             ];
     
             // Check if the email has changed
@@ -141,13 +142,26 @@ class TrainerController extends Controller
                     'description' => $request->input('description'),
                     'experience' => $request->input('experience'),
                     'session_price' => $request->input('session_price'),
-                    // ... other fields
                 ]);
 
 
                 if ($request->hasFile('profile_photo')) {
                     $photoPath = $request->file('profile_photo')->store('public/profile_photos');
                     $trainer->update(['profile_photo' => $photoPath]);
+                }
+                if ($request->hasFile('profile_photo')) {
+                    $photos = $request->file('profile_photo');
+                    $storagePath = storage_path('app/public/trainer_gallery_photos');
+            
+                    foreach ($photos as $photo) {
+                        $filename = time() . '.' . $photo->getClientOriginalExtension();
+                        $photo->storeAs($storagePath, $filename);
+            
+                        $trainer->profilePhotos()->create([
+                            'filename' => $filename,
+                            'path' => $storagePath,
+                        ]);
+                    }
                 }
 
                 return redirect()->route('trainers.index')->with('success', 'Trainer updated successfully');
@@ -168,9 +182,6 @@ class TrainerController extends Controller
 
             // Assuming you want to delete associated user as well
             $trainer->user->delete();
-            
-            // Alternatively, if you only want to delete the trainer and keep the user
-            // $trainer->delete();
 
             return redirect()->route('trainers.index')->with('success', 'Trainer deleted successfully');
         } catch (\Exception $e) {

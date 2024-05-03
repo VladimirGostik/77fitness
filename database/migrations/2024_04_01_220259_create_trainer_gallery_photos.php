@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trainer_profile_photos', function (Blueprint $table) {
+        Schema::create('trainer_gallery_photos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('trainer_id');
             $table->string('filename');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trainer_profile_photos');
+        Schema::dropIfExists('trainer_gallery_photos');
     }
 };

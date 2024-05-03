@@ -69,6 +69,17 @@
                 <input type="number" name="session_price" value="{{ $trainer->session_price }}" class="form-control" required>
             </div>
 
+            <div class="form-group">
+                <label for="profile_photo">Profile Photos (optional):</label>
+                <input type="file" name="profile_photo[]" multiple class="form-control-file">
+              
+                @if ($trainer->profilePhotos->count() > 0)
+                  @foreach ($trainer->profilePhotos as $photo)
+                    <img src="{{ asset('storage/trainer_gallery_photos/' . $photo->filename) }}" alt="Trainer Gallery Photo" class="img-thumbnail" style="width: 100px; height: 100px;">
+                  @endforeach
+                @endif
+              </div>
+              
             <button type="submit" class="btn btn-primary">Update Trainer</button>
         </form>
     </div>
