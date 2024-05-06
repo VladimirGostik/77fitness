@@ -70,14 +70,22 @@
             </div>
 
             <div class="form-group">
-                <label for="profile_photo">Profile Photos (optional):</label>
-                <input type="file" name="profile_photo[]" multiple class="form-control-file">
+                <label for="gallery_photos">Profile Photos (optional):</label>
+                <input type="file" name="gallery_photos[]" multiple class="form-control-file">
               
                 @if ($trainer->profilePhotos->count() > 0)
-                  @foreach ($trainer->profilePhotos as $photo)
-                    <img src="{{ asset('storage/trainer_gallery_photos/' . $photo->filename) }}" alt="Trainer Gallery Photo" class="img-thumbnail" style="width: 100px; height: 100px;">
-                  @endforeach
-                @endif
+                    <h2>Gallery Photos</h2>
+                    <ul>
+                        @foreach ($trainer->profilePhotos as $photo)
+                        <li>
+                            <img src="{{ asset('path/to/photo/' . $photo->photo_path) }}" alt="{{ $photo->caption }}">
+                        </li>
+                        @endforeach
+                    </ul>
+                    @else
+                    <p>No gallery photos found for this trainer.</p>
+                    @endif
+
               </div>
               
             <button type="submit" class="btn btn-primary">Update Trainer</button>

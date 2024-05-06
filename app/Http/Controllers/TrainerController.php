@@ -47,12 +47,15 @@ class TrainerController extends Controller
 
      public function edit($id)
      {
-         $trainer = Trainer::findOrFail($id);
- 
-         // You can add additional authorization logic here if needed
- 
-         return view('trainers.edit', compact('trainer'));
-    }
+        $trainer = Trainer::find($id);
+        if ($trainer) {
+            $trainer->load('profilePhotos');  // Eagerly load photos if needed
+        }
+
+        // ... rest of your logic ...
+
+        return view('trainers.edit', compact('trainer'));
+        }
 
         public function store(Request $request)
         {
@@ -105,7 +108,6 @@ class TrainerController extends Controller
 
         public function update(Request $request, $id)
         {
-
             $rules = [
                 'first_name' => 'required',
                 'last_name' => 'required',
@@ -149,12 +151,12 @@ class TrainerController extends Controller
                     $photoPath = $request->file('profile_photo')->store('public/profile_photos');
                     $trainer->update(['profile_photo' => $photoPath]);
                 }
-                if ($request->hasFile('profile_photo')) {
-                    $photos = $request->file('profile_photo');
+                if ($request->input('gallery_photos')) {
+                    $photos = $request->input('gallery_photos');
                     $storagePath = storage_path('app/public/trainer_gallery_photos');
             
                     foreach ($photos as $photo) {
-                        $filename = time() . '.' . $photo->getClientOriginalExtension();
+                        $filename = $photo;
                         $photo->storeAs($storagePath, $filename);
             
                         $trainer->profilePhotos()->create([

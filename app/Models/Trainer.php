@@ -46,7 +46,7 @@ class Trainer extends Model
 
     public function profilePhotos()
     {
-        return $this->hasMany(TrainerGalleryPhoto::class);
+        return $this->hasMany(TrainerGalleryPhoto::class, 'trainer_id');
     }
 
     /**

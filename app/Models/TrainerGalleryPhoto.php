@@ -11,8 +11,8 @@ class TrainerGalleryPhoto extends Model
     
     protected $fillable = ['trainer_id', 'filename', 'path'];
 
-    public function trainer()
+    public function trainerGalleryPhotos()
     {
-        return $this->belongsTo(Trainer::class);
+        return $this->hasMany(TrainerGalleryPhoto::class);
     }
 }
