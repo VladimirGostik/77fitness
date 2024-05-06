@@ -151,20 +151,21 @@ class TrainerController extends Controller
                     $photoPath = $request->file('profile_photo')->store('public/profile_photos');
                     $trainer->update(['profile_photo' => $photoPath]);
                 }
-                if ($request->input('gallery_photos')) {
-                    $photos = $request->input('gallery_photos');
+                if ($request->hasFile('gallery_photos')) {
+                    $photos = $request->file('gallery_photos');
                     $storagePath = storage_path('app/public/trainer_gallery_photos');
-            
+                
                     foreach ($photos as $photo) {
-                        $filename = $photo;
-                        $photo->storeAs($storagePath, $filename);
-            
+                        $filename = $photo->getClientOriginalName(); // Get the original file name
+                        $photo->storeAs($storagePath, $filename); // Store the file
+                
                         $trainer->profilePhotos()->create([
                             'filename' => $filename,
                             'path' => $storagePath,
                         ]);
                     }
                 }
+                
 
                 return redirect()->route('trainers.index')->with('success', 'Trainer updated successfully');
             } catch (\Exception $e) {
