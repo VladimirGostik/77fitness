@@ -18,7 +18,7 @@
         </div>
         @endif
 
-        <form method="POST" action="{{ route('trainers.update', ['trainer' => $trainer->user_id]) }}" >
+        <form method="POST" enctype="multipart/form-data" action="{{ route('trainers.update', ['trainer' => $trainer->user_id]) }}" >
             @csrf
             @method('PUT')
 
@@ -77,9 +77,7 @@
                     <h2>Gallery Photos</h2>
                     <ul>
                         @foreach ($trainer->profilePhotos as $photo)
-                        <li>
-                            <img src="{{ asset('path/to/photo/' . $photo->photo_path) }}" alt="{{ $photo->caption }}">
-                        </li>
+                            <img src="{{ asset('storage/trainer_gallery_photos/' . $photo->filename) }}" alt="{{ $photo->filename }}" style="max-width: 100px; max-height: 100px; margin-right: 5px;" />
                         @endforeach
                     </ul>
                     @else

@@ -95,9 +95,11 @@
 
                 <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">Upraviť Profil</a> <a class="dropdown-item" href="#">Dobit Kredit</a> </div>
             </li>
+            @if(Auth::user()->role === 1)
               <li class="nav-item">
-                <span class="nav-link">Credit: {{ sprintf('%d€', Auth::user()->credit ?? 0) }}</span>
-            </li>
+                <span class="nav-link">Credit: {{ sprintf('%d€', Auth::user()->Client->credit ?? 0) }}</span>
+              </li>
+            @endif
             @endguest
           </ul>
         </div>

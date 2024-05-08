@@ -55,15 +55,15 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="current_password" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="current_password" name="current_password" required autocomplete="current-password">
+                            <input type="password" class="form-control" id="current_password" name="current_password" autocomplete="current-password">
                         </div>
                         <div class="mb-3">
                             <label for="new_password" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="new_password" name="new_password" required minlength="8" autocomplete="new-password">
+                            <input type="password" class="form-control" id="new_password" name="new_password" minlength="8" autocomplete="new-password">
                         </div>
                         <div class="mb-3">
                             <label for="new_password_confirmation" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required minlength="8" autocomplete="new-password">
+                            <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" minlength="8" autocomplete="new-password">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -80,17 +80,18 @@
           const changePasswordButton = document.getElementById("changePasswordButton");
         
           changePasswordButton.addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent default form submission
-        
-            const currentPassword = document.getElementById("current_password").value;
-            const newPassword = document.getElementById("new_password").value;
-            const newPasswordConfirmation = document.getElementById("new_password_confirmation").value;
-        
-            // Basic validation (more can be added)
-            if (newPassword !== newPasswordConfirmation) {
+          event.preventDefault(); // Prevent default form submission
+
+          const currentPassword = document.getElementById("current_password").value;
+          const newPassword = document.getElementById("new_password").value;
+          const newPasswordConfirmation = document.getElementById("new_password_confirmation").value;
+
+          // Basic validation (more can be added)
+          if (newPassword !== newPasswordConfirmation) {
               alert("New passwords do not match!");
+              document.getElementById("new_password_confirmation").focus(); // Focus on the confirmation field
               return;
-            }
+          }
         
             // Send Ajax request to change password
             fetch('/users/{{ $user->id }}/password', {

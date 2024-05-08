@@ -15,7 +15,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\GroupReservationController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\AdminController;
 
 
 
@@ -106,6 +106,8 @@ Route::group(['middleware' => ['auth', 'client']], function () {
 
 });
 
+Route::get('/admin/send-email', [AdminController::class, 'showEmailForm'])->name('admin.showEmailForm');
+Route::post('/admin/send-email', [AdminController::class, 'sendEmail'])->name('admin.sendEmail');
 
 
 

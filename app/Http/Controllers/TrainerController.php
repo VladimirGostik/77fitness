@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Models\User; // Make sure to import the User model
 use App\Models\Trainer;
@@ -108,6 +109,7 @@ class TrainerController extends Controller
 
         public function update(Request $request, $id)
         {
+            //dd($request->all());
             $rules = [
                 'first_name' => 'required',
                 'last_name' => 'required',
@@ -115,8 +117,7 @@ class TrainerController extends Controller
                 'specialization' => 'required',
                 'description' => 'required',
                 'experience' => 'required',
-                'session_price' => 'required',
-                'profile_photo.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation for each photo
+                'session_price' => 'required'
             ];
     
             // Check if the email has changed
@@ -145,26 +146,32 @@ class TrainerController extends Controller
                     'experience' => $request->input('experience'),
                     'session_price' => $request->input('session_price'),
                 ]);
-
-
+                
                 if ($request->hasFile('profile_photo')) {
                     $photoPath = $request->file('profile_photo')->store('public/profile_photos');
                     $trainer->update(['profile_photo' => $photoPath]);
                 }
+
                 if ($request->hasFile('gallery_photos')) {
                     $photos = $request->file('gallery_photos');
-                    $storagePath = storage_path('app/public/trainer_gallery_photos');
+                    $storagePath = 'public/trainer_gallery_photos';
                 
                     foreach ($photos as $photo) {
-                        $filename = $photo->getClientOriginalName(); // Get the original file name
-                        $photo->storeAs($storagePath, $filename); // Store the file
+                        // Generate a unique filename for each photo
+                        $filename = time() . '_' . $photo->getClientOriginalName();
                 
+                        // Store the photo locally
+                        $photo->storeAs($storagePath, $filename);
+                
+                        // Create database record for the photo
                         $trainer->profilePhotos()->create([
+                            'trainer_id' => $trainer->user_id,
                             'filename' => $filename,
                             'path' => $storagePath,
                         ]);
                     }
                 }
+                  
                 
 
                 return redirect()->route('trainers.index')->with('success', 'Trainer updated successfully');

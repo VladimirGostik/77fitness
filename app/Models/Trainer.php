@@ -19,6 +19,7 @@ class Trainer extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id', // Add 'user_id' here
         'specialization',
         'description',
         'experience',
