@@ -30,14 +30,14 @@
                                 <p class="card-text">{{ $trainer->user->email }}</p>
                                 <p class="card-text">{{ $trainer->specialization }}</p>
                             </div>
-                            <div class="card-footer">
-                                <a href="{{ route('trainers.edit', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary">Edit Trainer</a>
-                                <form action="{{ route('trainers.destroy', ['trainer' => $trainer->user_id]) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete Trainer</button>
-                                </form>
-                            </div>
+                                <div class="card-footer">
+                                    <a href="{{ route('trainers.edit', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary">Edit Trainer</a>
+                                    <form action="{{ route('trainers.destroy', ['trainer' => $trainer->user_id]) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete Trainer</button>
+                                    </form>
+                                </div>
                         </div>
                     </div>
                 @endforeach

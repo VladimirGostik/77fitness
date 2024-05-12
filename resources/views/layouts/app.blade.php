@@ -93,7 +93,8 @@
                   @csrf
                 </form>
 
-                <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">Upraviť Profil</a> <a class="dropdown-item" href="#">Dobit Kredit</a> </div>
+                <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">Upraviť Profil</a> 
+                <a class="dropdown-item" href="#">Dobit Kredit</a> </div>
             </li>
             @if(Auth::user()->role === 1)
               <li class="nav-item">

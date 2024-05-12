@@ -24,30 +24,11 @@ class UserNotificationEmail extends Mailable
         $this->content = $content;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'User Notification Email',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
 
     public function build()
     {
         return $this->subject($this->subject)
-                    ->view('emails.admin_email');
+                   ->view('emails.user_notification');
     }
     /**
      * Get the attachments for the message.
