@@ -22,14 +22,13 @@ mysqldump -u username -p database_name > database_dump.sql
 
 # To import the database
 mysql -u username -p database_name < database_dump.sql
-
+PS C:\xampp\htdocs\77fitness> composer require gopay/gopay-php-sdk 
 
 ******************✅✅✅**************************
 
 Instalace: composer require gopay/payments-sdk-php
 https://doc.gopay.cz/?_ga=2.116023429.266551348.1713826503-1678932547.1713826498
 najcastejsie chyby: https://teams.microsoft.com/l/message/19:41140d8d-a069-4117-a9ef-f5b736b0947f_b040f452-f29b-42f9-9219-8a2b1ac4547b@unq.gbl.spaces/1713858602556?context=%7B%22contextType%22%3A%22chat%22%7D
-
 ************************************************************************************************************
 ******************************************* DO do task ************************************************
 ************************************************************************************************************

@@ -94,8 +94,11 @@
                 </form>
 
                 <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">Upraviť Profil</a> 
-                <a class="dropdown-item" href="#">Dobit Kredit</a> </div>
-            </li>
+                @if(Auth::user()->role === 1)
+                    <a class="dropdown-item" href="{{ route('payments.index') }}">Dobit Kredit</a>
+                @endif
+
+              </li>
             @if(Auth::user()->role === 1)
               <li class="nav-item">
                 <span class="nav-link">Credit: {{ sprintf('%d€', Auth::user()->Client->credit ?? 0) }}</span>
@@ -145,7 +148,6 @@
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERFvqQZ8hhWOBX0jNpdeeN5hwchEjIpVu6wIkKPTrpCl7sGhayoGeHsqEt4zT/t" crossorigin="anonymous"></script>
 
 </body>
 </html>

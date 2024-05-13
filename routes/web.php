@@ -16,7 +16,7 @@ use App\Http\Controllers\GroupReservationController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\PaymentsController;
 
 
 
@@ -108,6 +108,15 @@ Route::group(['middleware' => ['auth', 'client']], function () {
 
 Route::get('/admin/send-email', [AdminController::class, 'showEmailForm'])->name('admin.showEmailForm');
 Route::post('/admin/send-email', [AdminController::class, 'sendEmail'])->name('admin.sendEmail');
+
+Route::get('/credit', [PaymentsController::class, 'index'])->name('payments.index');
+Route::get('/credit/charge_creditAdmin', [PaymentsController::class, 'chargeCredit'])->name('payments.chargeCredit');
+
+Route::post('/credit/charge_admin', [PaymentsController::class, 'chargeAdmin'])->name('payments.chargeAdmin');
+
+
+Route::post('/credit/charge_credit', [PaymentsController::class, 'charge'])->name('payments.charge');
+Route::get('/credit/charge_credit', [PaymentsController::class, 'callback'])->name('payments.callback');
 
 
 
