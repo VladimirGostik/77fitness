@@ -27,25 +27,28 @@ class AdminController extends Controller
             // Get all user emails from database (replace with your logic)
             $recipients = User::all();
             foreach ($recipients as $recipient) {
-                Mail::to($recipient->email)->send(new UserNotificationEmail($request->subject, $request->content));
-                sleep(1); // Introduce a 1-second delay between emails
-
+                if($recipient->receive_notifications){
+                    Mail::to($recipient->email)->send(new UserNotificationEmail($request->subject, $request->content));
+                    sleep(1); // Introduce a 1-second delay between emails
+                }
             }
         } else if ($request->recipient === 'Trainers') {
             // Get trainer emails from database (replace with your logic)
             $recipients = User::where('role', 2);
             foreach ($recipients as $recipient) {
-                Mail::to($recipient->email)->send(new UserNotificationEmail($request->subject, $request->content));
-                sleep(1); // Introduce a 1-second delay between emails
-
+                if($recipient->receive_notifications){
+                    Mail::to($recipient->email)->send(new UserNotificationEmail($request->subject, $request->content));
+                    sleep(1); // Introduce a 1-second delay between emails
+                }
             }
         } else if ($request->recipient === 'Clients') {
             // Get client emails from database (replace with your logic)
             $recipients = User::where('role', 1);
             foreach ($recipients as $recipient) {
-                Mail::to($recipient->email)->send(new UserNotificationEmail($request->subject, $request->content));
-                sleep(1); // Introduce a 1-second delay between emails
-
+                if($recipient->receive_notifications){
+                    Mail::to($recipient->email)->send(new UserNotificationEmail($request->subject, $request->content));
+                    sleep(1); // Introduce a 1-second delay between emails
+                }
             }
         } else {
             // Specific user email should be in the recipient field from Blade template

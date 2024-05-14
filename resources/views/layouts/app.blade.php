@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@latest/main.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@latest/main.min.js"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ config('app.name', 'Laravel') }}</title>
@@ -41,9 +42,12 @@
       margin-right: auto; /* Center horizontally */
     }
   </style>
+
 </head>
 <body>
+  <script type="text/javascript" src="https://gw.sandbox.gopay.com/gp-gw/js/embed.js">
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+
 
   <div id="app">
     <nav class="navbar navbar-expand-md navbar-inverse shadow-sm">
