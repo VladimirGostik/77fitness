@@ -38,6 +38,7 @@ DO do task:
 
 doriesit to api pre platby...
 ✅✅✅ upravit calendar...
+zobrazovanie fotiek na profile...
 odpocitavanie od kreditu...
 pridanie ceny za treningy...
 presmerovanie ak nie je kredit...
@@ -46,6 +47,7 @@ maily ukladnaie do tabulky...
 Blade pre permanentky...
 zadefinovanie articlov do tabulky...
 zadefinovanie vsetkych treneov do tabulky...
+upravit informacie o otvaracej dobe dolo vo footeri...
 
 frontent...
 pisanie... https://www.overleaf.com/project/66315b511e5c5a5f49de7785
@@ -63,24 +65,33 @@ Strukturu databazy popisem v bakalrskej praci// co nie je jasne z databazy tak t
 Popisat nejasnosti...
 Linux server, kde to spusim- 
 
+Otazky:
+     Ako citovat tie zdroje? Ako to definovat, alebo ako to spracovat?
+     Ked zrusim trening tak co s nim? vratit peniaze na kredit? Alebo nie je moznost zrusit uz zaplateny trening?? 
+     Mam detailnejsie popisat kroky 2.1?? resp. detailnejsie ake manju funkcionality?? Su use cases urobene spravne? 
+
+
+
+
+
 Struktura prace: 
 UIM tam je sablona (latex)
-Zhrnutie prace(abstrakt,cestne vyhlasenie, obsah)
+✅✅✅ Zhrnutie prace(abstrakt,cestne vyhlasenie, obsah)
 
 Hlavna cast:
--Uvod (omacky o teme,popis prace bez implementacnych detailov,popis co pisem dalej(struktura hlavnej casti/jadra)) 3/4 strany cca.
+✅✅✅ -Uvod (omacky o teme,popis prace bez implementacnych detailov,popis co pisem dalej(struktura hlavnej casti/jadra)) 3/4 strany cca.
 -Jadro: cislovane casti: 
-    1.popis problematiky a moze sa prekryvat s uvodom
-    1.2. ciele (co chceme dosiahnut) Webova aplikacia
-    1.3. POrovnanie s existujucimi a analyza trhu(porovnat existujuce systemy)
-    2. Specifikacia aplikacie (co ma ta aplikacia robit, aj s detailami/ popziadavky na aplikaciu): Usecase diagram
-    popisat funkcionalne(use case diagram) a nefunkcionalne poziadavky
-    3.vyber technologii:
-    prehlad co je dostupne...
-    popis ich vlastnosti a preco som si ich vybral... Logicky odovodnit!
-    3.1 vyber frameworku pre serverovu cast
-    3.2 vyber frameworku pre klientsku cast
-    3.3 vyber databazy 
+✅✅✅   1.popis problematiky a moze sa prekryvat s uvodom
+✅✅✅         1.2. ciele (co chceme dosiahnut) Webova aplikacia
+✅✅✅         1.3. POrovnanie s existujucimi a analyza trhu(porovnat existujuce systemy)
+✅✅✅   2. Specifikacia aplikacie (co ma ta aplikacia robit, aj s detailami/ popziadavky na aplikaciu): Usecase diagram popisat funkcionalne(use case diagram) a nefunkcionalne poziadavky
+✅✅✅         2.1 Funkcionalne poziadavky
+✅✅✅         2.2 Nefunkcionalne poziadavky
+          3.vyber technologii: prehlad co je dostupne...
+               popis ich vlastnosti a preco som si ich vybral... Logicky odovodnit!
+               3.1 vyber frameworku pre serverovu cast
+               3.2 vyber frameworku pre klientsku cast
+               3.3 vyber databazy 
 
     //ak stihnem, urobit framework aj pre frontent a ked nie, tak vsetko v laraveli...
 
