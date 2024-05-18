@@ -91,7 +91,11 @@ Hlavna cast:
 ✅✅✅        3.3 vyber databazy 
 ✅✅✅    4. navrh
 ✅✅✅        4.1 datovy Model
-                4.2 navrh grafickeho rozhrania
+                4.2 Pouzivatelske rozhranie
+                    4.2.1 Neprihlaseny pouzivatel
+                    4.2.2 Prihlaseny pouzivatel
+                    4.2.3 Trener
+                    4.2.4 Admin
             5.implementacia: sreenshoty...
                  5.1 emaily ako su riesenie (ukazka .env)
                  5.2 komunikacia s databazou

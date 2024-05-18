@@ -55,7 +55,7 @@
             <p>No trainers available.</p>
         @endif
     </div>
-    <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->user_id]) }}" class="btn btn-primary">Make a Reservation</a>
+    <a href="{{ route('home')}}" class="btn btn-primary">Make a Reservation</a>
 
 
 @endsection
