@@ -1,9 +1,9 @@
 <?php
 
+
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\Trainer;
@@ -11,6 +11,7 @@ use App\Models\Reservation;
 use App\Models\GroupReservation;
 use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationSuccessful;
@@ -44,12 +45,31 @@ class ReservationController extends Controller
     }
 
     public function submit(Request $request, $reservation_id){
-    $request->validate([
+        $request->validate([
         ]);
 
-        $client_id = Auth::user()->client->user_id;
+        $client = Auth::user()->client;
+        $client_id = $client->user_id;
+        $clientCredit = $client->credit;
+
         $reservation = Reservation::find($reservation_id);
-        
+        $reservationCost = $reservation->reservation_price;
+
+        if ($clientCredit < $reservationCost) {
+            // Redirect to a page for topping up credit
+            return redirect()->route('credit.charge_credit')->with('error', 'Insufficient credit. Please top up your credit.');
+        }
+
+        $client->credit -= $reservationCost;
+        $client->save();
+
+        Transaction::create([
+            'client_id' => $client_id,
+            'amount' => $reservationCost,
+            'description' => 'Reservation payment',
+            'id_reservation' => $reservation_id,
+        ]);
+
         $reservation->update([
             'client_id' => $client_id,
         ]);

@@ -51,6 +51,12 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3 text-center">
+                            <div class="col-md-12">
+                                <p>If you are not yet registered, please <a href="{{ route('register') }}">register here</a>.</p>
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

@@ -82,15 +82,18 @@
                         {{ $client->user->first_name }} {{ $client->user->last_name }}
                       </option>
                     @endforeach
+
                   @else
                     <option disabled>Clients not loaded</option>
                   @endif
                 </select>
+                <a href="{{ route('group_reservations.download_pdf', $groupReservation->id) }}" class="btn btn-primary ms-2">Download Participants PDF</a>
               </div>
             </div>
   
             <button type="submit" class="btn btn-success">Add Participant</button>
           </form>
+
         @else
           <p class="text-muted">Maximum participant limit reached.</p>
         @endif

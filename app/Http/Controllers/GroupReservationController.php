@@ -1,7 +1,6 @@
 <?php
 
 // GroupReservationController.php
-
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -14,6 +13,7 @@ use App\Models\GroupReservation; // Adjust the namespace based on your project s
 use App\Models\GroupParticipant; // Import the GroupParticipant model
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use App\Mail\GroupReservationConfirmation;
 use App\Mail\GroupReservationEdited;
@@ -45,6 +45,7 @@ class GroupReservationController extends Controller
 {  
     $user = Auth::user();
     $client = $user->client;  // Assuming a User belongsTo Client relationship
+    $clientCredit = $client->credit;
     $clientId = $client->user_id;  // Access client ID from the associated Client model
 
     // Get the maximum participants allowed for this group reservation
@@ -61,11 +62,24 @@ class GroupReservationController extends Controller
         return redirect()->back()->with('error', 'Cannot update reservation... too many people');
     }
 
+    $reservationCost = 12 + ($totalParticipants*12);
+
+    if ($clientCredit < $reservationCost) {
+        // Redirect to a page for topping up credit
+        return redirect()->route('credit.charge_credit')->with('error', 'Insufficient credit. Please top up your credit.');
+    }
+    Transaction::create([
+        'client_id' => $client_id,
+        'amount' => $reservationCost,
+        'description' => 'Group reservation payment',
+        'id_group_reservation' => $groupReservation,
+    ]);
     // Add the authenticated user as a participant
     $participant = new GroupParticipant();
     $participant->group_id = $id;
     $participant->client_id = $clientId;
     $participant->name = $user->first_name; // Or use any other appropriate field for the participant's name
+    $client->credit -= $reservationCost;
     $participant->save();
 
     // Add additional participants from the request

@@ -29,9 +29,11 @@ class TrainerController extends Controller
 
     public function show(Trainer $trainer)
     {
+        $trainer->load('profilePhotos');
         $reservations = Reservation::all();
         $groupReservations = GroupReservation::withCount('participants')->get();
         $clients = Client::all();
+
         return view('trainers.profile', compact('trainer', 'reservations', 'clients','groupReservations'));
     }
 

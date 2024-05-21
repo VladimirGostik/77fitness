@@ -83,7 +83,9 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::resource('reservations', ReservationController::class)->except(['create', 'show']);
     Route::post('/group_reservations/{group_reservation}/add-participant', [GroupReservationController::class, 'addParticipant'])->name('group_reservations.add_participant');
-    
+
+    Route::get('/group_reservations/{group_reservation}/', [AdminController::class, 'showEmailForm'])->name('group_reservations.download_pdf');
+
     Route::get('/group_reservations/create', [GroupReservationController::class, 'create'])->name('group_reservations.create');
     Route::post('/group_reservations', [GroupReservationController::class, 'store'])->name('group_reservations.store');
     Route::get('/group_reservations/{group_reservation}/edit', [GroupReservationController::class, 'edit'])->name('group_reservations.edit');
