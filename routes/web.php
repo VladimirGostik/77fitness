@@ -91,6 +91,8 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::get('/group_reservations/{group_reservation}/edit', [GroupReservationController::class, 'edit'])->name('group_reservations.edit');
     Route::put('/group_reservations/{group_reservation}', [GroupReservationController::class, 'update'])->name('group_reservations.update');
     Route::delete('/group_reservations/{group_reservation}', [GroupReservationController::class, 'destroy'])->name('group_reservations.destroy');
+    Route::get('/group_reservations/{groupReservation}/download_pdf', [GroupReservationController::class, 'downloadPdf'])->name('group_reservations.download_pdf');
+
 
 });
 

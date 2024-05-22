@@ -81,7 +81,7 @@
           <p><strong>End Time:</strong> <span id="end-time"></span></p>
           <p><strong>Price per participant:</strong> 12 eur</p>
           <p><strong>Participants:</strong> <span id="participant-count">0</span></p>
-          <p><strong>Total Price:</strong> <span id="total-price">0</span> eur</p>
+          <p><strong>Total Price:</strong> <span id="total-price">12</span> eur</p>
           <ul id="participant-list">
           </ul>
         </div>
@@ -182,6 +182,13 @@ document.addEventListener('DOMContentLoaded', function() {
     ],
 
     eventClick: function(info) {
+      var now = new Date();
+      var eventEnd = new Date(info.event.end);
+
+      if (eventEnd < now) {
+        return;
+      }
+
       if (info.event.extendedProps.type === 'group_reservation') {
         if (info.event.extendedProps.data.participants_count < info.event.extendedProps.data.max_participants) {
           openGroupReservationModal(info.event.extendedProps.data, info.event.extendedProps.type);
@@ -247,14 +254,10 @@ document.addEventListener('DOMContentLoaded', function() {
         success: function(response) {
           if (response.length >= 0) {
             participantCountElement.textContent = response.length;
-            initializeTotalPrice(response.length);
-            response.forEach(participant => {
-              const participantName = '{{ Auth::user()->role == 2 ? "' + participant.name + '" : "Participant" }}';
-              participantListElement.innerHTML += `<li>${participantName}</li>`;
-            });
+            initializeTotalPrice(1);
           } else {
-            participantCountElement.textContent = '0';
-            initializeTotalPrice(0);
+            participantCountElement.textContent = '1';
+            initializeTotalPrice(1);
           }
 
           $('#submitGroupReservation').off('click').on('click', function() {
@@ -295,14 +298,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function initializeTotalPrice(initialCount) {
     // Initialize total price with the given initial count of participants
-    var totalPrice = initialCount * pricePerParticipant;
-    totalPriceElement.textContent = totalPrice + ' eur';
+    var totalPrice = 12 + initialCount * pricePerParticipant;
+    totalPriceElement.textContent = totalPrice ;
   }
 
   function updateTotalPrice() {
     var participantCount = document.querySelectorAll('#participant-container .participant-input').length;
-    var totalPrice = participantCount * pricePerParticipant;
-    totalPriceElement.textContent = totalPrice + ' eur';
+    var totalPrice = 12 + participantCount * pricePerParticipant;
+    totalPriceElement.textContent = totalPrice ;
   }
 
   function formatDateTime(dateTime) {

@@ -13,10 +13,10 @@
   <link rel="dns-prefetch" href="//fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
   <style>
-   body {
+    body {
       margin: 0;
       padding: 0;
       display: flex;
@@ -28,26 +28,50 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      /* Remove align-items: center; */
       justify-content: center;
     }
 
     footer {
-      width: 90%;
-      background-color: #f8f9fa;
-      text-align: center;
-      padding: 20px 0;
-      margin-top: auto; /* Ensure footer stays at the bottom */
-      margin-left: auto; /* Center horizontally */
-      margin-right: auto; /* Center horizontally */
+      background-color: #343a40;
+      color: white;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #adb5bd;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .social-icons a {
+      color: #adb5bd;
+      margin-right: 15px;
+      font-size: 24px;
+      text-decoration: none;
+    }
+
+    .social-icons a:hover {
+      color: #fff;
     }
   </style>
-
 </head>
 <body>
-  <script type="text/javascript" src="https://gw.sandbox.gopay.com/gp-gw/js/embed.js">
+  <script type="text/javascript" src="https://gw.sandbox.gopay.com/gp-gw/js/embed.js"></script>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-
 
   <div id="app">
     <nav class="navbar navbar-expand-md navbar-inverse shadow-sm">
@@ -60,7 +84,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto">
-
           </ul>
 
           <ul class="navbar-nav ms-auto">
@@ -101,8 +124,8 @@
                 @if(Auth::user()->role === 1)
                     <a class="dropdown-item" href="{{ route('payments.index') }}">Dobit Kredit</a>
                 @endif
-
-              </li>
+              </div>
+            </li>
             @if(Auth::user()->role === 1)
               <li class="nav-item">
                 <span class="nav-link">Credit: {{ sprintf('%d€', Auth::user()->Client->credit ?? 0) }}</span>
@@ -122,36 +145,42 @@
       </main>
     </div>
 
-    <footer class="py-3 text-muted text-center">
-      <h2>Links & Contact</h2>
-      <ul class="list-unstyled d-flex flex-wrap justify-content-between mb-0">
-        <li>
-          <a href="https://www.facebook.com/" target="_blank" class="text-dark">
-            <i class="bi bi-facebook me-1"></i> Facebook
-          </a>
-        </li>
-        <li>
-          <a href="https://www.instagram.com/" target="_blank" class="text-dark">
-            <i class="bi bi-instagram me-1"></i> Instagram
-          </a>
-        </li>
-        <li>
-          <a href="mailto:youremail@example.com" class="text-dark">
-            <i class="bi bi-envelope me-1"></i> youremail@example.com
-          </a>
-        </li>
-        <li>
-          <i class="bi bi-geo-alt me-1"></i> Location: Your Business Address
-        </li>
-        <li>
-          <i class="bi bi-clock me-1"></i> Open Hours: Monday-Friday: 9:00 AM - 5:00 PM, Saturday: 10:00 AM - 4:00 PM (Closed on Sundays)
-        </li>
-      </ul>
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Links</h5>
+            <ul class="footer-links">
+              <li><a href="https://www.facebook.com/77fitness.sk" target="_blank"><i class="bi bi-facebook"></i> Facebook</a></li>
+              <li><a href="https://www.instagram.com/77fitness.sk/" target="_blank"><i class="bi bi-instagram"></i> Instagram</a></li>
+              <li><a href="mailto:77fitness@gmail.com"><i class="bi bi-envelope"></i> 77fitness@gmail.com</a></li>
+              <li><a href="https://www.youtube.com/channel/UCgumAghelhdahPVrik__liw" target="_blank"><i class="bi bi-youtube"></i> YouTube</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Contact</h5>
+            <ul class="footer-links">
+              <li><a href="https://maps.app.goo.gl/VVZhQ86zmW1foxgB7" target="_blank"><i class="bi bi-geo-alt"></i> Bajkalska 2/i, Bratislava, Slovakia</a></li>
+              <li><i class="bi bi-clock"></i> Open Hours:
+                <ul class="footer-links">
+                  <li>Po - Pia: 5:30 – 22:00</li>                  
+                  <li>So - Ne, Sviatky: 8:00 – 22:00</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Follow Us</h5>
+            <div class="social-icons">
+              <a href="https://www.facebook.com/77fitness.sk" target="_blank"><i class="bi bi-facebook"></i></a>
+              <a href="https://www.instagram.com/77fitness.sk/" target="_blank"><i class="bi bi-instagram"></i></a>
+              <a href="https://www.youtube.com/channel/UCgumAghelhdahPVrik__liw" target="_blank"><i class="bi bi-youtube"></i></a>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
   </div>
-
-  </div>
-
-
 </body>
 </html>

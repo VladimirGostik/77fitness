@@ -18,6 +18,9 @@ use Carbon\Carbon;
 use App\Mail\GroupReservationConfirmation;
 use App\Mail\GroupReservationEdited;
 use Illuminate\Support\Facades\Mail;
+use PDF; // Using the alias
+
+
 
 class GroupReservationController extends Controller
 {
@@ -42,20 +45,19 @@ class GroupReservationController extends Controller
     }
 
     public function submit(Request $request, $id)
-{  
+{   
     $user = Auth::user();
     $client = $user->client;  // Assuming a User belongsTo Client relationship
     $clientCredit = $client->credit;
-    $clientId = $client->user_id;  // Access client ID from the associated Client model
+    $client_id = $client->user_id;  // Access client ID from the associated Client model
 
     // Get the maximum participants allowed for this group reservation
     $groupReservation = GroupReservation::findOrFail($id);
     $maxParticipants = $groupReservation->max_participants;
 
-    $totalParticipants =  GroupParticipant::where('group_id', $groupReservation->id)->count();
     // Retrieve additional participants from the request
     $participants = $request->input('participants', []);
-
+    $totalParticipants = count($participants); // Use the count function to get the number of participants
 
     // Check if adding participants would exceed the limit
     if (count($participants) + $totalParticipants > $maxParticipants) {
@@ -72,21 +74,21 @@ class GroupReservationController extends Controller
         'client_id' => $client_id,
         'amount' => $reservationCost,
         'description' => 'Group reservation payment',
-        'id_group_reservation' => $groupReservation,
+        'id_group_reservation' => $id,
     ]);
     // Add the authenticated user as a participant
     $participant = new GroupParticipant();
     $participant->group_id = $id;
-    $participant->client_id = $clientId;
+    $participant->client_id = $client_id;
     $participant->name = $user->first_name; // Or use any other appropriate field for the participant's name
     $client->credit -= $reservationCost;
+    $client->save();
     $participant->save();
-
     // Add additional participants from the request
     foreach ($participants as $participantName) {
         $participant = new GroupParticipant();
         $participant->group_id = $id;
-        $participant->client_id = $clientId;
+        $participant->client_id = $client_id;
         $participant->name = $participantName;
         $participant->save();
     }
@@ -121,6 +123,15 @@ public function addParticipant(GroupReservation $groupReservation, Request $requ
     ->with('success', 'Participant added successfully!');
 }
 
+
+        public function downloadPdf($id)
+        {
+            $groupReservation = GroupReservation::with(['participants.client.user', 'trainer.user', 'room'])->findOrFail($id);
+            $pdf = PDF::loadView('group_reservations.pdf', ['groupReservation' => $groupReservation]);
+            //dd($groupReservation->participants);
+
+            return $pdf->download('group_reservations.pdf');
+        }
 
 
     public function getGroupReservationDetails($id)

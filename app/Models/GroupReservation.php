@@ -34,6 +34,11 @@ class GroupReservation extends Model
         return $this->belongsTo(Trainer::class, 'trainer_id');
     }
 
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
+
     public function participants()
     {
         return $this->hasMany(GroupParticipant::class, 'group_id');

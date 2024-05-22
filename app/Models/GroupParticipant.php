@@ -22,4 +22,10 @@ class GroupParticipant extends Model
     {
         return $this->belongsTo(GroupReservation::class, 'group_id');
     }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id', 'user_id');
+    }
+    
 }

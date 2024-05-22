@@ -8,10 +8,19 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Client;
 use App\Models\User;
 use App\Models\ChargingCredit;
-use GoPay\Api;
+use App\Services\GoPayService;
+
 
 class PaymentsController extends Controller
 {
+    protected $goPayService;
+
+    public function __construct(GoPayService $goPayService)
+    {
+        $this->goPayService = $goPayService;
+    }
+
+
     public function index(Request $request)
 {
     // Your charge logic here
@@ -32,23 +41,28 @@ class PaymentsController extends Controller
         $clientId = auth()->user()->client->user_id;
 
         // Create GoPay API object using your credentials
-        $gopay = new Api([
-            'clientId' => env('GOPAY_CLIENT_ID'),
-            'secretKey' => env('GOPAY_SECRET_KEY'),
-        ]);
+        $order = [
+            'first_name' => auth()->user()->first_name,
+            'last_name' => auth()->user()->last_name,
+            'email' => auth()->user()->email,
+            'phone' => auth()->user()->phone_number,
+            'amount' => $amount,
+            'order_number' => uniqid(),
+            'description' => 'Dobitie kreditu',
+            'items' => [
+                [
+                    'name' => 'Dobitie kreditu',
+                    'amount' => $amount * 100,
+                ]
+            ],
+        ];
 
         // Create the GoPay payment request
-        $payment = $gopay->createPayment([
-            'amount' => $amount,
-            'currency' => 'EUR', // Adjust currency if needed
-            'description' => 'Dobitie kreditu', // Or use a more specific description
-            'orderNumber' => uniqid(), // Unique order number
-            'callbackUrl' => route('payments.callback'), // Callback URL for payment status updates
-        ]);
+        $response = $this->goPayService->createPayment($order);
 
         // Create a new ChargingCredit record
         ChargingCredit::create([
-            'external_transaction_id' => $payment->id, // Replace with actual transaction ID
+            'external_transaction_id' => $response->json['id'], // Replace with actual transaction ID
             'client_id' => $clientId,
             'amount' => $amount,
             'currency' => 'EUR', // Based on payment request

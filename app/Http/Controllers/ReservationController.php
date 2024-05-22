@@ -72,6 +72,7 @@ class ReservationController extends Controller
 
         $reservation->update([
             'client_id' => $client_id,
+            'transaction_id' => $transaction->id, // Store the transaction ID in the reservation
         ]);
         // Optionally, return a response indicating success or failure
         $clientEmail = Auth::user()->email;
@@ -229,14 +230,31 @@ class ReservationController extends Controller
 
 
     public function destroy($id)
-    {
-        $reservation = Reservation::findOrFail($id);
-        // Add any additional authorization logic if needed
+        {
+            $reservation = Reservation::findOrFail($id);
+            $transaction = Transaction::where('id_reservation', $id)->first();
+            
+            if ($transaction) {
+                $client = Client::findOrFail($reservation->client_id);
+                $client->credit += $transaction->amount;
+                $client->save();
 
-        $reservation->delete();
+                // Create a new transaction for the refund
+                Transaction::create([
+                    'client_id' => $client->user_id,
+                    'amount' => -$transaction->amount,
+                    'description' => 'Refund for reservation',
+                    'id_reservation' => $id,
+                ]);
 
-        return redirect()->route('reservations.index')->with('success', 'Reservation deleted successfully');
-    }
+                $transaction->delete();
+            }
+
+            $reservation->delete();
+
+            return redirect()->route('reservations.index')->with('success', 'Reservation deleted successfully, and client credit refunded if applicable.');
+        }
+
 
 
 // ReservationController.php
