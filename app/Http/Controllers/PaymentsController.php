@@ -13,12 +13,12 @@ use App\Services\GoPayService;
 
 class PaymentsController extends Controller
 {
-    protected $goPayService;
+    // protected $goPayService;
 
-    public function __construct(GoPayService $goPayService)
-    {
-        $this->goPayService = $goPayService;
-    }
+    // public function __construct(GoPayService $goPayService)
+    // {
+    //     $this->goPayService = $goPayService;
+    // }
 
 
     public function index(Request $request)
