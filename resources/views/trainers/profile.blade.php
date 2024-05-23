@@ -248,23 +248,24 @@
                     var now = new Date();
                     var eventEnd = new Date(info.event.end);
 
-                    if (eventEnd < now) {
+                    if (eventEnd < now ) {
                         return;
                     }
-
-                    if (info.event.extendedProps.type === 'group_reservation') {
-                        if (info.event.extendedProps.data.participants_count < info.event.extendedProps.data.max_participants) {
-                            openGroupReservationModal(info.event.extendedProps.data, info.event.extendedProps.type);
+                    @if(Auth::check())
+                        if (info.event.extendedProps.type === 'group_reservation') {
+                            if (info.event.extendedProps.data.participants_count < info.event.extendedProps.data.max_participants) {
+                                openGroupReservationModal(info.event.extendedProps.data, info.event.extendedProps.type);
+                            } else {
+                                console.log('Maximum participants reached for group reservation.');
+                                return;
+                            }
+                        } else if (info.event.extendedProps.data.client_id == null) {
+                            openModal(info.event.extendedProps.data, info.event.extendedProps.type);
                         } else {
-                            console.log('Maximum participants reached for group reservation.');
+                            info.jsEvent.preventDefault();
                             return;
                         }
-                    } else if (info.event.extendedProps.data.client_id == null) {
-                        openModal(info.event.extendedProps.data, info.event.extendedProps.type);
-                    } else {
-                        info.jsEvent.preventDefault();
-                        return;
-                    }
+                        @endif
                 }
             });
 

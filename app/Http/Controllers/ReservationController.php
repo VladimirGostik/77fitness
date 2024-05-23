@@ -63,12 +63,14 @@ class ReservationController extends Controller
         $client->credit -= $reservationCost;
         $client->save();
 
-        Transaction::create([
+        $transaction = Transaction::create([
             'client_id' => $client_id,
             'amount' => $reservationCost,
             'description' => 'Reservation payment',
             'id_reservation' => $reservation_id,
         ]);
+        
+
 
         $reservation->update([
             'client_id' => $client_id,
