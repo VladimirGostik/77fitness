@@ -1,30 +1,77 @@
-<div id="group-reservation-fields" style="padding: 20px; border: 1px solid #ccc; border-radius: 10px; margin-top: 20px;">
-    <form method="POST" action="{{ route('group_reservations.store') }}">
+<div id="group-reservation-fields" class="bg-dark text-white shadow-lg border-0 rounded-lg p-4 mb-4">
+  <form method="POST" action="{{ route('group_reservations.store') }}">
       @csrf
-  
-      <h3>Create Group Reservation</h3>
-  
-      <label for="start_time">Start Time:</label>
-      <input type="time" name="start_time" required class="form-control">
-  
-      <label for="end_time">End Time:</label>
-      <input type="time" name="end_time" required class="form-control">
-  
-      <label for="reservation_date">Date:</label>
-      <input type="date" name="reservation_date" required class="form-control">
-  
-      <label for="max_participants">Max Participants:</label>
-      <input type="number" name="max_participants" id="max_participants" required class="form-control">
-  
-      <label for="room_id">Select Room:</label>
-  
-      <select name="room_id" id="room_id" class="form-control">
-        @foreach ($rooms as $room)
-          <option value="{{ $room->id }}">{{ $room->name }}</option>
-        @endforeach
-      </select>
-  
-      <button type="submit" class="btn btn-primary mt-3">Create Group Reservation</button>
-    </form>
-  </div>
-  
+
+      <h3 class="text-white">Create Group Reservation</h3>
+
+      <div class="form-group mb-3">
+          <label for="start_time" class="text-white">Start Time:</label>
+          <input type="time" name="start_time" required class="form-control bg-secondary text-white border-0">
+      </div>
+
+      <div class="form-group mb-3">
+          <label for="end_time" class="text-white">End Time:</label>
+          <input type="time" name="end_time" required class="form-control bg-secondary text-white border-0">
+      </div>
+
+      <div class="form-group mb-3">
+          <label for="reservation_date" class="text-white">Date:</label>
+          <input type="date" name="reservation_date" required class="form-control bg-secondary text-white border-0">
+      </div>
+
+      <div class="form-group mb-3">
+          <label for="max_participants" class="text-white">Max Participants:</label>
+          <input type="number" name="max_participants" id="max_participants" required class="form-control bg-secondary text-white border-0">
+      </div>
+
+      <div class="form-group mb-3">
+          <label for="room_id" class="text-white">Select Room:</label>
+          <select name="room_id" id="room_id" class="form-control bg-secondary text-white border-0">
+              @foreach ($rooms as $room)
+                  <option value="{{ $room->id }}">{{ $room->name }}</option>
+              @endforeach
+          </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block mt-3">Create Group Reservation</button>
+  </form>
+</div>
+
+<style>
+  .btn-primary {
+      background-color: #007bff;
+      border: none;
+  }
+
+  .btn-primary:hover {
+      background-color: #0056b3;
+  }
+
+  .form-control {
+      background-color: #495057;
+      color: #ffffff;
+      border: 1px solid #ced4da;
+  }
+
+  .form-control:focus {
+      background-color: #495057;
+      color: #ffffff;
+      border-color: #80bdff;
+  }
+
+  .bg-dark {
+      background-color: #343a40 !important;
+  }
+
+  .text-white {
+      color: #ffffff !important;
+  }
+
+  .rounded-lg {
+      border-radius: 15px !important;
+  }
+
+  .shadow-lg {
+      box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+  }
+</style>

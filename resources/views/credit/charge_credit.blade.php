@@ -22,13 +22,14 @@
 </div>
 
 <div class="container d-flex justify-content-center">
-  <div class="col-md-6"> <h1>Dobite si kredit</h1>
+  <div class="col-md-6 ">     <h1 class="text-white ">Dobite si kredit</h1>
+
 
     <form method="POST" action="{{ route('payments.charge') }}">
       @csrf
 
       <div class="form-group mb-3">
-        <label for="amount">Suma:</label>
+        <label for="amount" class="text-white">Suma:</label>
         <div class="input-group">
           <input type="number" id="amount" name="amount" min="1" step="1" class="form-control" required>
           <span class="input-group-text">€</span>
@@ -36,7 +37,7 @@
       </div>
 
       <div class="mb-3">
-        <p class="text-muted">Alebo vyberte preddefinovanú sumu:</p>
+        <p class="text-white">Alebo vyberte preddefinovanú sumu:</p>
         <div class="btn-group d-flex justify-content-center" role="group" aria-label="Predefined amounts">
           <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('amount').value = 25">25 €</button>
           <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('amount').value = 50">50 €</button>

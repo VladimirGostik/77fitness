@@ -40,34 +40,47 @@
     </div>
 
     <h2 class="text-center mt-5 mb-5">Available Trainers</h2>
-    <div class="row">
-        @if (count($trainers) > 0)
-            @foreach ($trainers as $trainer)
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100">
-                        @if($trainer->profile_photo)
-                            <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" class="card-img-top img-fluid trainer-img" alt="Trainer Photo">
-                        @else
-                            <img src="{{ asset('images/default_trainer_photo.jpg') }}" class="card-img-top img-fluid trainer-img" alt="Default Trainer Photo">
-                        @endif
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</h5>
-                            <p class="card-text">{{ $trainer->specialization }}</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary btn-block">View Profile</a>
-                        </div>
+    <div id="trainerCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach ($trainers->chunk(3) as $chunk)
+                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                    <div class="row">
+                        @foreach ($chunk as $trainer)
+                            <div class="col-md-4">
+                                <div class="card bg-dark text-white h-100">
+                                    @if($trainer->profile_photo)
+                                        <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" class="card-img-top img-fluid trainer-img" alt="Trainer Photo">
+                                    @else
+                                        <img src="{{ asset('images/default_trainer_photo.jpg') }}" class="card-img-top img-fluid trainer-img" alt="Default Trainer Photo">
+                                    @endif
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</h5>
+                                        <p class="card-text">{{ $trainer->specialization }}</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="{{ route('trainer.profile', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary btn-block">View Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             @endforeach
-            <div class="col-md-12 text-center">
-                <a href="/trainers" class="btn btn-outline-primary mt-4">See More Trainers</a>
-            </div>
-        @else
-            <p class="text-center">No trainers available.</p>
-        @endif
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#trainerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#trainerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-    
+
+    <div class="text-center mt-4">
+        <a href="/trainers" class="btn btn-outline-primary">See More Trainers</a>
+    </div>
+
     <div class="text-center mt-5">
         <a href="{{ route('home') }}" class="btn btn-success btn-lg">Make a Reservation</a>
     </div>
@@ -76,14 +89,15 @@
 <style>
     .card-img-wrapper {
         position: relative;
+        display: flex;
         height: 300px; /* Fixed height */
         overflow: hidden;
     }
 
     .article-img {
-        height: 500px;
-        width: 100%;
-        object-fit: cover;
+        width: 100%; /* Ensure image fills the width */
+        height: 100%; /* Ensure image fills the height */
+        object-fit: cover; /* Ensure image covers the area without distortion */
     }
 
     .card-img-overlay {
@@ -102,7 +116,11 @@
     }
 
     .carousel-inner .carousel-item {
-        max-height: 400px; /* Set a max height for the carousel items */
+        display: flex;
+    }
+
+    .carousel-inner .carousel-item > div {
+        flex: 1;
     }
 
     .carousel-control-prev-icon,
@@ -123,6 +141,43 @@
         font-weight: bold;
         color: #ffffff;    
     }
+
+    .trainer-img {
+        height: 250px; /* Set height for trainer images */
+        object-fit: cover; /* Ensure image covers the area without distortion */
+    }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const trainerCarousel = document.querySelector('#trainerCarousel');
+        const trainers = trainerCarousel.querySelectorAll('.carousel-item .col-md-4');
+
+        let visibleItems = 3;
+        let itemWidth = 100 / visibleItems;
+
+        trainers.forEach((trainer, index) => {
+            trainer.style.minWidth = `${itemWidth}%`;
+            trainer.style.maxWidth = `${itemWidth}%`;
+        });
+
+        trainerCarousel.addEventListener('slide.bs.carousel', function (e) {
+            const items = e.target.querySelectorAll('.carousel-item');
+            const totalItems = items.length;
+
+            if (e.direction === 'left') {
+                const end = parseInt(items[totalItems - 1].getAttribute('data-index')) + 1;
+                const start = parseInt(items[0].getAttribute('data-index'));
+                items[start].setAttribute('data-index', end);
+                items[start].parentNode.appendChild(items[start]);
+            } else {
+                const start = parseInt(items[0].getAttribute('data-index')) - 1;
+                const end = parseInt(items[totalItems - 1].getAttribute('data-index'));
+                items[end].setAttribute('data-index', start);
+                items[end].parentNode.insertBefore(items[end], items[0]);
+            }
+        });
+    });
+</script>
 
 @endsection

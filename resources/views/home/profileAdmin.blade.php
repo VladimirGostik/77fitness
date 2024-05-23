@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1 class="text-center">Welcome, {{ Auth::user()->first_name }}, this is an admin page!</h1>
+    <div class="container mt-5">
+        <h1 class="text-center text-white mb-4 center">Welcome, {{ Auth::user()->first_name }}, this is an admin page!</h1>
         <div class="row mt-4">
             <div class="col-md-4 mb-4">
-                <div class="card text-center shadow-sm">
+                <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-user-edit fa-2x mb-3"></i>
                         <h5 class="card-title">Edit User</h5>
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card text-center shadow-sm">
+                <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-list fa-2x mb-3"></i>
                         <h5 class="card-title">Edit Articles</h5>
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card text-center shadow-sm">
+                <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-plus-circle fa-2x mb-3"></i>
                         <h5 class="card-title">Create Article</h5>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card text-center shadow-sm">
+                <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-plus-circle fa-2x mb-3"></i>
                         <h5 class="card-title">Create Trainer</h5>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card text-center shadow-sm">
+                <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-user fa-2x mb-3"></i>
                         <h5 class="card-title">Edit Trainers</h5>
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card text-center shadow-sm">
+                <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-envelope fa-2x mb-3"></i>
                         <h5 class="card-title">Send Email</h5>
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card text-center shadow-sm">
+                <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-euro-sign fa-2x mb-3"></i>
                         <h5 class="card-title">Manage User Credit</h5>
@@ -72,10 +72,42 @@
 @endsection
 
 <style>
-    .card-body i {
-        color: #007bff;
+  
+    h1 {
+        color: #ffffff;
     }
+
+    .card {
+        background-color: #343a40;
+        border: none;
+        border-radius: 10px;
+    }
+
+    .card-body i {
+        color: #007bff6b;
+    }
+
     .card-body .btn {
-        margin-top: 10px;
+        margin-top: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-outline-secondary {
+        color: #ffffff;
+        border-color: #ffffff;
+    }
+
+    .btn-outline-secondary:hover {
+        color: #000000;
+        background-color: #ffffff;
+        border-color: #ffffff;
     }
 </style>

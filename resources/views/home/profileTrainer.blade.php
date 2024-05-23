@@ -2,27 +2,55 @@
 
 @section('content')
     <div class="container">
-        <h1>Welcome, {{ Auth::user()->first_name }}, this is your profile page!</h1>
+        <h1 class="text-center text-white mb-4 center">Welcome {{ Auth::user()->first_name }}, this is your profile Trainer page!</h1>
+        <div class="row mt-4">
 
-        <div class="actions">
-            <a href="{{ route('trainers.edit', ['trainer' => Auth::user()->trainer->user_id]) }}">
-                <i class="fas fa-user-edit"></i> Edit Profile
-            </a> <br>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white text-center shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-envelope fa-2x mb-3"></i>
+                        <h5 class="card-title"> Edit Profile</h5>
+                        <a href="{{ route('trainers.edit', ['trainer' => Auth::user()->trainer->user_id])}}" class="btn btn-primary">Go</a>
+                    </div>
+                </div>
+            </div>
 
-            <a href="{{ route('articles.create') }}">
-                <i class="fas fa-plus-circle"></i> Create Article
-            </a> <br>
-
-            <a href="{{ route('articles.index') }}">
-                <i class="fas fa-list"></i> Edit Articles
-            </a> <br>
-      
-            <a href="{{ route('reservations.create') }}">
-                <i class="fas fa-calendar-plus"></i> Create Reservation
-            </a> <br>
-
-            <a href="{{ route('reservations.index') }}">All Reservation</a>
-
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white text-center shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-envelope fa-2x mb-3"></i>
+                        <h5 class="card-title"> Create Article</h5>
+                        <a href="{{ route('articles.create') }}" class="btn btn-primary">Go</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white text-center shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-envelope fa-2x mb-3"></i>
+                        <h5 class="card-title"> Edit Articles</h5>
+                        <a href="{{ route('articles.index') }}" class="btn btn-primary">Go</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white text-center shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-envelope fa-2x mb-3"></i>
+                        <h5 class="card-title">Create Reservation</h5>
+                        <a href="{{ route('reservations.create') }}" class="btn btn-primary">Go</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white text-center shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-envelope fa-2x mb-3"></i>
+                        <h5 class="card-title">All Reservation</h5>
+                        <a href="{{ route('reservations.index') }}" class="btn btn-primary">Go</a>
+                    </div>
+                </div>
+            </div>
       {{-- 
             <a href="{{ route('group-reservations.create') }}">
                 <i class="fas fa-users"></i> Create Group Reservation
@@ -31,4 +59,45 @@
             <!-- Add more actions as needed -->
         </div>
     </div>
+
+    <style>
+  
+        h1 {
+            color: #ffffff;
+        }
+    
+        .card {
+            background-color: #343a40;
+            border: none;
+            border-radius: 10px;
+        }
+    
+        .card-body i {
+            color: #007bff6b;
+        }
+    
+        .card-body .btn {
+            margin-top: 20px;
+        }
+    
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+    
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    
+        .btn-outline-secondary {
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+    
+        .btn-outline-secondary:hover {
+            color: #000000;
+            background-color: #ffffff;
+            border-color: #ffffff;
+        }
+    </style>
 @endsection
