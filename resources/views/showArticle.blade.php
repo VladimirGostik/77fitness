@@ -5,16 +5,16 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
             <a href="{{ route('articles.index') }}" class="btn btn-outline-secondary mb-3">Go back</a>
             <h1 class="text-white">{{ $article->title }}</h1>
-            <img class="img-fluid mb-4" src="/storage/cover_images/{{ $article->cover_image }}" alt="{{ $article->title }}">
+            <img class="img-fluid mb-4 article-image" src="/storage/cover_images/{{ $article->cover_image }}" alt="{{ $article->title }}">
         </div>
     </div>
 
-    <div class="row mt-3 center">
-        <div class="col-md-12">
+    <div class="row mt-3 justify-content-center">
+        <div class="col-md-10">
             <div class="article-content bg-dark text-white p-4 rounded">
                 {!! nl2br(e($article->content)) !!}
             </div>
@@ -33,6 +33,23 @@
         </div>
     </div>
 
+    <div class="row mt-3 justify-content-between">
+        <div class="col-md-6">
+            @if ($previous)
+                <a href="{{ route('articles.show', ['article' => $previous->id]) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Previous Article
+                </a>
+            @endif
+        </div>
+        <div class="col-md-6 text-right">
+            @if ($next)
+                <a href="{{ route('articles.show', ['article' => $next->id]) }}" class="btn btn-outline-secondary">
+                    Next Article <i class="fas fa-arrow-right"></i>
+                </a>
+            @endif
+        </div>
+    </div>
+
     <style>
         body {
             background-color: #141619;
@@ -41,6 +58,12 @@
 
         h1 {
             font-weight: bold;
+        }
+
+        .article-image {
+            width: 80%; /* Set the image width to 80% */
+            margin: auto;
+            display: block;
         }
 
         .article-content p {

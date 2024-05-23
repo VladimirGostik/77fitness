@@ -89,8 +89,11 @@ class ArticlesController extends Controller
     public function show(string $id)
     {
 
-        $article = Article::find($id);
-        return view('showArticle')->with('article',$article);
+        $article = Article::findOrFail($id);
+        $previous = Article::where('id', '<', $article->id)->orderBy('id', 'desc')->first();
+        $next = Article::where('id', '>', $article->id)->orderBy('id', 'asc')->first();
+
+        return view('showArticle', compact('article', 'previous', 'next'));
     }
 
     /**
