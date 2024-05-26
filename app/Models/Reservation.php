@@ -23,6 +23,7 @@ class Reservation extends Model
         'start_reservation',
         'end_reservation',
         'reservation_price',
+        'transaction_id',
     ];
 
     protected $casts = [
