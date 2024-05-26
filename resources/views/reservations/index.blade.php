@@ -3,11 +3,11 @@
 @section('content')
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-white">All Reservations</h1>
+            <h1 class="text-white">Všetky rezervácie</h1>
             <div>
-                <a href="/home" class="btn btn-outline-secondary">Go back</a>
+                <a href="/home" class="btn btn-outline-secondary">Späť</a>
                 <a href="{{ route('reservations.create') }}" class="btn btn-primary ml-2">
-                    <i class="fas fa-calendar-plus"></i> Create Reservation
+                    <i class="fas fa-calendar-plus"></i> Vytvor rezerváciu
                 </a>
             </div>
         </div>
@@ -18,9 +18,9 @@
             <table class="table table-dark table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>Client</th>
-                        <th>Reservation Period</th>
-                        <th>Actions</th>
+                        <th>Klient</th>
+                        <th>Čas rezervácie</th>
+                        <th>Akcie</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,7 @@
                                 @if($reservation->user)
                                     {{ $reservation->user->first_name }} {{ $reservation->user->last_name }}
                                 @else
-                                    Free
+                                    Voľná
                                 @endif
                             </td>
                             <td>
@@ -38,11 +38,11 @@
                                 {{ $reservation->end_reservation->format('Y-m-d H:i') }}
                             </td>
                             <td class="d-flex">
-                                <a href="{{ route('reservations.edit', ['reservation' => $reservation->id]) }}" class="btn btn-sm btn-warning mr-2">Edit</a>
+                                <a href="{{ route('reservations.edit', ['reservation' => $reservation->id]) }}" class="btn btn-sm btn-warning mr-2">Upraviť</a>
                                 <form action="{{ route('reservations.destroy', ['reservation' => $reservation->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Vymazať</button>
                                 </form>
                             </td>
                         </tr>
@@ -50,7 +50,7 @@
                 
                     @foreach($groupReservations as $groupReservation)
                         <tr>
-                            <td>Group Reservation</td>
+                            <td>Skupinová rezerváciaS</td>
                             <td>
                                 {{ $groupReservation->start_reservation->format('Y-m-d H:i') }} -
                                 {{ $groupReservation->end_reservation->format('Y-m-d H:i') }}

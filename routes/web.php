@@ -83,25 +83,19 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::resource('reservations', ReservationController::class)->except(['create', 'show']);
     Route::post('/group_reservations/{group_reservation}/add-participant', [GroupReservationController::class, 'addParticipant'])->name('group_reservations.add_participant');
-
     Route::get('/group_reservations/{group_reservation}/', [AdminController::class, 'showEmailForm'])->name('group_reservations.download_pdf');
-
     Route::get('/group_reservations/create', [GroupReservationController::class, 'create'])->name('group_reservations.create');
     Route::post('/group_reservations', [GroupReservationController::class, 'store'])->name('group_reservations.store');
     Route::get('/group_reservations/{group_reservation}/edit', [GroupReservationController::class, 'edit'])->name('group_reservations.edit');
     Route::put('/group_reservations/{group_reservation}', [GroupReservationController::class, 'update'])->name('group_reservations.update');
     Route::delete('/group_reservations/{group_reservation}', [GroupReservationController::class, 'destroy'])->name('group_reservations.destroy');
     Route::get('/group_reservations/{groupReservation}/download_pdf', [GroupReservationController::class, 'downloadPdf'])->name('group_reservations.download_pdf');
-
-
 });
 
 Route::get('/trainers/{trainer}', [TrainerController::class, 'show'])->name('trainer.profile');
 Route::post('/group_reservations/{group_reservations}/add-participant', [GroupReservationController::class, 'addParticipant'])->name('add.participant');
 
-
 Route::group(['middleware' => ['auth', 'client']], function () {
-
     Route::post('/reservations/{reservation_id}/submit', [ReservationController::class, 'submit']);
     Route::post('/group_reservation/{id}/submit', [GroupReservationController::class, 'submit']);
     Route::get('/group_reservation/{id}/participants', [GroupReservationController::class, 'getParticipants']);

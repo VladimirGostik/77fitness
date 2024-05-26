@@ -8,41 +8,31 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
-    protected $table = 'reservations'; // Assuming your table name for admins is 'admins'
-    protected $dates = ['start_reservation', 'end_reservation'];
+    protected $table = 'reservations'; 
+    protected $dates = ['start_reservation', 'end_reservation']; 
 
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'client_id',
-        'trainer_id',
-        'start_reservation',
-        'end_reservation',
-        'reservation_price',
-        'transaction_id',
+        'client_id', // ID klienta
+        'trainer_id', // ID trénera
+        'start_reservation', // Začiatok rezervácie
+        'end_reservation', // Koniec rezervácie
+        'reservation_price', // Cena rezervácie
+        'transaction_id', // ID transakcie
     ];
 
     protected $casts = [
-        'start_reservation' => 'datetime',
-        'end_reservation' => 'datetime',
+        'start_reservation' => 'datetime', // Konverzia na dátumový objekt
+        'end_reservation' => 'datetime', // Konverzia na dátumový objekt
     ];
-    /**
-     * Get the client associated with the reservation.
-     */
-    public function client()
+
+    public function client()  // Vzťah: Rezervácia patrí klientovi
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
 
-    /**
-     * Get the trainer associated with the reservation.
-     */
-    public function trainer()
+    public function trainer() // Vzťah: Rezervácia patrí trénerovi
     {
-        return $this->belongsTo(Trainer::class, 'trainer_id');
+        return $this->belongsTo(Trainer::class, 'trainer_id'); 
     }
 }
+

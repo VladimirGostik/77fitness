@@ -15,12 +15,12 @@ class TrainerMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-       // Check if the authenticated user is a trainer
-       if ($request->user() && $request->user()->role === 2) {
+        // Skontrolujte, či je autentifikovaný používateľ tréner
+        if ($request->user() && $request->user()->role === 2) {
         return $next($request);
     }
 
-    // If not a trainer, redirect or handle as needed
-    return redirect('/home')->with('error', 'Unauthorized access for trainers');
+        // Ak nie je tréner, presmerujte alebo spracujte podľa potreby
+        return redirect('/home')->with('error', 'Neoprávnený prístup, iba pre trénerov');
     }
 }

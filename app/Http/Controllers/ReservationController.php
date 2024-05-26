@@ -19,34 +19,33 @@ use App\Mail\ReservationEdited;
 
 class ReservationController extends Controller
 {
-    public function index()
+    public function index() // Metóda na zobrazenie zoznamu rezervácií
     {
-        // Fetch all reservations
         $reservations = Reservation::all();
         $groupReservations = GroupReservation::with('participants')->get();
         
         return view('reservations.index', compact('reservations', 'groupReservations'));
     }
 
-
-    public function create()
+    public function edit(Reservation $reservation) // Metóda na zobrazenie formulára pre úpravu rezervácie
     {
-        $trainerId = auth()->user()->trainer->user_id; // Assuming you have a relationship between User and Trainer
-        $trainer = Trainer::findOrFail($trainerId);
-        $rooms = Room::all();
-        $clients = Client::all(); // Fetch all clients
+        return view('reservations.edit', compact('reservation'));
+    }
 
+    public function create() // Metóda na zobrazenie formulára pre vytvorenie novej rezervácie
+    {
+        $trainer = auth()->user()->trainer; // Načítanie ID trénera aktuálneho
+        $rooms = Room::all();
+        $clients = Client::all(); 
 
         return view('reservations.create', [
-            'sessionPrice' => $trainer->session_price,
-            'rooms' => $rooms,
-            'clients' => $clients,
+            'sessionPrice' => $trainer->session_price, // Cena tréningu
+            'rooms' => $rooms, // Zoznam miestností
+            'clients' => $clients, // Zoznam klientov
         ]);
     }
 
     public function submit(Request $request, $reservation_id){
-        $request->validate([
-        ]);
 
         $client = Auth::user()->client;
         $client_id = $client->user_id;
@@ -56,7 +55,6 @@ class ReservationController extends Controller
         $reservationCost = $reservation->reservation_price;
 
         if ($clientCredit < $reservationCost) {
-            // Redirect to a page for topping up credit
             return redirect()->route('credit.charge_credit')->with('error', 'Insufficient credit. Please top up your credit.');
         }
 
@@ -70,36 +68,25 @@ class ReservationController extends Controller
             'id_reservation' => $reservation_id,
         ]);
         
-
-
         $reservation->update([
             'client_id' => $client_id,
-            'transaction_id' => $transaction->id, // Store the transaction ID in the reservation
+            'transaction_id' => $transaction->id, 
         ]);
-        // Optionally, return a response indicating success or failure
+
         $clientEmail = Auth::user()->email;
         Mail::to($clientEmail)->send(new ReservationSuccessful($reservation));
 
     }
 
-
-    public function edit(Reservation $reservation)
-    {
-        return view('reservations.edit', compact('reservation'));
-    }
-
-
     public function store(Request $request)
     {
-        // Validate the incoming request
         $request->validate([
-            'client_id' => 'nullable|exists:clients,id', // Allow null or valid client ID
+            'client_id' => 'nullable|exists:clients,id', 
             'start_time' => 'required',
             'end_time' => 'required',
             'reservation_price' => 'required|numeric|min:0',
         ]);
 
-        // Fetch the trainer's ID from the authenticated user
         $trainerId = auth()->user()->trainer->user_id;
         $minAllowedStartTime = Carbon::now()->addHour();
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('reservation_date') . ' ' . $request->input('start_time'))->toDateTimeString();
@@ -120,7 +107,6 @@ class ReservationController extends Controller
         })
         ->exists();
 
-        // If there are overlapping reservations, display an error
         if ($overlappingReservations) {
             return redirect()->route('reservations.create')->with('error', 'Overlapping reservations are not allowed.');
         }
@@ -135,22 +121,17 @@ class ReservationController extends Controller
                 });
         })
         ->exists();
-        // If there are overlapping reservations, display an error
         if ($overlappingReservations) {
             return redirect()->route('reservations.create')->with('error', 'Overlapping Group reservations are not allowed.');
         }
-
-
-        // Create a new reservation
         Reservation::create([
-            'client_id' => $request->input('client_id'), // Use the selected client ID if provided
+            'client_id' => $request->input('client_id'),
             'trainer_id' => $trainerId,
             'start_reservation' => $startDateTime,
             'end_reservation' => $endDateTime,
             'reservation_price' => $request->input('reservation_price'),
         ]);
 
-        // Redirect back with a success message
         return redirect()->route('reservations.create')->with('success', 'Reservation created successfully');
     }
 
