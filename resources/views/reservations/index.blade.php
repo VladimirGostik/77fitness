@@ -50,17 +50,17 @@
                 
                     @foreach($groupReservations as $groupReservation)
                         <tr>
-                            <td>Skupinová rezerváciaS</td>
+                            <td>Skupinová rezervácia</td>
                             <td>
                                 {{ $groupReservation->start_reservation->format('Y-m-d H:i') }} -
                                 {{ $groupReservation->end_reservation->format('Y-m-d H:i') }}
                             </td>
                             <td class="d-flex">
-                                <a href="{{ route('group_reservations.edit', ['group_reservation' => $groupReservation->id]) }}" class="btn btn-sm btn-warning mr-2">Edit</a>
+                                <a href="{{ route('group_reservations.edit', ['group_reservation' => $groupReservation->id]) }}" class="btn btn-sm btn-warning mr-2">Upraviť</a>
                                 <form action="{{ route('group_reservations.destroy', ['group_reservation' => $groupReservation->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Vymazať</button>
                                 </form>
                             </td>
                         </tr>
@@ -75,7 +75,12 @@
             document.addEventListener('DOMContentLoaded', function() {
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridWeek',
+                    initialView: 'timeGridWeek',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
                     events: [
                         @foreach($reservations as $reservation)
                             {
@@ -83,14 +88,18 @@
                                 start: '{{ $reservation->start_reservation->toIso8601String() }}',
                                 end: '{{ $reservation->end_reservation->toIso8601String() }}',
                                 url: '{{ route('reservations.edit', ['reservation' => $reservation->id]) }}',
+                                backgroundColor: '{{ $reservation->client_id ? "#f56954" : "#00a65a" }}', // Zmena farby podľa prítomnosti klienta
+                                borderColor: '{{ $reservation->client_id ? "#f56954" : "#00a65a" }}'
                             },
                         @endforeach
                         @foreach($groupReservations as $groupReservation)
                             {
-                                title: '(' + {{ $groupReservation->participants()->count() }} + '/' + {{ $groupReservation->max_participants }} + ')',
+                                title: 'Skupinová rezervácia (' + {{ $groupReservation->participants()->count() }} + '/' + {{ $groupReservation->max_participants }} + ')',
                                 start: '{{ $groupReservation->start_reservation->toIso8601String() }}',
                                 end: '{{ $groupReservation->end_reservation->toIso8601String() }}',
                                 url: '{{ route('group_reservations.edit', ['group_reservation' => $groupReservation->id]) }}',
+                                backgroundColor: '#3c8dbc',
+                                borderColor: '#3c8dbc'
                             },
                         @endforeach
                     ],
@@ -98,6 +107,8 @@
                         window.location = info.event.url;
                         return false;
                     },
+                    editable: true,
+                    droppable: true
                 });
                 calendar.render();
             });

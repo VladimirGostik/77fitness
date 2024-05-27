@@ -13,12 +13,19 @@ use App\Services\GoPayService;
 
 class PaymentsController extends Controller
 {
-    // protected $goPayService;
+    protected $goPay;
 
-    // public function __construct(GoPayService $goPayService)
-    // {
-    //     $this->goPayService = $goPayService;
-    // }
+    public function __construct()
+    {
+        $this->goPay = GoPay::payments([
+            'goid' => env('GOPAY_GOID'),
+            'clientId' => env('GOPAY_CLIENT_ID'),
+            'clientSecret' => env('GOPAY_CLIENT_SECRET'),
+            'isProductionMode' => true,
+            'scope' => GoPay::FULL,
+            'language' => Language::SLOVAK,
+        ]);
+    }
 
 
     public function index(Request $request)
@@ -28,52 +35,80 @@ class PaymentsController extends Controller
 }
 
 
-    public function charge(Request $request)
-    {
-        $amount = $request->input('amount');
+public function charge(Request $request)
+{
+    $amount = $request->input('amount');
+    // Validácia: Skontrolujte minimálnu sumu dobíjania
+    if ($amount < 1) {
+        return back()->withErrors(['amount' => 'Minimálna suma na dobitie je 1 €.']);
+    }
+    // Získajte aktuálne ID klienta
+    $clientId = auth()->user()->client->user_id;
+    
+    // Pripravte údaje o platbe pre GoPay
+    $order = [
+        'payer' => [
+            'default_payment_instrument' => PaymentInstrument::BANK_ACCOUNT,
+            'allowed_payment_instruments' => [PaymentInstrument::BANK_ACCOUNT],
+            'contact' => [
+                'first_name' => auth()->user()->first_name,
+                'last_name' => auth()->user()->last_name,
+                'email' => auth()->user()->email,
+                'phone_number' => auth()->user()->phone_number,
+            ],
+        ],
+        'amount' => $amount * 100, // Prevod na centy
+        'currency' => 'EUR',
+        'order_number' => uniqid(),
+        'order_description' => 'Dobitie kreditu',
+        'items' => [
+            [
+                'name' => 'Dobitie kreditu',
+                'amount' => $amount * 100, // Prevod na centy
+                'type' => PaymentItemType::ITEM,
+            ]
+        ],
+        'callback' => [
+            'return_url' => route('payments.success'),
+            'notification_url' => route('payments.notify'),
+        ],
+    ];
 
-        // Validation: Check minimum charge amount
-        if ($amount < 1) {
-            return back()->withErrors(['amount' => 'Minimálna suma na dobitie je 1 €.']);
+    try {
+        // Vytvorenie platobnej požiadavky na GoPay
+        $response = $this->goPay->createPayment($order);
+
+        // Logovanie odpovede pre debugovanie
+        \Log::info('GoPay response:', (array) $response);
+
+        // Skontrolujte, či odpoveď obsahuje potrebné údaje
+        if (!isset($response->json['id']) || !isset($response->json['state']) || !isset($response->json['gw_url'])) {
+            return back()->withErrors(['error' => 'Nesprávna odpoveď od GoPay API.']);
         }
 
-        // Get the current client's ID
-        $clientId = auth()->user()->client->user_id;
+        $paymentId = $response->json['id'];
+        $paymentState = $response->json['state'];
+        $paymentUrl = $response->json['gw_url'];
 
-        // Create GoPay API object using your credentials
-        $order = [
-            'first_name' => auth()->user()->first_name,
-            'last_name' => auth()->user()->last_name,
-            'email' => auth()->user()->email,
-            'phone' => auth()->user()->phone_number,
-            'amount' => $amount,
-            'order_number' => uniqid(),
-            'description' => 'Dobitie kreditu',
-            'items' => [
-                [
-                    'name' => 'Dobitie kreditu',
-                    'amount' => $amount * 100,
-                ]
-            ],
-        ];
-
-        // Create the GoPay payment request
-        $response = $this->goPayService->createPayment($order);
-
-        // Create a new ChargingCredit record
+        // Vytvorenie nového záznamu ChargingCredit
         ChargingCredit::create([
-            'external_transaction_id' => $response->json['id'], // Replace with actual transaction ID
+            'external_transaction_id' => $paymentId,
             'client_id' => $clientId,
             'amount' => $amount,
-            'currency' => 'EUR', // Based on payment request
-            'payment_method' => $request->input('payment_method'), // Assuming payment method from the form
-            'payment_status' => $payment->state, // Initial payment state from GoPay
-            // ... (Add other relevant details)
+            'currency' => 'EUR',
+            'payment_method' => 'GoPay',
+            'payment_status' => $paymentState,
         ]);
 
-        // Redirect to GoPay payment gateway
-        return redirect($payment->url);
+        // Presmerovanie na GoPay platobnú bránu
+        return redirect($paymentUrl);
+    } catch (\Exception $e) {
+        \Log::error('Error creating GoPay payment:', ['error' => $e->getMessage()]);
+        return back()->withErrors(['error' => 'Vyskytla sa chyba pri vytváraní platby. Skúste to znova.']);
     }
+}
+
+
 
     public function callback(Request $request)
     {

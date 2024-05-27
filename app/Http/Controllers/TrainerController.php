@@ -93,7 +93,7 @@ class TrainerController extends Controller
                 'phone_number' => $request->input('phone_number'),
                 'password' => Hash::make($request->input('password')),
                 'receive_notifications' => $request->has('receive_notifications') ? 1 : 0,
-                'role' => 2, // Assuming 2 is the role for trainers
+                'role' => 2, // 2 je rola pre trenerov
             ]);
     
             $trainer = Trainer::create([

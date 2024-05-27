@@ -102,7 +102,7 @@
         }
 
         .fc-event-title {
-            color: white !important; /* Adjust text color for events */
+            color: white !important; /* Upraviť farbu textu pre udalosti */
         }
 
         .fc-daygrid-day-number {
@@ -168,7 +168,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var pricePerParticipant = 12; // Price per participant
+            var pricePerParticipant = 12; // Cena za účastníka
             var totalPriceElement = document.getElementById('total-price');
             var participantCountElement = document.getElementById('participant-count');
             var participantListElement = document.getElementById('participant-list');
@@ -202,7 +202,12 @@
 
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridWeek',
+                initialView: 'timeGridWeek',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
                 events: [
                     @if (Auth::check())
                         @foreach($reservations->where('trainer_id', $trainer->user_id) as $reservation)
@@ -212,7 +217,8 @@
                             end: '{{ $reservation->end_reservation->toIso8601String() }}',
                             data: {!! json_encode($reservation) !!},
                             type: 'reservation',
-                            backgroundColor: '{{ $reservation->client_id ? 'red' : 'lightgreen' }}' // Set color based on client_id
+                            backgroundColor: '{{ $reservation->client_id ? '#f56954' : '#00a65a' }}', // Nastavenie farby podľa prítomnosti klienta
+                            borderColor: '{{ $reservation->client_id ? '#f56954' : '#00a65a' }}'
                         },
                         @endforeach
                     @else
@@ -221,9 +227,10 @@
                             title: '{{ $reservation->client_id ? 'Reserved' : 'Free' }}',
                             start: '{{ $reservation->start_reservation->toIso8601String() }}',
                             end: '{{ $reservation->end_reservation->toIso8601String() }}',
-                            data: {!! json_encode($reservation) !!},
-                            type: 'reservation',
-                            backgroundColor: '{{ $reservation->client_id ? 'red' : 'lightgreen' }}' // Set color based on client_id
+                            data: {!! json_encode($reservation) !!},          
+                            type: 'reservation',                  
+                            backgroundColor: '{{ $reservation->client_id ? '#f56954' : '#00a65a' }}', // Nastavenie farby podľa prítomnosti klienta
+                            borderColor: '{{ $reservation->client_id ? '#f56954' : '#00a65a' }}'
                         },
                         @endforeach
                     @endif
@@ -236,14 +243,13 @@
                         data: {!! json_encode($groupReservation) !!},
                         type: 'group_reservation',
                         @if ($groupReservation->participants_count >= $groupReservation->max_participants)
-                            backgroundColor: 'red' // Set red for full reservations
+                            backgroundColor: 'red' // Nastavenie červenej farby pre plné rezervácie
                         @else
-                            backgroundColor: 'lightgreen' // Set green for available group reservations
+                            backgroundColor: 'lightgreen' // Nastavenie zelenej farby pre dostupné skupinové rezervácie
                         @endif
                     },
                     @endforeach
                 ],
-
                 eventClick: function(info) {
                     var now = new Date();
                     var eventEnd = new Date(info.event.end);
@@ -309,7 +315,7 @@
                     document.getElementById('trainer-name').textContent = '{{ $trainer->user->first_name }} {{ $trainer->user->last_name }}';
                     document.getElementById('start-time').textContent = formatDateTime(data.start_reservation);
                     document.getElementById('end-time').textContent = formatDateTime(data.end_reservation);
-                    participantListElement.innerHTML = ''; // Clear existing participants
+                    participantListElement.innerHTML = ''; // Vyčistiť existujúcich účastníkov
 
                     $.ajax({
                         url: '/group_reservation/' + data.id + '/participants',
@@ -358,7 +364,7 @@
             }
 
             function initializeTotalPrice(initialCount) {
-                // Initialize total price with the given initial count of participants
+                // Inicializovať celkovú cenu s daným počiatočným počtom účastníkov
                 var totalPrice = 12;
                 totalPriceElement.textContent = totalPrice;
             }
@@ -371,10 +377,10 @@
 
             function formatDateTime(dateTime) {
                 if (dateTime instanceof Date) {
-                    // Existing logic for formatting a Date object
+                    // Existujúca logika pre formátovanie objektu Date
                 } else {
-                    var dateObj = new Date(dateTime); // Convert the string to a Date object
-                    if (dateObj.getHours) { // Check if conversion was successful (optional)
+                    var dateObj = new Date(dateTime); // Konvertovať reťazec na objekt Date
+                    if (dateObj.getHours) { // Skontrolovať, či konverzia bola úspešná (voliteľné)
                         var hours = dateObj.getHours().toString().padStart(2, '0');
                         var minutes = dateObj.getMinutes().toString().padStart(2, '0');
                         var day = dateObj.getDate().toString().padStart(2, '0');
@@ -383,7 +389,7 @@
                         return hours + ':' + minutes + '  ' + day + '.' + month + '.' + year;
                     } else {
                         console.error("Invalid date format passed to formatDateTime:", dateTime);
-                        return ""; // Or return some default value
+                        return ""; // Alebo vrátiť nejakú predvolenú hodnotu
                     }
                 }
             }

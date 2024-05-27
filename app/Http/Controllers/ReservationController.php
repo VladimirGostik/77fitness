@@ -45,37 +45,35 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function submit(Request $request, $reservation_id){
-
+    public function submit(Request $request, $reservation_id)
+    {
         $client = Auth::user()->client;
-        $client_id = $client->user_id;
-        $clientCredit = $client->credit;
-
-        $reservation = Reservation::find($reservation_id);
+        $reservation = Reservation::findOrFail($reservation_id);
         $reservationCost = $reservation->reservation_price;
 
-        if ($clientCredit < $reservationCost) {
-            return redirect()->route('credit.charge_credit')->with('error', 'Insufficient credit. Please top up your credit.');
+        if ($client->credit < $reservationCost) {     // Kontrola, či má klient dostatočný kredit
+            return redirect()->route('credit.charge_credit')->with('error', 'Nedostatočný kredit!');
         }
 
-        $client->credit -= $reservationCost;
-        $client->save();
+        $client->decrement('credit', $reservationCost);
 
-        $transaction = Transaction::create([
-            'client_id' => $client_id,
+        $transaction = Transaction::create([     // Vytvorenie transakcie pre platbu rezervácie
+            'client_id' => $client->user_id,
             'amount' => $reservationCost,
             'description' => 'Reservation payment',
             'id_reservation' => $reservation_id,
         ]);
-        
-        $reservation->update([
-            'client_id' => $client_id,
-            'transaction_id' => $transaction->id, 
+
+        $reservation->update([     // Aktualizácia rezervácie s ID klienta a ID transakcie
+            'client_id' => $client->user_id,
+            'transaction_id' => $transaction->id,
         ]);
 
-        $clientEmail = Auth::user()->email;
-        Mail::to($clientEmail)->send(new ReservationSuccessful($reservation));
+        
+        // Odoslanie potvrdzovacieho emailu klientovi
+        Mail::to($client->user->email)->send(new ReservationSuccessful($reservation));
 
+        return redirect()->route('reservations.index')->with('success', 'Rezervácia bola úspešne potvrdená');
     }
 
     public function store(Request $request)
@@ -124,6 +122,7 @@ class ReservationController extends Controller
         if ($overlappingReservations) {
             return redirect()->route('reservations.create')->with('error', 'Overlapping Group reservations are not allowed.');
         }
+
         Reservation::create([
             'client_id' => $request->input('client_id'),
             'trainer_id' => $trainerId,
