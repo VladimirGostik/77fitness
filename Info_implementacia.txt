@@ -126,8 +126,6 @@ Hlavna cast:
 ✅✅✅             Platby...
 ✅✅✅             E-maily...
 
-
-
                Co vlastne idem pisat do bodu 5??? 
                     co idem popisat.. roots/popisat presne ako to funguje...
                     spomenut v implementacii: mailtrap/github a workbench...
@@ -144,3 +142,29 @@ Hlavna cast:
 popridavat fortky treneri, ako vytvarat rezervacie, ako si vytlacit tebn pdf. s luidmi na skupinovkami. Pre admina ako evidovat platby, ako rozposlat maily...
 velmi strucne!!! 
 //Nech to je cca 30 stran! 
+
+
+co mi este chyba: 
+     ✅✅✅ skusit poriesit tie diagrami
+     ✅✅✅ upravit gramatiku, frazovanie a skratky
+     ✅✅✅ upravit zdroje a viac z nich cerpat
+     Logicky si to pozriet
+     dokoncit navod pre uzivatela
+     
+     prejst to cez antiplagiat 1
+     prejst to cez antiplagiat 2
+
+     prelozit vsetko do svk... 
+     ✅✅✅ vymenit fotky do bc.
+
+          ✅✅✅ admin a sprava osobnych udajov = vymazat prepojenie
+          popisat usecasy a rozdelenie na podnadpisy ak sa da...
+          ✅✅✅ mvc tabulator.... skratky
+          licencne zmluvy a formality doplnit...
+          kod odovzdat...
+          napisat na gopay... kedze je to casovo obmedzene...
+
+          dopisat ten text... a rozbehat na serveri
+          login: gostik
+          ip adresa: 147.175.121.131
+          helo: 5VT2Tuizhe (zmeňte si ho)

@@ -6,7 +6,7 @@
     @endif
 
     <div class="container mt-5">
-        <h2 class="text-white text-center mb-5">Recent Articles</h2>
+        <h2 class="text-white text-center mb-5">Najnovšie články</h2>
         <div id="articleCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @foreach ($articles as $index => $article)
@@ -20,7 +20,7 @@
                             <div class="card-img-overlay d-flex flex-column justify-content-end">
                                 <h5 class="card-title">{{ $article->title }}</h5>
                                 <p class="card-text">{{ Str::limit($article->content, 200, '...') }}</p>
-                                <a href="{{ route('articles.show', ['article' => $article->id]) }}" class="btn btn-primary btn-block">Read More</a>
+                                <a href="{{ route('articles.show', ['article' => $article->id]) }}" class="btn btn-primary btn-block">Čítať viac</a>
                             </div>
                         </div>
                     </div>
@@ -28,19 +28,19 @@
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#articleCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Predchádzajúce</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#articleCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Nasledujúce</span>
             </button>
         </div>
 
         <div class="text-center mt-4">
-            <a href="{{ route('articles.index') }}" class="btn btn-outline-primary">See More Articles</a>
+            <a href="{{ route('articles.index') }}" class="btn btn-outline-primary">Viac článkov</a>
         </div>
 
-        <h2 class="text-white text-center mt-5 mb-5">Available Trainers</h2>
+        <h2 class="text-white text-center mt-5 mb-5">Dostupní tréneri</h2>
         <div id="trainerCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @foreach ($trainers->chunk(3) as $chunk)
@@ -59,7 +59,7 @@
                                             <p class="card-text">{{ $trainer->specialization }}</p>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary btn-block">View Profile</a>
+                                            <a href="{{ route('trainer.profile', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary btn-block">Zobraziť profil</a>
                                         </div>
                                     </div>
                                 </div>
@@ -70,23 +70,23 @@
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#trainerCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Predchádzajúce</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#trainerCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Nasledujúce</span>
             </button>
         </div>
 
         <div class="text-center mt-5">
-            <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->user_id]) }}" class="btn btn-primary btn-lg">Make a Reservation</a>
+            <a id="makeReservationLink" href="{{ route('trainer.profile', ['trainer' => $trainers->first()->user_id]) }}" class="btn btn-primary btn-lg">Urobiť rezerváciu</a>
         </div>
 
         <div class="row mt-5 justify-content-center">
             <div class="col-md-6 text-center">
-                <h4 class="text-white">Select Trainer</h4>
+                <h4 class="text-white">Vybrať trénera</h4>
                 <select id="trainer-dropdown" class="form-select mb-3">
-                    <option value="">Select Trainer</option>
+                    <option value="">Vybrať trénera</option>
                     @foreach ($trainers as $trainer)
                         <option value="{{ $trainer->user_id }}" {{ (request()->get('trainer') == $trainer->user_id || (!request()->get('trainer') && $trainer->user_id === $trainers->first()->user_id)) ? 'selected' : '' }}>
                             {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}
@@ -98,7 +98,7 @@
 
         <div class="row mt-3 justify-content-center">
             <div class="col-md-12">
-                <h2 class="text-white text-center mb-4">Training Calendar</h2>
+                <h2 class="text-white text-center mb-4">Kalendár tréningov</h2>
                 <div id="calendar" class="bg-light p-3 rounded"></div>
             </div>
         </div>
@@ -121,7 +121,7 @@
                 events: [
                     @foreach($reservations->where('trainer_id', $trainer->user_id) as $reservation)
                     {
-                        title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Free' }}',
+                        title: '{{ $reservation->client_id ? $reservation->client->user->last_name : 'Voľné' }}',
                         start: '{{ $reservation->start_reservation->toIso8601String() }}',
                         end: '{{ $reservation->end_reservation->toIso8601String() }}',
                         data: {!! json_encode($reservation) !!},
@@ -192,7 +192,7 @@
             const transformedEvents = [];
             for (const reservation of reservations) {
                 const event = {
-                    title:  reservation.client_id ? 'Full' : 'Free',
+                    title:  reservation.client_id ? 'Plné' : 'Voľné',
                     start: reservation.start_reservation,
                     end: reservation.end_reservation,
                     data: reservation,

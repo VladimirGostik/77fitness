@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Edit User')
+@section('title', 'Upraviť Používateľa')
 
 @section('content')
     <div class="container mt-5">
-        <h1 class="text-white text-center mb-4">Edit User</h1>
-        <a href="{{ route('home') }}" class="btn btn-outline-secondary mb-4 btn-sm">Go back</a>
+        <h1 class="text-white text-center mb-4">Upraviť Používateľa</h1>
+        <a href="{{ route('home') }}" class="btn btn-outline-secondary mb-4 btn-sm">Späť</a>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -18,12 +18,12 @@
                     @method('PUT')
 
                     <div class="form-group mb-3">
-                        <label for="first_name" class="form-label h6">First Name</label>
+                        <label for="first_name" class="form-label h6">Meno</label>
                         <input type="text" class="form-control form-control-sm" id="first_name" name="first_name" value="{{ $user->first_name }}" required>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="last_name" class="form-label h6">Last Name</label>
+                        <label for="last_name" class="form-label h6">Priezvisko</label>
                         <input type="text" class="form-control form-control-sm" id="last_name" name="last_name" value="{{ $user->last_name }}" required>
                     </div>
 
@@ -33,18 +33,18 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="phone_number" class="form-label h6">Phone Number</label>
+                        <label for="phone_number" class="form-label h6">Telefónne číslo</label>
                         <input type="text" class="form-control form-control-sm" id="phone_number" name="phone_number" value="{{ $user->phone_number }}" required>
                     </div>
 
                     <div class="form-group mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="receive_notifications" name="receive_notifications" value="1" {{ $user->receive_notifications ? 'checked' : '' }}>
-                        <label class="form-check-label" for="receive_notifications">Receive Notifications</label>
+                        <label class="form-check-label" for="receive_notifications">Dostávať notifikácie</label>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <button type="submit" class="btn btn-primary btn-sm">Update User</button>
-                        <button type="button" class="btn btn-link text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Upraviť Používateľa</button>
+                        <button type="button" class="btn btn-link text-primary btn-sm" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Zmeniť Heslo</button>
                     </div>
                 </form>
             </div>
@@ -54,26 +54,26 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-dark text-white">
-                        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                        <h5 class="modal-title" id="changePasswordModalLabel">Zmeniť Heslo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body bg-dark text-white">
                         <div class="form-group mb-2">
-                            <label for="current_password" class="form-label h6">Current Password</label>
+                            <label for="current_password" class="form-label h6">Aktuálne Heslo</label>
                             <input type="password" class="form-control form-control-sm" id="current_password" name="current_password" autocomplete="current-password">
                         </div>
                         <div class="form-group mb-2">
-                            <label for="new_password" class="form-label h6">New Password</label>
+                            <label for="new_password" class="form-label h6">Nové Heslo</label>
                             <input type="password" class="form-control form-control-sm" id="new_password" name="new_password" minlength="8" autocomplete="new-password">
                         </div>
                         <div class="form-group mb-2">
-                            <label for="new_password_confirmation" class="form-label h6">Confirm New Password</label>
+                            <label for="new_password_confirmation" class="form-label h6">Potvrďte Nové Heslo</label>
                             <input type="password" class="form-control form-control-sm" id="new_password_confirmation" name="new_password_confirmation" minlength="8" autocomplete="new-password">
                         </div>
                     </div>
                     <div class="modal-footer bg-dark text-white">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" id="changePasswordButton">Change Password</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Zatvoriť</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="changePasswordButton">Zmeniť Heslo</button>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
 
                 // Basic validation (more can be added)
                 if (newPassword !== newPasswordConfirmation) {
-                    alert("New passwords do not match!");
+                    alert("Nové heslá sa nezhodujú!");
                     document.getElementById("new_password_confirmation").focus(); // Focus on the confirmation field
                     return;
                 }
@@ -113,15 +113,15 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert("Password changed successfully!");
+                        alert("Heslo bolo úspešne zmenené!");
                         // Optionally, close the modal or redirect to a different page
                     } else {
-                        alert("Error changing password: " + data.message);
+                        alert("Chyba pri zmene hesla: " + data.message);
                     }
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    alert("An error occurred. Please try again later.");
+                    alert("Vyskytla sa chyba. Skúste to prosím neskôr.");
                 });
             });
         });

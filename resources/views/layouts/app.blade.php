@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
- 
 </head>
 <body>
   <script type="text/javascript" src="https://gw.sandbox.gopay.com/gp-gw/js/embed.js"></script>
@@ -37,19 +36,19 @@
 
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link{{ Request::is('/') ? ' active' : '' }}" href="{{ url('/home') }}">Home</a>
+              <a class="nav-link{{ Request::is('/') ? ' active' : '' }}" href="{{ url('/home') }}">Domov</a>
             </li>
 
             @guest
               @if (Route::has('login'))
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                  <a class="nav-link" href="{{ route('login') }}">{{ __('Prihlásiť sa') }}</a>
                 </li>
               @endif
 
               @if (Route::has('register'))
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                  <a class="nav-link" href="{{ route('register') }}">{{ __('Registrácia') }}</a>
                 </li>
               @endif
             @else
@@ -62,7 +61,7 @@
                 <a class="dropdown-item" href="{{ route('logout') }}"
                    onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
-                  {{ __('Logout') }}
+                  {{ __('Odhlásiť sa') }}
                 </a>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -77,7 +76,7 @@
             </li>
             @if(Auth::user()->role === 1)
               <li class="nav-item">
-                <span class="nav-link">Credit: {{ sprintf('%d€', Auth::user()->Client->credit ?? 0) }}</span>
+                <span class="nav-link">Kredit: {{ sprintf('%d€', Auth::user()->Client->credit ?? 0) }}</span>
               </li>
             @endif
             @endguest
@@ -98,7 +97,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <h5>Links</h5>
+            <h5>Odkazy</h5>
             <ul class="footer-links">
               <li><a href="https://www.facebook.com/77fitness.sk" target="_blank"><i class="bi bi-facebook"></i> Facebook</a></li>
               <li><a href="https://www.instagram.com/77fitness.sk/" target="_blank"><i class="bi bi-instagram"></i> Instagram</a></li>
@@ -107,10 +106,10 @@
             </ul>
           </div>
           <div class="col-md-4">
-            <h5>Contact</h5>
+            <h5>Kontakt</h5>
             <ul class="footer-links">
               <li><a href="https://maps.app.goo.gl/VVZhQ86zmW1foxgB7" target="_blank"><i class="bi bi-geo-alt"></i> Bajkalska 2/i, Bratislava, Slovakia</a></li>
-              <li><i class="bi bi-clock"></i> Open Hours:
+              <li><i class="bi bi-clock"></i> Otváracie hodiny:
                 <ul class="footer-links">
                   <li>Po - Pia: 5:30 – 22:00</li>                  
                   <li>So - Ne, Sviatky: 8:00 – 22:00</li>
@@ -119,7 +118,7 @@
             </ul>
           </div>
           <div class="col-md-4">
-            <h5>Follow Us</h5>
+            <h5>Sledujte nás</h5>
             <div class="social-icons">
               <a href="https://www.facebook.com/77fitness.sk" target="_blank"><i class="bi bi-facebook"></i></a>
               <a href="https://www.instagram.com/77fitness.sk/" target="_blank"><i class="bi bi-instagram"></i></a>
@@ -140,7 +139,7 @@
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        background-color: #141619; /* Black background */
+        background-color: #141619; /* Čierne pozadie */
         background-image: 
           radial-gradient(circle at 10% 20%, #ff00ff, transparent 20%),
           radial-gradient(circle at 80% 10%, #00c3ff, transparent 20%),

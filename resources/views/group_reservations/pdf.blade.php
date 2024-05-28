@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Participants</title>
+    <title>Účastníci</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -20,17 +20,17 @@
     </style>
 </head>
 <body>
-    <h1>Group Reservation Participants</h1>
-    <p><strong>Trainer:</strong> {{ $groupReservation->trainer->user->first_name }} {{ $groupReservation->trainer->user->last_name }}</p>
-    <p><strong>Start Time:</strong> {{ $groupReservation->start_reservation }}</p>
-    <p><strong>End Time:</strong> {{ $groupReservation->end_reservation }}</p>
-    <p><strong>Room:</strong> {{ $groupReservation->room->name }}</p>
-    <p><strong>Participants:</strong></p>
+    <h1>Účastníci skupinovej rezervácie</h1>
+    <p><strong>Tréner:</strong> {{ $groupReservation->trainer->user->first_name }} {{ $groupReservation->trainer->user->last_name }}</p>
+    <p><strong>Začiatok:</strong> {{ $groupReservation->start_reservation }}</p>
+    <p><strong>Koniec:</strong> {{ $groupReservation->end_reservation }}</p>
+    <p><strong>Miestnosť:</strong> {{ $groupReservation->room->name }}</p>
+    <p><strong>Účastníci:</strong></p>
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Paid by:</th>
+                <th>Meno</th>
+                <th>Zaplatené kým:</th>
             </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@
                     @if($participant->client && $participant->client->user)
                         <td>{{ $participant->client->user->first_name }} {{ $participant->client->user->last_name }}</td>
                     @else
-                        <td>Unknown</td>
+                        <td>Neznáme</td>
                     @endif
                 </tr>
             @endforeach

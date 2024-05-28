@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="container mt-5">
-        <h1 class="text-white text-center mb-4">Trainers List</h1>
+        <h1 class="text-white text-center mb-4">Zoznam Trénerov</h1>
         @if (Auth::check())
-            <a href="/home" class="btn btn-outline-secondary mb-4">Go back</a>
+            <a href="/home" class="btn btn-outline-secondary mb-4">Späť</a>
         @else
-            <a href="/" class="btn btn-outline-secondary mb-4">Go back</a>
+            <a href="/" class="btn btn-outline-secondary mb-4">Späť</a>
         @endif
          
         @if(session('success'))
@@ -20,9 +20,9 @@
                         <div class="card h-100 bg-dark text-white shadow-lg border-0 rounded-lg" style="border-radius: 15px;">
                             <div class="profile-picture-container" style="max-height: 300px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
                                 @if($trainer->profile_photo)
-                                    <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" alt="Profile Picture" class="img-fluid" style="max-width: 100%; max-height: 100%; border-radius: 15px 15px 0 0;">
+                                    <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" alt="Profilová Fotka" class="img-fluid" style="max-width: 100%; max-height: 100%; border-radius: 15px 15px 0 0;">
                                 @else
-                                    <span class="text-center">No Profile Photo</span>
+                                    <span class="text-center">Bez Profilovej Fotky</span>
                                 @endif
                             </div>
                             <div class="card-body">
@@ -32,20 +32,20 @@
                             </div>
                             <div class="card-footer d-flex justify-content-between">
                                 @if (Auth::check())
-                                    <a href="{{ route('trainers.edit', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary btn-sm btn-block" style="width: 48%;">Edit</a>
+                                    <a href="{{ route('trainers.edit', ['trainer' => $trainer->user_id]) }}" class="btn btn-primary btn-sm btn-block" style="width: 48%;">Upraviť</a>
                                     <form action="{{ route('trainers.destroy', ['trainer' => $trainer->user_id]) }}" method="POST" style="display:inline; width: 48%;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btn-block">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm btn-block">Vymazať</button>
                                     </form>
-                                    @endif
-                                </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 @endforeach
             </div>
         @else
-            <p class="text-white text-center">No trainers found.</p>
+            <p class="text-white text-center">Žiadni tréneri nenájdení.</p>
         @endif
     </div>
 
@@ -71,7 +71,7 @@
 
         .card-footer .btn {
             margin-top: 10px;
-            width: 100%; /* Make buttons full width */
+            width: 100%; /* Zabezpečiť, aby boli tlačidlá po celej šírke */
         }
 
         .alert {
@@ -85,8 +85,7 @@
         }
 
         .btn {
-            width: 100%; /* Ensure buttons are full width */
+            width: 100%; /* Zabezpečiť, aby boli tlačidlá po celej šírke */
         }
-
     </style>
 @endsection

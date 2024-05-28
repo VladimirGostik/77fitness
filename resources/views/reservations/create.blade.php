@@ -3,8 +3,8 @@
 @section('content')
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-white">Create Reservation</h1>
-        <a href="/home" class="btn btn-outline-secondary">Go back</a>
+        <h1 class="text-white">Vytvoriť rezerváciu</h1>
+        <a href="/home" class="btn btn-outline-secondary">Späť</a>
     </div>
 
     @if (session('success'))
@@ -25,9 +25,9 @@
             @csrf
 
             <div class="form-group mb-3">
-                <label for="client_id" class="text-white">Client:</label>
+                <label for="client_id" class="text-white">Klient:</label>
                 <select class="form-select bg-secondary text-white border-0" name="client_id" id="client_id">
-                    <option value="">Select Client</option>
+                    <option value="">Vyberte klienta</option>
                     @if (isset($clients))
                         @foreach ($clients as $client)
                             <option value="{{ $client->user_id }}">
@@ -35,32 +35,32 @@
                             </option>
                         @endforeach
                     @else
-                        <option disabled>Clients not loaded</option>
+                        <option disabled>Klienti neboli načítaní</option>
                     @endif
                 </select>
             </div>
 
             <div class="form-group mb-3">
-                <label for="start_time" class="text-white">Start Time:</label>
+                <label for="start_time" class="text-white">Začiatok:</label>
                 <input type="time" name="start_time" required class="form-control bg-secondary text-white border-0">
             </div>
 
             <div class="form-group mb-3">
-                <label for="end_time" class="text-white">End Time:</label>
+                <label for="end_time" class="text-white">Koniec:</label>
                 <input type="time" name="end_time" required class="form-control bg-secondary text-white border-0">
             </div>
 
             <div class="form-group mb-3">
-                <label for="reservation_date" class="text-white">Date:</label>
+                <label for="reservation_date" class="text-white">Dátum:</label>
                 <input type="date" name="reservation_date" required class="form-control bg-secondary text-white border-0">
             </div>
 
             <div class="form-group mb-3">
-                <label for="reservation_price" class="text-white">Reservation Price:</label>
+                <label for="reservation_price" class="text-white">Cena rezervácie:</label>
                 <input type="number" name="reservation_price" id="reservation_price" class="form-control bg-secondary text-white border-0" step="0.01" value="{{ $sessionPrice }}" required>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block mt-3">Create Regular Reservation</button>
+            <button type="submit" class="btn btn-primary btn-block mt-3">Vytvoriť rezerváciu</button>
         </form>
     </div>
 
@@ -112,17 +112,17 @@
     }
 
     label {
-        color: #ffffff; /* Ensure labels are visible */
+        color: #ffffff;
     }
 
     .container {
-        text-align: center; /* Center align the content */
+        text-align: center;
     }
 
     #regular-reservation-fields, #group-reservation-fields {
-        margin: 0 auto; /* Center the fields */
-        max-width: 500px; /* Adjust the maximum width as needed */
-        background-color: #343a40; /* Dark background color */
+        margin: 0 auto;
+        max-width: 500px;
+        background-color: #343a40;
         padding: 20px;
         border: 1px solid #454d55;
         border-radius: 10px;

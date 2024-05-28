@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Trainer Profile')
+@section('title', 'Profil Trénera')
 
 @section('content')
     @if (session('error'))
@@ -12,36 +12,36 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-4">
-                <h1 class="text-white text-center mb-4">Trainer Profile</h1>
+                <h1 class="text-white text-center mb-4">Profil Trénera</h1>
                 @if (Auth::check())
-                    <a href="/home" class="btn btn-outline-secondary mb-4">Go back</a>
+                    <a href="/home" class="btn btn-outline-secondary mb-4">Späť</a>
                 @else
-                    <a href="/" class="btn btn-outline-secondary mb-4">Go back</a>
+                    <a href="/" class="btn btn-outline-secondary mb-4">Späť</a>
                 @endif
                 <div class="card bg-dark text-white shadow-lg border-0 rounded-lg p-4">
                     @if($trainer->profile_photo)
-                        <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" alt="Profile Picture" class="img-fluid rounded mb-4">
+                        <img src="{{ asset('storage/profile_photos/' . $trainer->profile_photo) }}" alt="Profilová Fotka" class="img-fluid rounded mb-4">
                     @else
-                        <span class="text-white">No Profile Photo</span>
+                        <span class="text-white">Bez Profilovej Fotky</span>
                     @endif
-                    <h3>Name: {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</h3>
-                    <p><strong>Specialization: </strong>{{ $trainer->specialization }}</p>
-                    <p><strong>Description: </strong>{{ $trainer->description }}</p>
-                    <p><strong>Session Price: </strong>{{ $trainer->session_price }} EUR</p>
+                    <h3>Meno: {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</h3>
+                    <p><strong>Špecializácia: </strong>{{ $trainer->specialization }}</p>
+                    <p><strong>Popis: </strong>{{ $trainer->description }}</p>
+                    <p><strong>Cena za Tréning: </strong>{{ $trainer->session_price }} EUR</p>
                 </div>
             </div>
             <div class="col-md-8">
-                <h2 class="text-white text-center mb-4">Training Calendar</h2>
+                <h2 class="text-white text-center mb-4">Tréningový Kalendár</h2>
                 <div id='calendar' class="bg-light p-3 rounded"></div>
                 @if ($trainer->profilePhotos->count() > 0)
-                    <h3 class="text-white text-center mt-4">Photos from Gallery</h3>
+                    <h3 class="text-white text-center mt-4">Fotografie z Galérie</h3>
                     <div class="d-flex flex-wrap justify-content-center">
                         @foreach ($trainer->profilePhotos as $photo)
                             <img src="{{ asset('storage/trainer_gallery_photos/' . $photo->filename) }}" alt="{{ $photo->filename }}" class="img-thumbnail m-2" style="max-width: 150px; max-height: 150px;">
                         @endforeach
                     </div>
                 @else
-                    <p class="text-white text-center mt-4">No gallery photos found for this trainer.</p>
+                    <p class="text-white text-center mt-4">Žiadne galérie fotiek neboli nájdené pre tohto trénera.</p>
                 @endif
             </div>
         </div>
@@ -51,13 +51,13 @@
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Reservation Details</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Detaily Rezervácie</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="submitReservation" class="btn btn-primary">Submit Reservation</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvoriť</button>
+                    <button id="submitReservation" class="btn btn-primary">Odoslať Rezerváciu</button>
                 </div>
             </div>
         </div>
@@ -67,26 +67,26 @@
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="groupReservationModalLabel">Group Reservation Details</h5>
+                    <h5 class="modal-title" id="groupReservationModalLabel">Detaily Skupinovej Rezervácie</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div id="group-reservation-details">
-                        <p><strong>Trainer:</strong> <span id="trainer-name"></span></p>
-                        <p><strong>Start Time:</strong> <span id="start-time"></span></p>
-                        <p><strong>End Time:</strong> <span id="end-time"></span></p>
-                        <p><strong>Price per participant:</strong> 12 EUR</p>
-                        <p><strong>Total Price:</strong> <span id="total-price">12</span> EUR</p>
+                        <p><strong>Tréner:</strong> <span id="trainer-name"></span></p>
+                        <p><strong>Čas Začiatku:</strong> <span id="start-time"></span></p>
+                        <p><strong>Čas Konca:</strong> <span id="end-time"></span></p>
+                        <p><strong>Cena za účastníka:</strong> 12 EUR</p>
+                        <p><strong>Celková Cena:</strong> <span id="total-price">12</span> EUR</p>
                         <ul id="participant-list"></ul>
                     </div>
                     <div id="participant-container"></div>
                     <div class="participant-input mt-2">
-                        <button type="button" class="btn btn-success btn-sm add-participant">Add participant +</button>
+                        <button type="button" class="btn btn-success btn-sm add-participant">Pridať účastníka +</button>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="submitGroupReservation">Submit Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvoriť</button>
+                    <button type="button" class="btn btn-primary" id="submitGroupReservation">Odoslať Zmeny</button>
                 </div>
             </div>
         </div>
@@ -181,7 +181,7 @@
                     if (participantContainer) {
                         var newInput = document.createElement('div');
                         newInput.classList.add('participant-input', 'd-flex', 'align-items-center', 'mt-2');
-                        newInput.innerHTML = '<input type="text" name="participant_name[]" placeholder="Participant Name" class="form-control form-control-sm mr-2">' +
+                        newInput.innerHTML = '<input type="text" name="participant_name[]" placeholder="Meno Účastníka" class="form-control form-control-sm mr-2">' +
                             '<button type="button" class="btn btn-danger btn-sm remove-participant">-</button>';
                         participantContainer.appendChild(newInput);
                         updateTotalPrice();
@@ -212,7 +212,7 @@
                     @if (Auth::check())
                         @foreach($reservations->where('trainer_id', $trainer->user_id) as $reservation)
                         {
-                            title: '{{ Auth::user()->role == 2 ? ($reservation->client_id ? $reservation->client->user->last_name : 'Free') : ($reservation->client_id ? 'Reserved' : 'Free') }}',
+                            title: '{{ Auth::user()->role == 2 ? ($reservation->client_id ? $reservation->client->user->last_name : 'Voľné') : ($reservation->client_id ? 'Rezervované' : 'Voľné') }}',
                             start: '{{ $reservation->start_reservation->toIso8601String() }}',
                             end: '{{ $reservation->end_reservation->toIso8601String() }}',
                             data: {!! json_encode($reservation) !!},
@@ -224,7 +224,7 @@
                     @else
                     @foreach($reservations->where('trainer_id', $trainer->user_id) as $reservation)
                         {
-                            title: '{{ $reservation->client_id ? 'Reserved' : 'Free' }}',
+                            title: '{{ $reservation->client_id ? 'Rezervované' : 'Voľné' }}',
                             start: '{{ $reservation->start_reservation->toIso8601String() }}',
                             end: '{{ $reservation->end_reservation->toIso8601String() }}',
                             data: {!! json_encode($reservation) !!},          
@@ -271,7 +271,7 @@
                             info.jsEvent.preventDefault();
                             return;
                         }
-                        @endif
+                    @endif
                 }
             });
 
@@ -282,12 +282,12 @@
                 if (type === 'reservation') {
                     var startTime = formatDateTime(data.start_reservation);
                     var endTime = formatDateTime(data.end_reservation);
-                    $('#reservationModal .modal-title').text('Reservation Details');
+                    $('#reservationModal .modal-title').text('Detaily Rezervácie');
                     $('#reservationModal .modal-body').html(
-                        '<p><strong>Trainer:</strong> {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</p>' +
-                        '<p><strong>Start Time:</strong> ' + startTime + '</p>' +
-                        '<p><strong>End Time:</strong> ' + endTime + '</p>' +
-                        '<p><strong>Session Price:</strong> ' + data.reservation_price + ' EUR</p>'
+                        '<p><strong>Tréner:</strong> {{ $trainer->user->first_name }} {{ $trainer->user->last_name }}</p>' +
+                        '<p><strong>Čas Začiatku:</strong> ' + startTime + '</p>' +
+                        '<p><strong>Čas Konca:</strong> ' + endTime + '</p>' +
+                        '<p><strong>Cena za Tréning:</strong> ' + data.reservation_price + ' EUR</p>'
                     );
                     $('#submitReservation').off('click').on('click', function() {
                         $.ajax({
@@ -302,7 +302,7 @@
                             },
                             error: function(xhr, status, error) {
                                 console.error(error);
-                                alert('Failed to submit reservation.');
+                                alert('Rezerváciu sa nepodarilo odoslať.');
                             }
                         });
                     });
@@ -348,18 +348,18 @@
                                     },
                                     error: function(xhr, status, error) {
                                         console.error(error);
-                                        alert('Failed to submit Group Reservation.');
+                                        alert('Skupinovú Rezerváciu sa nepodarilo odoslať.');
                                     }
                                 });
                             });
                         },
                         error: function(xhr, status, error) {
                             console.error(error);
-                            alert('Failed to fetch group participants.');
+                            alert('Nepodarilo sa načítať účastníkov skupiny.');
                         }
                     });
                 } else {
-                    console.error("Invalid type or participants data.");
+                    console.error("Neplatný typ alebo údaje účastníkov.");
                 }
             }
 
@@ -388,7 +388,7 @@
                         var year = dateObj.getFullYear();
                         return hours + ':' + minutes + '  ' + day + '.' + month + '.' + year;
                     } else {
-                        console.error("Invalid date format passed to formatDateTime:", dateTime);
+                        console.error("Neplatný formát dátumu prenesený do formatDateTime:", dateTime);
                         return ""; // Alebo vrátiť nejakú predvolenú hodnotu
                     }
                 }

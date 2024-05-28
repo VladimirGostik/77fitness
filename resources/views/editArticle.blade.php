@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container mt-5">
-        <h1 class="text-white text-center">Edit Article</h1>
-        <a href="/home" class="btn btn-outline-secondary mb-3 btn-sm">Go back</a>
+        <h1 class="text-white text-center">Upraviť Článok</h1>
+        <a href="/home" class="btn btn-outline-secondary mb-3 btn-sm">Späť</a>
 
         <div class="mt-5">
             @if($errors->any())
@@ -27,22 +27,22 @@
             <div class="card-body p-3">
                 {!! Form::open(['route' => ['articles.update', $article->id], 'method' => 'POST','enctype' => 'multipart/form-data']) !!}
                     <div class="form-group mb-3">
-                        {{ Form::label('title', 'Title', ['class' => 'form-label h6']) }}
-                        {{ Form::text('title', $article->title, ['class' => 'form-control form-control-sm', 'placeholder' => 'Title']) }}
+                        {{ Form::label('title', 'Názov', ['class' => 'form-label h6']) }}
+                        {{ Form::text('title', $article->title, ['class' => 'form-control form-control-sm', 'placeholder' => 'Názov']) }}
                     </div>
                     <div class="form-group mb-3">
-                        {{ Form::label('content', 'Content', ['class' => 'form-label h6']) }}
-                        {{ Form::textarea('content', $article->content, ['class' => 'form-control form-control-sm', 'placeholder' => 'Content']) }}
+                        {{ Form::label('content', 'Obsah', ['class' => 'form-label h6']) }}
+                        {{ Form::textarea('content', $article->content, ['class' => 'form-control form-control-sm', 'placeholder' => 'Obsah']) }}
                     </div>
                     <div class="form-group mb-3">
-                        {{ Form::label('cover_image', 'Cover Image', ['class' => 'form-label h6']) }}
+                        {{ Form::label('cover_image', 'Obrázok', ['class' => 'form-label h6']) }}
                         <div class="custom-file">
                             {{ Form::file('cover_image', ['class' => 'custom-file-input', 'id' => 'cover_image']) }}
-                            {{ Form::label('cover_image', 'Choose file', ['class' => 'custom-file-label']) }}
+                            {{ Form::label('cover_image', 'Vyberte súbor', ['class' => 'custom-file-label']) }}
                         </div>
                     </div>
                     {{ Form::hidden('_method', 'PUT') }}
-                    {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-block btn-sm']) }}
+                    {{ Form::submit('Odoslať', ['class' => 'btn btn-primary btn-block btn-sm']) }}
                 {!! Form::close() !!}
             </div>
         </div>

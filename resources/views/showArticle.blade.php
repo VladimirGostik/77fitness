@@ -7,7 +7,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <a href="{{ route('articles.index') }}" class="btn btn-outline-secondary mb-3">Go back</a>
+            <a href="{{ route('articles.index') }}" class="btn btn-outline-secondary mb-3">Späť</a>
             <h1 class="text-white">{{ $article->title }}</h1>
             <img class="img-fluid mb-4 article-image" src="/storage/cover_images/{{ $article->cover_image }}" alt="{{ $article->title }}">
         </div>
@@ -21,12 +21,12 @@
             <hr>
             @auth
                 @if(auth()->user()->id === $article->user_id || auth()->user()->role === 3)
-                    <small class="text-white">Written on {{ $article->created_at }}</small>
-                    <a href="{{ route('articles.edit', ['article' => $article->id]) }}" class="btn btn-outline-secondary ml-3">Edit</a>
+                    <small class="text-white">Napísané dňa {{ $article->created_at }}</small>
+                    <a href="{{ route('articles.edit', ['article' => $article->id]) }}" class="btn btn-outline-secondary ml-3">Upraviť</a>
                     <form action="{{ route('articles.destroy', ['article' => $article->id]) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger ml-2">Delete</button>
+                        <button type="submit" class="btn btn-danger ml-2">Vymazať</button>
                     </form>
                 @endif
             @endauth
@@ -37,14 +37,14 @@
         <div class="col-md-6">
             @if ($previous)
                 <a href="{{ route('articles.show', ['article' => $previous->id]) }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left"></i> Previous Article
+                    <i class="fas fa-arrow-left"></i> Predchádzajúci článok
                 </a>
             @endif
         </div>
         <div class="col-md-6 text-right">
             @if ($next)
                 <a href="{{ route('articles.show', ['article' => $next->id]) }}" class="btn btn-outline-secondary">
-                    Next Article <i class="fas fa-arrow-right"></i>
+                    Ďalší článok <i class="fas fa-arrow-right"></i>
                 </a>
             @endif
         </div>
@@ -61,7 +61,7 @@
         }
 
         .article-image {
-            width: 80%; /* Set the image width to 80% */
+            width: 80%; /* Nastavenie šírky obrázku na 80% */
             margin: auto;
             display: block;
         }

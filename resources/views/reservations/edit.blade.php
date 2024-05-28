@@ -3,8 +3,8 @@
 @section('content')
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-white">Edit Reservation</h1>
-            <a href="/reservations" class="btn btn-outline-secondary">Go back</a>
+            <h1 class="text-white">Upraviť rezerváciu</h1>
+            <a href="/reservations" class="btn btn-outline-secondary">Späť</a>
         </div>
 
         @if(session('success'))
@@ -17,23 +17,23 @@
                 @method('PUT')
 
                 <div class="form-group mb-3">
-                    <label for="start_time" class="text-white">Start Time:</label>
+                    <label for="start_time" class="text-white">Začiatok:</label>
                     <input type="time" name="start_time" class="form-control bg-secondary text-white border-0" value="{{ date('H:i', strtotime($reservation->start_reservation)) }}" required>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="end_time" class="text-white">End Time:</label>
+                    <label for="end_time" class="text-white">Koniec:</label>
                     <input type="time" name="end_time" class="form-control bg-secondary text-white border-0" value="{{ date('H:i', strtotime($reservation->end_reservation)) }}" required>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="reservation_price" class="text-white">Reservation Price:</label>
+                    <label for="reservation_price" class="text-white">Cena rezervácie:</label>
                     <input type="number" name="reservation_price" class="form-control bg-secondary text-white border-0" value="{{ $reservation->reservation_price }}" step="0.01" required>
                 </div>
 
                 <!-- Add other fields as needed -->
 
-                <button type="submit" class="btn btn-primary">Update Reservation</button>
+                <button type="submit" class="btn btn-primary">Upraviť rezerváciu</button>
             </form>
         </div>
     </div>

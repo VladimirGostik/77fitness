@@ -15,17 +15,17 @@ class PaymentsController extends Controller
 {
     protected $goPay;
 
-    public function __construct()
-    {
-        $this->goPay = GoPay::payments([
-            'goid' => env('GOPAY_GOID'),
-            'clientId' => env('GOPAY_CLIENT_ID'),
-            'clientSecret' => env('GOPAY_CLIENT_SECRET'),
-            'isProductionMode' => true,
-            'scope' => GoPay::FULL,
-            'language' => Language::SLOVAK,
-        ]);
-    }
+    // public function __construct()
+    // {
+    //     $this->goPay = GoPay::payments([
+    //         'goid' => env('GOPAY_GOID'),
+    //         'clientId' => env('GOPAY_CLIENT_ID'),
+    //         'clientSecret' => env('GOPAY_CLIENT_SECRET'),
+    //         'isProductionMode' => true,
+    //         'scope' => GoPay::FULL,
+    //         'language' => Language::SLOVAK,
+    //     ]);
+    // }
 
 
     public function index(Request $request)

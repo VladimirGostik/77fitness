@@ -1,15 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Users List')
+@section('title', 'Zoznam Používateľov')
 @section('content')
     <div class="container mt-5 rounded bg-dark text-white p-4 shadow-lg">
-        <h1 class="text-white text-center mb-4">Users List</h1>
-        <a href="/home" class="btn btn-outline-secondary mb-4">Go back</a>
+        <h1 class="text-white text-center mb-4">Zoznam Používateľov</h1>
+        <a href="/home" class="btn btn-outline-secondary mb-4">Späť</a>
 
         <form action="{{ route('users.index') }}" method="GET" class="mb-4">
             @csrf
             <div class="input-group">
-                <input type="text" name="query" class="form-control" placeholder="Search users" value="{{ $query }}">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <input type="text" name="query" class="form-control" placeholder="Hľadať používateľov" value="{{ $query }}">
+                <button type="submit" class="btn btn-primary">Hľadať</button>
             </div>
         </form>
 
@@ -26,18 +26,18 @@
                             <p class="mb-1">{{ $user->email }}</p>
                         </div>
                         <div class="btn-group" role="group">
-                            <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-primary btn-sm">Upraviť</a>
                             <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ste si istí, že chcete odstrániť tohto používateľa?')">Vymazať</button>
                             </form>
                         </div>
                     </div>
                 @endforeach
             </div>
         @else
-            <p class="text-white">No users found.</p>
+            <p class="text-white">Žiadni používatelia neboli nájdení.</p>
         @endif
     </div>
 

@@ -18,32 +18,32 @@
         <div class="alert alert-success">{{session('success')}}</div>
     @endif
 
-    <h2 class="text-white text-center mb-4">Send Email</h2>
+    <h2 class="text-white text-center mb-4">Odoslanie emailu</h2>
 
     <div class="card bg-dark text-white shadow-lg border-0 rounded-lg p-4">
         <div class="card-body">
             <div class="form-group mb-4 text-center">
-                <button type="button" id="send-all-users" class="btn btn-outline-primary mr-2 mb-2">Send to All Users</button>
-                <button type="button" id="send-to-trainers" class="btn btn-outline-primary mr-2 mb-2">Send to Trainers</button>
-                <button type="button" id="send-to-clients" class="btn btn-outline-primary mr-2 mb-2">Send to Clients</button>
-                <button type="button" id="send-to-specific-users" class="btn btn-outline-primary mr-2 mb-2">Send to One user...</button>
+                <button type="button" id="send-all-users" class="btn btn-outline-primary mr-2 mb-2">Odoslať všetkým používateľom</button>
+                <button type="button" id="send-to-trainers" class="btn btn-outline-primary mr-2 mb-2">Odoslať trénerom</button>
+                <button type="button" id="send-to-clients" class="btn btn-outline-primary mr-2 mb-2">Odoslať klientom</button>
+                <button type="button" id="send-to-specific-users" class="btn btn-outline-primary mr-2 mb-2">Odoslať jednému používateľovi...</button>
             </div>
 
             <form id="email-form" action="{{ route('admin.sendEmail') }}" method="post">
                 @csrf
                 <div class="form-group mb-3">
-                    <label for="recipient" class="form-label">Recipient:</label>
+                    <label for="recipient" class="form-label">Príjemca:</label>
                     <input id="recipient" name="recipient" class="form-control" readonly> <!-- Hidden input to store recipient type -->
                 </div>
                 <div class="form-group mb-3">
-                    <label for="subject" class="form-label">Subject:</label>
+                    <label for="subject" class="form-label">Predmet:</label>
                     <input type="text" name="subject" id="subject" class="form-control" required>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="content" class="form-label">Content:</label>
+                    <label for="content" class="form-label">Obsah:</label>
                     <textarea name="content" id="content" class="form-control" rows="5" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Send Email</button>
+                <button type="submit" class="btn btn-primary btn-block">Odoslať email</button>
             </form>
         </div>
     </div>
@@ -54,17 +54,17 @@
         const users = {!! json_encode($users) !!};
 
         document.getElementById('send-all-users').addEventListener('click', function() {
-            document.getElementById('recipient').value = 'All Users';
+            document.getElementById('recipient').value = 'Všetci používatelia';
             document.getElementById('recipient').readOnly = true;
         });
 
         document.getElementById('send-to-trainers').addEventListener('click', function() {
-            document.getElementById('recipient').value = 'Trainers';
+            document.getElementById('recipient').value = 'Tréneri';
             document.getElementById('recipient').readOnly = true;
         });
 
         document.getElementById('send-to-clients').addEventListener('click', function() {
-            document.getElementById('recipient').value = 'Clients';
+            document.getElementById('recipient').value = 'Klienti';
             document.getElementById('recipient').readOnly = true;
         });
 

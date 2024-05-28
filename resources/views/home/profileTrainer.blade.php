@@ -2,15 +2,15 @@
 
 @section('content')
     <div class="container">
-        <h1 class="text-center text-white mb-4 center">Welcome {{ Auth::user()->first_name }}, this is your profile Trainer page!</h1>
+        <h1 class="text-center text-white mb-4 center">Vitaj {{ Auth::user()->first_name }}, toto je tvoja profilová stránka Trénera!</h1>
         <div class="row mt-4">
 
             <div class="col-md-4 mb-4">
                 <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-envelope fa-2x mb-3"></i>
-                        <h5 class="card-title"> Edit Profile</h5>
-                        <a href="{{ route('trainers.edit', ['trainer' => Auth::user()->trainer->user_id])}}" class="btn btn-primary">Go</a>
+                        <h5 class="card-title"> Upraviť profil</h5>
+                        <a href="{{ route('trainers.edit', ['trainer' => Auth::user()->trainer->user_id])}}" class="btn btn-primary">Choď</a>
                     </div>
                 </div>
             </div>
@@ -19,8 +19,8 @@
                 <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-envelope fa-2x mb-3"></i>
-                        <h5 class="card-title"> Create Article</h5>
-                        <a href="{{ route('articles.create') }}" class="btn btn-primary">Go</a>
+                        <h5 class="card-title"> Vytvoriť článok</h5>
+                        <a href="{{ route('articles.create') }}" class="btn btn-primary">Choď</a>
                     </div>
                 </div>
             </div>
@@ -28,8 +28,8 @@
                 <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-envelope fa-2x mb-3"></i>
-                        <h5 class="card-title"> Edit Articles</h5>
-                        <a href="{{ route('articles.index') }}" class="btn btn-primary">Go</a>
+                        <h5 class="card-title"> Upraviť články</h5>
+                        <a href="{{ route('articles.index') }}" class="btn btn-primary">Choď</a>
                     </div>
                 </div>
             </div>
@@ -37,8 +37,8 @@
                 <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-envelope fa-2x mb-3"></i>
-                        <h5 class="card-title">Create Reservation</h5>
-                        <a href="{{ route('reservations.create') }}" class="btn btn-primary">Go</a>
+                        <h5 class="card-title">Vytvoriť rezerváciu</h5>
+                        <a href="{{ route('reservations.create') }}" class="btn btn-primary">Choď</a>
                     </div>
                 </div>
             </div>
@@ -46,17 +46,17 @@
                 <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
                         <i class="fas fa-envelope fa-2x mb-3"></i>
-                        <h5 class="card-title">All Reservation</h5>
-                        <a href="{{ route('reservations.index') }}" class="btn btn-primary">Go</a>
+                        <h5 class="card-title">Všetky rezervácie</h5>
+                        <a href="{{ route('reservations.index') }}" class="btn btn-primary">Choď</a>
                     </div>
                 </div>
             </div>
       {{-- 
             <a href="{{ route('group-reservations.create') }}">
-                <i class="fas fa-users"></i> Create Group Reservation
+                <i class="fas fa-users"></i> Vytvoriť skupinovú rezerváciu
             </a> <br>
 --}}
-            <!-- Add more actions as needed -->
+            <!-- Pridajte ďalšie akcie podľa potreby -->
         </div>
     </div>
 

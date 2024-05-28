@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Articles')
+@section('title', 'Články')
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="text-white">Articles</h1>
+        <h1 class="text-white">Články</h1>
         @if (Auth::check())
-            <a href="/home" class="btn btn-outline-secondary mb-3">Go back</a>
+            <a href="/home" class="btn btn-outline-secondary mb-3">Späť</a>
         @else
-            <a href="/" class="btn btn-outline-secondary mb-3">Go back</a>
+            <a href="/" class="btn btn-outline-secondary mb-3">Späť</a>
         @endif
         
         @if(session('success'))
@@ -26,9 +26,9 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h3 class="card-title"><a href="/articles/{{ $article->id }}" class="text-decoration-none text-primary">{{ $article->title }}</a></h3>
-                                    <small class="text-muted">Written on {{ $article->created_at }}</small>
+                                    <small class="text-muted">Napísané dňa {{ $article->created_at }}</small>
                                     <p class="card-text mt-2">{{ Str::limit($article->content, 150, '...') }}</p>
-                                    <a href="/articles/{{ $article->id }}" class="btn btn-outline-primary">Read More</a>
+                                    <a href="/articles/{{ $article->id }}" class="btn btn-outline-primary">Čítať viac</a>
                                 </div>
                             </div>
                         </div>
@@ -36,16 +36,16 @@
                 @endforeach
             </div>
         @else
-            <p class="text-white">No articles found.</p>
+            <p class="text-white">Žiadne články neboli nájdené.</p>
         @endif
     </div>
 
     <style>
         .articles-list .card {
             border: none;
-            border-radius: 10px; /* Rounded corners */
-            overflow: hidden; /* Ensure the rounded corners are applied */
-            margin-bottom: 20px; /* Add space between the cards */
+            border-radius: 10px; /* Zaoblené rohy */
+            overflow: hidden; /* Zabezpečiť použitie zaoblených rohov */
+            margin-bottom: 20px; /* Pridať priestor medzi kartami */
         }
         .img-fluid {
             max-height: 200px;
