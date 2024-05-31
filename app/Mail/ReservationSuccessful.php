@@ -18,47 +18,46 @@ class ReservationSuccessful extends Mailable
     public $reservation;
 
     /**
-     * Create a new message instance.
+     * Vytvorenie novej inštancie správy.
      */
     public function __construct(Reservation $reservation)
     {
         $this->reservation = $reservation;
-
     }
 
     public function build()
     {
-        return $this->subject('Reservation Confirmation')->view('emails.reservation-success');
-
+        return $this->subject('Potvrdenie rezervácie') // Nastavenie predmetu emailu
+                    ->view('emails.reservation-success'); // Nastavenie pohľadu pre email
     }
 
     /**
-     * Get the message envelope.
+     * Získanie obálky správy.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Successful',
+            subject: 'Rezervácia úspešná', // Predmet správy
         );
     }
 
     /**
-     * Get the message content definition.
+     * Získanie definície obsahu správy.
      */
     public function content(): Content
     {
         return new Content(
-            view: 'emails.reservation-success',
+            view: 'emails.reservation-success', // Pohľad pre obsah správy
         );
     }
 
     /**
-     * Get the attachments for the message.
+     * Získanie príloh pre správu.
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {
-        return [];
+        return []; // Žiadne prílohy
     }
 }

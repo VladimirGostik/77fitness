@@ -208,6 +208,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                locale: 'sk', 
                 events: [
                     @if (Auth::check())
                         @foreach($reservations->where('trainer_id', $trainer->user_id) as $reservation)

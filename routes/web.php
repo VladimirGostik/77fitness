@@ -67,11 +67,12 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 Route::get('/users/{id}', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::post('/users/{user}/change-password', [UserController::class, 'changePassword'])->name('users.change-password');
-
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
 Route::resource('trainers', TrainerController::class);
 
@@ -92,17 +93,17 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::get('/group_reservations/{groupReservation}/download_pdf', [GroupReservationController::class, 'downloadPdf'])->name('group_reservations.download_pdf');
 });
 
-Route::get('/trainers/{trainer}', [TrainerController::class, 'show'])->name('trainer.profile');
-Route::post('/group_reservations/{group_reservations}/add-participant', [GroupReservationController::class, 'addParticipant'])->name('add.participant');
-
 Route::group(['middleware' => ['auth', 'client']], function () {
     Route::post('/reservations/{reservation_id}/submit', [ReservationController::class, 'submit']);
     Route::post('/group_reservation/{id}/submit', [GroupReservationController::class, 'submit']);
     Route::get('/group_reservation/{id}/participants', [GroupReservationController::class, 'getParticipants']);
     Route::get('/home/{trainerId}', [HomeController::class, 'getReservations']);
 
-
 });
+
+
+Route::get('/trainers/{trainer}', [TrainerController::class, 'show'])->name('trainer.profile');
+Route::post('/group_reservations/{group_reservations}/add-participant', [GroupReservationController::class, 'addParticipant'])->name('add.participant');
 
 Route::get('/admin/send-email', [AdminController::class, 'showEmailForm'])->name('admin.showEmailForm');
 Route::post('/admin/send-email', [AdminController::class, 'sendEmail'])->name('admin.sendEmail');

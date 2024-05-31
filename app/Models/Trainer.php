@@ -14,12 +14,12 @@ class Trainer extends Model
     protected $primaryKey = 'user_id';
 
     /**
-     * The attributes that are mass assignable.
+     * Atribúty, ktoré sú hromadne priraditeľné.
      *
      * @var array
      */
     protected $fillable = [
-        'user_id', // Add 'user_id' here
+        'user_id', // Pridajte 'user_id' sem
         'specialization',
         'description',
         'experience',
@@ -28,7 +28,7 @@ class Trainer extends Model
     ];
 
     /**
-     * Get the user that owns the trainer.
+     * Získanie používateľa, ktorý vlastní trénera.
      */
     public function user()
     {
@@ -36,29 +36,32 @@ class Trainer extends Model
     }
 
     /**
-     * Get the key for the model.
+     * Získanie kľúča pre model.
      *
      * @return string
      */
     public function getKey()
     {
-        return 'user_id'; // Set the primary key attribute name
+        return 'user_id'; // Nastavenie názvu primárneho kľúča
     }
 
+    /**
+     * Získanie profilových fotografií trénera.
+     */
     public function profilePhotos()
     {
         return $this->hasMany(TrainerGalleryPhoto::class, 'trainer_id');
     }
 
     /**
-     * Get the primary key type.
+     * Typ primárneho kľúča.
      *
      * @return string
      */
     protected $keyType = 'int';
 
     /**
-     * Indicates if the IDs are auto-incrementing.
+     * Indikuje, či sú ID auto-incrementné.
      *
      * @var bool
      */

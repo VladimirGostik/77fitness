@@ -26,5 +26,5 @@ class ChargingCredit extends Model
         return $this->belongsTo(Client::class);
     }
 
-    // Optional: Define additional relationships (e.g., orders)
+   
 }

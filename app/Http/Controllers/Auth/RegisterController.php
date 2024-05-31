@@ -76,7 +76,7 @@ class RegisterController extends Controller
             'receive_notifications' => $data['receive_notifications'],
         ]);
 
-        // Create a client for the user
+        // Vytvaranie clienta
         $clientData = ['user_id' => $user->id];
         $user->client()->create($clientData);
 

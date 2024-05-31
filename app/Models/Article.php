@@ -18,7 +18,7 @@ class Article extends Model
         'title',
         'content',
         'date_time',
-        // Add any additional fields you want to be mass assignable for articles
+        
     ];
 
     public function user(){

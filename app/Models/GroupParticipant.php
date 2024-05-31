@@ -10,7 +10,7 @@ class GroupParticipant extends Model
     use HasFactory;
     
     protected $fillable = [
-        'group_id', // Add this line
+        'group_id', 
         'client_id',
         'name',
     ];

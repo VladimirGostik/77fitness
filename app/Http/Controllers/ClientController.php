@@ -14,6 +14,6 @@ class ClientController extends Controller
         $articles = Article::latest()->take(5)->get();
         $trainers = Trainer::all();
 
-        return view('home.profileClient', compact('articles', 'trainers')); // Pass $trainers to the view
+        return view('home.profileClient', compact('articles', 'trainers')); //Vrat mi to s articlami a aj trenermi
     }
 }

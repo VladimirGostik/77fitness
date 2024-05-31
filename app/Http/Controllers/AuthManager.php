@@ -61,22 +61,21 @@ class AuthManager extends Controller
         'role' => $request->role,
     ];
 
-    // Create the user
+    // Vytvor usera
     $user = User::create($data);
 
     if (!$user) {
         return redirect(route('registration'))->with("error", "Registration details are not valid");
     }
 
-    // Create the associated client
+    // vytvarame klienta, ktory ma id usera
 
     $client = $user->client()->create(['user_id' => $user->id]);
 
     
-    // Log in the user
+    // prihlas usera
     Auth::login($user);
 
-    // Redirect to login route
     return redirect(route('login'))->with("success", "Registration successful");
 }
 

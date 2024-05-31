@@ -10,54 +10,53 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\GroupReservation;
 
-
 class GroupReservationConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $groupReservation; // Change variable name to singular
+    public $groupReservation; // Zmena názvu premennej na jednotné číslo
 
     /**
-     * Create a new message instance.
+     * Vytvorenie novej inštancie správy.
      */
     public function __construct(GroupReservation $groupReservation)
     {
-        $this->groupReservation = $groupReservation; // Change variable name to singular
+        $this->groupReservation = $groupReservation; // Zmena názvu premennej na jednotné číslo
     }
 
     public function build()
     {
-        return $this->subject('Group Reservation successful')
-                    ->view('emails.group_reservation_confirmation');
+        return $this->subject('Group Reservation successful') // Nastavenie predmetu emailu
+                    ->view('emails.group_reservation_confirmation'); // Nastavenie pohľadu pre email
     }
 
     /**
-     * Get the message envelope.
+     * Získanie obálky správy.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Group Reservation Confirmation',
+            subject: 'Group Reservation Confirmation', // Predmet správy
         );
     }
 
     /**
-     * Get the message content definition.
+     * Získanie definície obsahu správy.
      */
     public function content(): Content
     {
         return new Content(
-            view: 'emails.group_reservation_confirmation',
+            view: 'emails.group_reservation_confirmation', // Pohľad pre obsah správy
         );
     }
 
     /**
-     * Get the attachments for the message.
+     * Získanie príloh pre správu.
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {
-        return [];
+        return []; // Žiadne prílohy
     }
 }

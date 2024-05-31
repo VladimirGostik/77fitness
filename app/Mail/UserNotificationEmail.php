@@ -16,7 +16,7 @@ class UserNotificationEmail extends Mailable
     public $content;
 
     /**
-     * Create a new message instance.
+     * Vytvorenie novej inštancie správy.
      */
     public function __construct($subject, $content)
     {
@@ -24,19 +24,19 @@ class UserNotificationEmail extends Mailable
         $this->content = $content;
     }
 
-
     public function build()
     {
-        return $this->subject($this->subject)
-                   ->view('emails.user_notification');
+        return $this->subject($this->subject) // Nastavenie predmetu emailu
+                    ->view('emails.user_notification'); // Nastavenie pohľadu pre email
     }
+
     /**
-     * Get the attachments for the message.
+     * Získanie príloh pre správu.
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {
-        return [];
+        return []; // Žiadne prílohy
     }
 }

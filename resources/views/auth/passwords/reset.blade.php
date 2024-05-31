@@ -5,7 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+                <div class="card-header">
+                    {{ __('Reset Password') }}
+                    <button class="btn btn-sm btn-toggle-dark-mode float-right">Toggle Dark Mode</button>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('password.update') }}">
@@ -62,4 +65,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleDarkModeButton = document.querySelector('.btn-toggle-dark-mode');
+        const body = document.body;
+
+        toggleDarkModeButton.addEventListener('click', function () {
+            body.classList.toggle('dark-mode');
+        });
+    });
+</script>
+
 @endsection

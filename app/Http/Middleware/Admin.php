@@ -15,9 +15,10 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->role !== 3) {
-            abort(403);
-        }        
-        return $next($request);
+        if ($request->user() && $request->user()->role === 3) {
+            return $next($request);
+        }
+        return redirect('/home')->with('error', 'Neoprávnený prístup, iba pre Adminov');
+
     }
 }

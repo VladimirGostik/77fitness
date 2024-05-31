@@ -43,6 +43,15 @@
             <div class="col-md-4 mb-4">
                 <div class="card bg-dark text-white text-center shadow-sm">
                     <div class="card-body">
+                        <i class="fas fa-plus-circle fa-2x mb-3"></i>
+                        <h5 class="card-title">Vytvoriť používateľa</h5>
+                        <a href="{{ route('users.create') }}" class="btn btn-primary">Choď</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white text-center shadow-sm">
+                    <div class="card-body">
                         <i class="fas fa-user fa-2x mb-3"></i>
                         <h5 class="card-title">Upraviť trénerov</h5>
                         <a href="{{ route('trainers.index') }}" class="btn btn-primary">Choď</a>
@@ -72,7 +81,6 @@
 @endsection
 
 <style>
-  
     h1 {
         color: #ffffff;
     }

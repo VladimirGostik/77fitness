@@ -28,7 +28,6 @@ class GroupReservation extends Model
     ];
     
 
-    // Add any relationships or additional logic as needed
     public function trainer()
     {
         return $this->belongsTo(Trainer::class, 'trainer_id');

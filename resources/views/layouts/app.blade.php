@@ -6,6 +6,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@latest/main.min.css">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@latest/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/locales-all.min.js"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ config('app.name', 'Laravel') }}</title>
@@ -19,7 +20,6 @@
 </head>
 <body>
   <script type="text/javascript" src="https://gw.sandbox.gopay.com/gp-gw/js/embed.js"></script>
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 
   <div id="app">
     <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
@@ -129,89 +129,88 @@
       </div>
     </footer>
   </div>
-</body>
 
-<style>
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+          background-color: #141619; /* Čierne pozadie */
+          background-image: 
+            radial-gradient(circle at 10% 20%, #ff00ff, transparent 20%),
+            radial-gradient(circle at 80% 10%, #00c3ff, transparent 20%),
+            radial-gradient(circle at 50% 80%, #ad0aad, transparent 20%),
+            radial-gradient(circle at 90% 60%, #00ffff, transparent 20%);
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
     
-  body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        background-color: #141619; /* Čierne pozadie */
-        background-image: 
-          radial-gradient(circle at 10% 20%, #ff00ff, transparent 20%),
-          radial-gradient(circle at 80% 10%, #00c3ff, transparent 20%),
-          radial-gradient(circle at 50% 80%, #ad0aad, transparent 20%),
-          radial-gradient(circle at 90% 60%, #00ffff, transparent 20%);
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-  
-      #app {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-  
-      .navbar {
-        background-color: #141619;
-      }
-  
-      .navbar .nav-link, .navbar .navbar-brand {
-        color: #adb5bd;
-      }
-  
-      .navbar .nav-link:hover, .navbar .navbar-brand:hover {
-        color: #fff;
-      }
-  
-      footer {
-        background-color: #141619;
-        color: white;
-        padding: 40px 0;
-        margin-top: auto;
-      }
-  
-      .footer-links {
-        list-style: none;
-        padding: 0;
-      }
-  
-      .footer-links li {
-        margin-bottom: 10px;
-      }
-  
-      .footer-links a {
-        color: #adb5bd;
-        text-decoration: none;
-      }
-  
-      .footer-links a:hover {
-        color: #fff;
-        text-decoration: underline;
-      }
-  
-      .social-icons a {
-        color: #adb5bd;
-        margin-right: 15px;
-        font-size: 24px;
-        text-decoration: none;
-      }
-  
-      .social-icons a:hover {
-        color: #fff;
-      }
+        #app {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+    
+        .navbar {
+          background-color: #141619;
+        }
+    
+        .navbar .nav-link, .navbar .navbar-brand {
+          color: #adb5bd;
+        }
+    
+        .navbar .nav-link:hover, .navbar .navbar-brand:hover {
+          color: #fff;
+        }
+    
+        footer {
+          background-color: #141619;
+          color: white;
+          padding: 40px 0;
+          margin-top: auto;
+        }
+    
+        .footer-links {
+          list-style: none;
+          padding: 0;
+        }
+    
+        .footer-links li {
+          margin-bottom: 10px;
+        }
+    
+        .footer-links a {
+          color: #adb5bd;
+          text-decoration: none;
+        }
+    
+        .footer-links a:hover {
+          color: #fff;
+          text-decoration: underline;
+        }
+    
+        .social-icons a {
+          color: #adb5bd;
+          margin-right: 15px;
+          font-size: 24px;
+          text-decoration: none;
+        }
+    
+        .social-icons a:hover {
+          color: #fff;
+        }
 
-      h2.text-center {
-          font-weight: bold;
-          color: #ffffff;    
-      }
+        h2.text-center {
+            font-weight: bold;
+            color: #ffffff;    
+        }
 
-      h1.text-center {
-          color: #ffffff;    
-      }
-    </style>
+        h1.text-center {
+            color: #ffffff;    
+        }
+  </style>
+</body>
 </html>

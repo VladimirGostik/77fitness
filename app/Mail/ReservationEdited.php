@@ -16,9 +16,9 @@ class ReservationEdited extends Mailable
     public $reservation;
 
     /**
-     * Create a new message instance.
+     * Vytvorenie novej inštancie správy.
      *
-     * @param $reservation The reservation instance
+     * @param $reservation Inštancia rezervácie
      * @return void
      */
     public function __construct($reservation)
@@ -26,30 +26,33 @@ class ReservationEdited extends Mailable
         $this->reservation = $reservation;
     }
 
+    /**
+     * Získanie obálky správy.
+     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Edited',
+            subject: 'Rezervácia upravená', // Predmet správy
         );
     }
 
     /**
-     * Get the message content definition.
+     * Získanie definície obsahu správy.
      */
     public function content(): Content
     {
         return new Content(
-            view: 'emails.reservation-edit',
+            view: 'emails.reservation-edit', // Pohľad pre obsah správy
         );
     }
 
     /**
-     * Build the message.
+     * Vytvorenie správy.
      *
      * @return $this
      */
     public function build()
     {
-        return $this->subject('Reservation Edited')->view('emails.reservation_edited');
+        return $this->subject('Rezervácia upravená')->view('emails.reservation_edited'); // Nastavenie predmetu a pohľadu pre email
     }
 }
